@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{c6b9542d-16c0-4e14-bbc7-ae7ad63bb0da}</ProjectGuid>
+    <RootNamespace>NovaEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_GLFW_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp23</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)src\Dependencies\GLAD-0.1.36;$(ProjectDir)src\Dependencies\GLFW-3.4\include\GLFW\;$(ProjectDir)src\Dependencies\ImGui-1.92.0;$(ProjectDir)src\Dependencies\OpenAL-1.24.3;$(ProjectDir)src\Dependencies\zlib-1.3.1;$(ProjectDir)src\Dependencies\miniaudio-0.11.22</AdditionalIncludeDirectories>
+      <OmitFramePointers>true</OmitFramePointers>
+      <CreateHotpatchableImage>
+      </CreateHotpatchableImage>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\Dependencies\GLEW-2.2.0\Windows\;$(ProjectDir)src\Dependencies\GLFW-3.4\Windows\;$(ProjectDir)src\Dependencies\OpenAL-1.24.3\Windows\;$(ProjectDir)src\Dependencies\zlib-1.3.1\Windows\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32sd.lib;opengl32.lib;glfw3d.lib;alsoft.common.lib;alsoft.excommon.lib;OpenAL32.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\Dependencies\GLFW-3.4\Windows\;$(ProjectDir)src\Dependencies\OpenAL-1.24.3\Windows\Debug\;$(ProjectDir)src\Dependencies\zlib-1.3.1\Windows\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_GLFW_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp23</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)src;$(ProjectDir)src\Dependencies\GLAD-0.1.36;$(ProjectDir)src\Dependencies\GLFW-3.4\include\GLFW\;$(ProjectDir)src\Dependencies\ImGui-1.92.0;$(ProjectDir)src\Dependencies\OpenAL-1.24.3;$(ProjectDir)src\Dependencies\zlib-1.3.1;$(ProjectDir)src\Dependencies\miniaudio-0.11.22</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <TreatWarningAsError>false</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\Dependencies\GLEW-2.2.0\Windows\;$(ProjectDir)src\Dependencies\GLFW-3.4\Windows\;$(ProjectDir)src\Dependencies\OpenAL-1.24.3\Windows\;$(ProjectDir)src\Dependencies\zlib-1.3.1\Windows\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;alsoft.common.lib;alsoft.excommon.lib;OpenAL32.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)src\Dependencies\GLFW-3.4\Windows\;$(ProjectDir)src\Dependencies\OpenAL-1.24.3\Windows\Release\;$(ProjectDir)src\Dependencies\zlib-1.3.1\Windows\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Dependencies\GLAD-0.1.36\glad.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\cocoa_time.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\context.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\egl_context.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\glx_context.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\init.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\input.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\linux_joystick.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\monitor.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\null_init.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\null_joystick.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\null_monitor.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\null_window.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\osmesa_context.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\platform.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\posix_module.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\posix_poll.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\posix_thread.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\posix_time.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\vulkan.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\wgl_context.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\win32_init.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\win32_joystick.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\win32_module.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\win32_monitor.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\win32_thread.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\win32_time.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\win32_window.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\window.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\wl_init.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\wl_monitor.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\wl_window.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\x11_init.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\x11_monitor.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\x11_window.c" />
+    <ClCompile Include="src\Dependencies\GLFW-3.4\src\xkb_unicode.c" />
+    <ClCompile Include="src\Dependencies\ImGui-1.92.0\imgui.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ClCompile Include="src\Dependencies\ImGui-1.92.0\imgui_demo.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ClCompile Include="src\Dependencies\ImGui-1.92.0\imgui_draw.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ClCompile Include="src\Dependencies\ImGui-1.92.0\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\Dependencies\ImGui-1.92.0\imgui_impl_opengl3.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ClCompile Include="src\Dependencies\ImGui-1.92.0\imgui_tables.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ClCompile Include="src\Dependencies\ImGui-1.92.0\imgui_widgets.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ScanSourceForModuleDependencies>
+      <ScanSourceForModuleDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ClCompile Include="src\Dependencies\miniaudio-0.11.22\miniaudio.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\adler32.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\compress.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\crc32.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\deflate.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\gzclose.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\gzlib.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\gzread.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\gzwrite.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\infback.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\inffast.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\inflate.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\inftrees.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\trees.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\uncompr.c" />
+    <ClCompile Include="src\Dependencies\zlib-1.3.1\zutil.c" />
+    <ClCompile Include="src\IO\Input\KeyboardState.cppm" />
+    <ClCompile Include="src\IO\Input\KeyboardKeys.cppm" />
+    <ClCompile Include="src\IO\Input\MouseButtons.cppm" />
+    <ClCompile Include="src\IO\Input\MouseState.cppm" />
+    <ClCompile Include="src\IO\IO.cppm" />
+    <ClCompile Include="src\NSL\Astar.cppm" />
+    <ClCompile Include="src\NSL\Astar2DGrid.cppm" />
+    <ClCompile Include="src\NSL\Color4.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\FBX\FBX.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\FBX\FBXLoader.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\FBX\RawFBX.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\PNG\PixelRGB.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\PNG\PixelRGBA.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\PNG\PNG.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\PNG\PNGLoader.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\WAVE.cppm" />
+    <ClCompile Include="src\Engine\Engine.cppm" />
+    <ClCompile Include="src\IO\Window\BaseWindow.cppm" />
+    <ClCompile Include="src\IO\Window\FPSController.cppm" />
+    <ClCompile Include="src\IO\Window\Monitor.cppm" />
+    <ClCompile Include="src\IO\Window\WindowState.cppm" />
+    <ClCompile Include="src\NovaEngine.cppm" />
+    <ClCompile Include="src\Engine\GameWindow.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Mathematics.Functions.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Ray.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Vector2i.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Vector2ui.cppm" />
+    <ClCompile Include="src\NSL\NSL.BinaryStream.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\JSON.cppm" />
+    <ClCompile Include="src\NSL\Logger.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Mathematics.Constants.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Mathematics.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Matrix2x2.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Matrix3x3.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Matrix4x4.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Vector2.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Vector3.cppm" />
+    <ClCompile Include="src\NSL\Mathematics\Vector4.cppm" />
+    <ClCompile Include="src\NSL\NSL.cppm" />
+    <ClCompile Include="src\NSL\NSL.Interfaces.cppm" />
+    <ClCompile Include="src\NSL\NSL.Functions.cppm" />
+    <ClCompile Include="src\NSL\STDHasher.cppm" />
+    <ClCompile Include="src\NSL\STDLess.cppm" />
+    <ClCompile Include="src\NSL\Time.cppm" />
+    <ClCompile Include="src\Renderer\MeshesDataDB.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\DrawCommandBuffer.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\GLBuffersContextManager.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\GLShadersContextManager.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\GLTexturesContextManager.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\OpenGLIndirectCommands.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\Pixelbuffer.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\ShaderStorageBuffer.cppm" />
+    <ClCompile Include="src\Renderer\Raycaster.cppm" />
+    <ClCompile Include="src\Renderer\ResourcesManager.cppm" />
+    <ClCompile Include="src\Renderer\Scene.cppm" />
+    <ClCompile Include="src\Renderer\AssetsManager.cppm" />
+    <ClCompile Include="src\Renderer\Camera.cppm" />
+    <ClCompile Include="src\IO\Window\ImGuiUI.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\GLContext.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\GLGlobalContextManager.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\Mesh.cppm" />
+    <ClCompile Include="src\Renderer\Model.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\Shader.cppm" />
+    <ClCompile Include="src\Renderer\ShadersSourceCodeDB.cppm" />
+    <ClCompile Include="src\Renderer\OpenGL\Texture2D.cppm" />
+    <ClCompile Include="src\Renderer\Renderer.cppm" />
+    <ClCompile Include="src\Renderer\RenderHandler.cppm" />
+    <ClCompile Include="src\Renderer\Sprite.cppm" />
+    <ClCompile Include="src\Renderer\Transform.cppm" />
+    <ClCompile Include="src\Resources\ResourcesDB.cppm" />
+    <ClCompile Include="src\Resources\Shaders_SpriteInstanced_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_SpriteInstanced_vert.cppm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Dependencies\GLAD-0.1.36\glad.h" />
+    <ClInclude Include="src\Dependencies\GLAD-0.1.36\khrplatform.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\cocoa_platform.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\cocoa_time.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\internal.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\linux_joystick.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\mappings.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\null_joystick.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\null_platform.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\platform.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\posix_poll.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\posix_thread.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\posix_time.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\win32_joystick.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\win32_platform.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\win32_thread.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\win32_time.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\wl_platform.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\x11_platform.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\src\xkb_unicode.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imconfig.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imgui.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imgui_impl_glfw.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imgui_internal.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imstb_rectpack.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imstb_textedit.h" />
+    <ClInclude Include="src\Dependencies\ImGui-1.92.0\imstb_truetype.h" />
+    <ClInclude Include="src\Dependencies\miniaudio-0.11.22\miniaudio.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\zconf.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\include\GLFW\glfw3.h" />
+    <ClInclude Include="src\Dependencies\GLFW-3.4\include\GLFW\glfw3native.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\crc32.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\deflate.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\gzguts.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\inffast.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\inffixed.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\inflate.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\inftrees.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\trees.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\zlib.h" />
+    <ClInclude Include="src\Dependencies\zlib-1.3.1\zutil.h" />
+    <ClInclude Include="src\Core.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="rc\Shaders\SpriteInstanced.frag" />
+    <None Include="rc\Shaders\SpriteInstanced.vert" />
+    <None Include="src\Dependencies\zlib-1.3.1\zconf.h.in" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SourceGenerator\SourceGenerator.vcxproj">
+      <Project>{c16b32f9-c6a5-48be-92ad-0b1bcfc7be5f}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+  </Target>
+</Project>

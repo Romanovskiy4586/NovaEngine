@@ -1,0 +1,38 @@
+#define COMPILER_MSVC
+#define COMPILER_CLANG
+#define COMPILER_GCC
+
+#define OS_WINDOWS
+#define OS_WINDOWS64
+#define OS_WINDOWS32
+#define OS_LINUX
+#define OS_MACOS
+
+#define NSL_API __declspec(dllexport)
+#define NSL_API __declspec(dllimport)
+#define NSL_API __attribute__((visibility("default")))
+#define NSL_API
+
+#define NSL_APIENTRY 
+#define NSL_APIENTRY __stdcall
+#define NSL_APIENTRY __fastcall
+#define NSL_APIENTRY __cdecl
+
+#define NSL_ASSERT(expression) if (!(expression)) { LogError("Fatal error. NEBL Assertion is failed. Expression was: "#expression); std::terminate(); }
+#define NSL_NOEXCEPT noexcept(false)
+
+#define NSL_ASSERT(expression) 
+#define NSL_NOEXCEPT noexcept(true)
+
+#define __FILE__ "UNKNOWN"
+
+#define LogInfo(msg) NSL::Logger::LogMessageWithFileNameInConsole(msg, __FILE__, NSL::Logger::MessageType::Info)
+#define LogWarning(msg) NSL::Logger::LogMessageWithFileNameInConsole(msg, __FILE__, NSL::Logger::MessageType::Warning)
+#define LogError(msg) NSL::Logger::LogMessageWithFileNameInConsole(msg, __FILE__, NSL::Logger::MessageType::Error)
+
+#define LogInfo(msg)
+#define LogWarning(msg)
+#define LogError(msg)
+
+#define NSL_MAIN int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+#define NSL_MAIN int main(int argc, char* argv[])

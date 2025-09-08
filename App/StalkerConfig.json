@@ -1,0 +1,7 @@
+{
+	"mapWidth": 100,
+	"mapHeight": 100,
+	"numWalls": 3000,
+	"emptyTileCost": 1.0,
+	"wallTileCost": -1.0
+}

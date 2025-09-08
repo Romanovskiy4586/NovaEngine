@@ -1,0 +1,3 @@
+Glyph - 14x6
+1-3 pixels vertically - lower part
+4 pixel vertically - start

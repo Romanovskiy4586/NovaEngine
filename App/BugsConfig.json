@@ -1,0 +1,9 @@
+{
+  "mapSize": 128,
+  "numBugs": 1000,
+  "numWalls": 1000,
+  "delay": 50.0,
+  "emptyColor": [ 120, 140, 40,  255 ],
+  "wallColor":  [ 100, 100, 100, 255 ],
+  "bugColor":   [ 0,   0,   0,   255 ]
+}
