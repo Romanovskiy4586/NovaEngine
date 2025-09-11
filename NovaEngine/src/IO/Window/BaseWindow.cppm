@@ -474,15 +474,15 @@ export namespace IO
 			}
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->KeyCallback(static_cast<KeyboardKey>(key), state);
 		}
-		static void _CursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+		static void _CursorPositionCallback(GLFWwindow* window, double xpos, double ypos) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->CursorPositionCallback(NSL::Vector2(static_cast<float>(xpos), static_cast<float>(ypos)));
 		}
-		static void _CursorEnterCallback(GLFWwindow* window, int entered)
+		static void _CursorEnterCallback(GLFWwindow* window, int entered) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->CursorEnterCallback(static_cast<bool>(entered));
 		}
-		static void _MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+		static void _MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) NSL_NOEXCEPT
 		{
 			ButtonState state;
 			if (action == GLFW_RELEASE)
@@ -495,31 +495,31 @@ export namespace IO
 			}
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->MouseButtonCallback(static_cast<MouseButton>(button), state);
 		}
-		static void _ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+		static void _ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->ScrollCallback(static_cast<float>(yoffset));
 		}
-		static void _DropCallback(GLFWwindow* window, int count, const char** paths)
+		static void _DropCallback(GLFWwindow* window, int count, const char** paths) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->DropCallback(count, paths);
 		}
-		static void _WindowCloseCallback(GLFWwindow* window)
+		static void _WindowCloseCallback(GLFWwindow* window) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->WindowCloseCallback();
 		}
-		static void _WindowSizeCallback(GLFWwindow* window, int width, int height)
+		static void _WindowSizeCallback(GLFWwindow* window, int width, int height) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->WindowSizeCallback(width, height);
 		}
-		static void _WindowPosCallback(GLFWwindow* window, int x, int y)
+		static void _WindowPosCallback(GLFWwindow* window, int x, int y) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->WindowPosCallback(x, y);
 		}
-		static void _WindowMaximizeCallback(GLFWwindow* window, int maximized)
+		static void _WindowMaximizeCallback(GLFWwindow* window, int maximized) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->WindowMaximizeCallback(static_cast<bool>(maximized));
 		}
-		static void _FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+		static void _FramebufferSizeCallback(GLFWwindow* window, int width, int height) NSL_NOEXCEPT
 		{
 			((BaseWindow*)(glfwGetWindowUserPointer(window)))->FramebufferCallback(width, height);
 		}

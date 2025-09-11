@@ -19,10 +19,10 @@
 #define NSL_APIENTRY __cdecl
 
 #define NSL_ASSERT(expression) if (!(expression)) { LogError("Fatal error. NEBL Assertion is failed. Expression was: "#expression); std::terminate(); }
-#define NSL_NOEXCEPT
+#define NSL_NOEXCEPT noexcept(false)
 
 #define NSL_ASSERT(expression) 
-#define NSL_NOEXCEPT noexcept
+#define NSL_NOEXCEPT noexcept(true)
 
 #define __FILE__ "UNKNOWN"
 
@@ -34,12 +34,5 @@
 #define LogWarning(msg)
 #define LogError(msg)
 
-#define GETTER(Type, GetterName, Property, AdditionalLogic)\
-Type GetterName() const NSL_NOEXCEPT { return Property; AdditionalLogic }
-
-#define SETTER(Type, SetterName, Property, AdditionalLogic)\
-void SetterName(Type value) NSL_NOEXCEPT { Property = value; AdditionalLogic }
-
-#define GETTER_SETTER(Type, GetterSetterName, Property, AdditionalGetterLogic, AdditionalSetterLogic)\
-GETTER(Type, GetterSetterName, Property, AdditionalGetterLogic)\
-SETTER(Type, GetterSetterName, Property, AdditionalSetterLogic)
+#define NSL_MAIN int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+#define NSL_MAIN int main(int argc, char* argv[])

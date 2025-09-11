@@ -9,7 +9,7 @@ export namespace Stalker
 	class StalkerWindow final
 	{
 	public:
-		StalkerWindow()
+		StalkerWindow() NSL_NOEXCEPT
 		{
 			_gameWindow.load =	 [this]() { _Load(); };
 			_gameWindow.update = [this](double delta) { _Update(delta); };
@@ -147,13 +147,19 @@ export namespace Stalker
 		}
 		void _SetSpritesDepths() NSL_NOEXCEPT
 		{
-			NSL::Vector3 position(0.0f, 0.0f, 0.001f);
-			_gameWindow.renderHandler.GetSprite("LowtierStalker").transform.SetPosition(position);
-			_gameWindow.renderHandler.GetSprite("MidlowtierStalker").transform.SetPosition(position);
-			_gameWindow.renderHandler.GetSprite("MidtierStalker").transform.SetPosition(position);
-			_gameWindow.renderHandler.GetSprite("MidhightierStalker").transform.SetPosition(position);
-			_gameWindow.renderHandler.GetSprite("HightierStalker").transform.SetPosition(position);
-			_gameWindow.renderHandler.GetSprite("Point").transform.SetPosition(position);
+			NSL::Vector3 position0(0.0f, 0.0f, 0.0f);
+			NSL::Vector3 position1(0.0f, 0.0f, 0.001f);
+			NSL::Vector3 position2(0.0f, 0.0f, 0.002f);
+
+
+			_gameWindow.renderHandler.GetSprite("EmptyTile").transform.SetPosition(position0);
+			_gameWindow.renderHandler.GetSprite("WallTile").transform.SetPosition(position0);
+			_gameWindow.renderHandler.GetSprite("LowtierStalker").transform.SetPosition(position1);
+			_gameWindow.renderHandler.GetSprite("MidlowtierStalker").transform.SetPosition(position1);
+			_gameWindow.renderHandler.GetSprite("MidtierStalker").transform.SetPosition(position1);
+			_gameWindow.renderHandler.GetSprite("MidhightierStalker").transform.SetPosition(position1);
+			_gameWindow.renderHandler.GetSprite("HightierStalker").transform.SetPosition(position1);
+			_gameWindow.renderHandler.GetSprite("Point").transform.SetPosition(position1);
 		}
 		void _CreateSSBOs() NSL_NOEXCEPT
 		{
@@ -203,7 +209,7 @@ export namespace Stalker
 			_gameWindow.renderHandler.DeleteShaderStorageBuffer("Astar");
 		}
 
-		void _HandleInput(double delta)
+		void _HandleInput(double delta) NSL_NOEXCEPT
 		{
 			static float speed;
 			speed = 0.00001f * static_cast<float>(delta) * _camera.GetFOV();
