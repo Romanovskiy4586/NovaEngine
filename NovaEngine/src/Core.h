@@ -1,6 +1,7 @@
 #ifndef CORE_H
 #define CORE_H
 
+#define NOVA_VERSION "0.1"
 
 // Define compiler. Supported MSVC, Clang and GCC
 #if defined(_MSC_VER)

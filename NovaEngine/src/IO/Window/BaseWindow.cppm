@@ -184,55 +184,55 @@ export namespace IO
 
 	public: // Loop start and end
 		void StartFrame() NSL_NOEXCEPT
-			{
-				_fpsController.StartFrame();
-				glfwPollEvents();
-				if (renderUI) UI.StartRender();
-			}
+		{
+			_fpsController.StartFrame();
+			glfwPollEvents();
+			if (renderUI) UI.StartRender();
+		}
 		void EndFrame() NSL_NOEXCEPT
+		{
+			static int width = _windowState.width;
+			static int height = _windowState.height;
+			static bool vsync = _windowState.vsync;
+			static int fpsLock = _fpsController.GetFPSLock();
+
+			_keyboardState.UpdateKeyboardState();
+			_mouseState.UpdateMouseState();
+
+			if (renderUI && renderWindowState)
 			{
-				static int width = _windowState.width;
-				static int height = _windowState.height;
-				static bool vsync = _windowState.vsync;
-				static int fpsLock = _fpsController.GetFPSLock();
+				UI.Begin("Window State");
 
-				_keyboardState.UpdateKeyboardState();
-				_mouseState.UpdateMouseState();
+				UI.Text("FPS: ");
+				UI.SameLine();
+				UI.Double(1000.0 / _deltaFrame);
 
-				if (renderUI && renderWindowState)
-				{
-					UI.Begin("Window State");
+				if (width != _windowState.width) width = _windowState.width;
+				UI.InputInt("Width", width);
+				if (width != _windowState.width) SetWidth(width);
 
-					UI.Text("FPS: ");
-					UI.SameLine();
-					UI.Double(1000.0 / _deltaFrame);
+				if (height != _windowState.height) height = _windowState.height;
+				UI.InputInt("Height", height);
+				if (height != _windowState.height) SetHeight(height);
 
-					if (width != _windowState.width) width = _windowState.width;
-					UI.InputInt("Width", width);
-					if (width != _windowState.width) SetWidth(width);
+				if (vsync != _windowState.vsync) vsync = _windowState.vsync;
+				UI.Checkbox("VSync", vsync);
+				if (vsync != _windowState.vsync) SetVsync(vsync);
 
-					if (height != _windowState.height) height = _windowState.height;
-					UI.InputInt("Height", height);
-					if (height != _windowState.height) SetHeight(height);
+				if (fpsLock != _fpsController.GetFPSLock()) fpsLock = _fpsController.GetFPSLock();
+				UI.SliderInt("FPSLock", fpsLock, 0, 240);
+				if (fpsLock != _fpsController.GetFPSLock()) SetFPSLock(fpsLock);
 
-					if (vsync != _windowState.vsync) vsync = _windowState.vsync;
-					UI.Checkbox("VSync", vsync);
-					if (vsync != _windowState.vsync) SetVsync(vsync);
-
-					if (fpsLock != _fpsController.GetFPSLock()) fpsLock = _fpsController.GetFPSLock();
-					UI.SliderInt("FPSLock", fpsLock, 0, 240);
-					if (fpsLock != _fpsController.GetFPSLock()) SetFPSLock(fpsLock);
-
-					UI.End();
-				}
-
-				if (renderUI) UI.EndRender();
-
-				glfwSwapBuffers(_glfwWindow);
-
-				// Controls FPS and writes delta frame
-				_deltaFrame = _fpsController.EndFrame();
+				UI.End();
 			}
+
+			if (renderUI) UI.EndRender();
+
+			glfwSwapBuffers(_glfwWindow);
+
+			// Controls FPS and writes delta frame
+			_deltaFrame = _fpsController.EndFrame();
+		}
 
 	public: // Public members
 		Monitor monitor;
@@ -421,6 +421,7 @@ export namespace IO
 		void _ShutdownMiniaudio() NSL_NOEXCEPT
 		{
 			ma_device_uninit(&_device);
+			LogInfo("Miniaudio devise is uninited");
 		}
 		std::string _GetMiniaudioUsedBackend() NSL_NOEXCEPT
 		{
