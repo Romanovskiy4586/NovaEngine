@@ -58,14 +58,12 @@ export namespace Stalker
 			_UnloadSSBOs();
 		}
 
-	private:
 		void _FramebufferSizeCallback(int width, int height) NSL_NOEXCEPT
 		{
 			_gameWindow.renderHandler.SetViewport(width, height);
 			_camera.SetWidthAndHeight(width, height);
 		}
 
-	private:
 		void _InitGame() NSL_NOEXCEPT
 		{
 			NSL::JSON json = NSL::JSON::Load("StalkerConfig.json");
@@ -184,7 +182,6 @@ export namespace Stalker
 			_gameWindow.renderHandler.UpdateShaderStorageBuffer("Astar", _path);
 		}
 
-	private:
 		void _UnloadTextures() NSL_NOEXCEPT
 		{
 			_gameWindow.renderHandler.DeleteTexture2D("Font");
@@ -212,6 +209,8 @@ export namespace Stalker
 		void _HandleInput(double delta) NSL_NOEXCEPT
 		{
 			static float speed;
+			static bool isNeedToUpdateSSBOs = false;
+			static bool isRebuildingMap = false;
 			speed = 0.00001f * static_cast<float>(delta) * _camera.GetFOV();
 
 			_camera.AddToFOV(-_gameWindow.baseWindow.GetMouseScrollDelta() * _camera.GetFOV() * 0.1f);
@@ -236,10 +235,24 @@ export namespace Stalker
 			{
 				_camera.InputMouseDelta(_gameWindow.baseWindow.GetCursorPositionDelta().x, _gameWindow.baseWindow.GetCursorPositionDelta().y);
 			}
-			if (_gameWindow.baseWindow.IsKeyboardKeyPressed(IO::KeyboardKey::Space))
+			if (_gameWindow.baseWindow.IsKeyboardKeyPressed(IO::KeyboardKey::Space) && !isRebuildingMap)
 			{
-				_InitGame();
+				std::thread thrd([this]()
+				{
+					isRebuildingMap = true;
+					do
+					{
+						_InitGame();
+					} while (_path.empty());
+					isNeedToUpdateSSBOs = true;
+					isRebuildingMap = false;
+				});
+				thrd.detach();
+			}
+			if (isNeedToUpdateSSBOs)
+			{
 				_UpdateSSBOs();
+				isNeedToUpdateSSBOs = false;
 			}
 		}
 

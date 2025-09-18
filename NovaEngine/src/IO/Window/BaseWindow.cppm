@@ -4,9 +4,6 @@ module;
 #include "miniaudio.h"
 export module BaseWindow;
 #include "Core.h"
-#define GETTER(type, name, logic) type name() const NSL_NOEXCEPT { logic return _windowState.name; }
-#define SETTER(type, name, logic) void name(type value) NSL_NOEXCEPT { _windowState.name = value; logic }
-#define GETTER_SETTER(type, name, getLogic, setLogic) GETTER(type, name, getLogic) SETTER(type, name, setLogic)
 import std;
 import NSL;
 import WindowState;

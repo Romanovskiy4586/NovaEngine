@@ -427,31 +427,11 @@ export namespace Renderer
 
 		void RenderModel(const std::string& modelName, const Camera& camera) NSL_NOEXCEPT
 		{
-			static const std::string pvmUniformName("pvm");
-			Model& model = assetsManager.GetModel(modelName);
-
-			BindShader(s_modelShaderName);
-			glTexturesContextManager.BindTexture2D(&model.albedo, 0);
-			glTexturesContextManager.BindTexture2D(&model.normal, 1);
-			glTexturesContextManager.BindTexture2D(&model.metallic, 2);
-			glTexturesContextManager.BindTexture2D(&model.ao, 3);
-			glTexturesContextManager.BindTexture2D(&model.roughness, 4);
-			SetShaderUniform(camera.GetProjectionViewMatrix() * model.transform.GetModelMatrix(), pvmUniformName, false);
-			DrawMesh(model);
+			_RenderModel(modelName, camera, s_modelShaderName);
 		}
 		void RenderModelPS1(const std::string& modelName, const Camera& camera) NSL_NOEXCEPT
 		{
-			static const std::string pvmUniformName("pvm");
-			Model& model = assetsManager.GetModel(modelName);
-
-			BindShader(s_modelPS1ShaderName);
-			glTexturesContextManager.BindTexture2D(&model.albedo, 0);
-			glTexturesContextManager.BindTexture2D(&model.normal, 1);
-			glTexturesContextManager.BindTexture2D(&model.metallic, 2);
-			glTexturesContextManager.BindTexture2D(&model.ao, 3);
-			glTexturesContextManager.BindTexture2D(&model.roughness, 4);
-			SetShaderUniform(camera.GetProjectionViewMatrix() * model.transform.GetModelMatrix(), pvmUniformName, false);
-			DrawMesh(model);
+			_RenderModel(modelName, camera, s_modelPS1ShaderName);
 		}
 
 	public:
@@ -464,6 +444,20 @@ export namespace Renderer
 		AssetsManager assetsManager;
 
 	private:
+		void _RenderModel(const std::string& modelName, const Camera& camera, const std::string& shaderName) NSL_NOEXCEPT
+		{
+			static const std::string pvmUniformName("pvm");
+			Model& model = assetsManager.GetModel(modelName);
+
+			BindShader(shaderName);
+			glTexturesContextManager.BindTexture2D(&model.albedo, 0);
+			glTexturesContextManager.BindTexture2D(&model.normal, 1);
+			glTexturesContextManager.BindTexture2D(&model.metallic, 2);
+			glTexturesContextManager.BindTexture2D(&model.ao, 3);
+			glTexturesContextManager.BindTexture2D(&model.roughness, 4);
+			SetShaderUniform(camera.GetProjectionViewMatrix() * model.transform.GetModelMatrix(), pvmUniformName, false);
+			DrawMesh(model);
+		}
 		void _Sort(Scene& scene) NSL_NOEXCEPT
 		{
 			switch (scene.renderParameters.sortingByDistance)
@@ -473,20 +467,20 @@ export namespace Renderer
 
 			case Scene::RenderParameters::SortingByDistance::NearToFar:
 				std::sort(scene.sprites.begin(), scene.sprites.end(), [&](const std::string& a, const std::string& b)
-					{
-						float distanceA = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(a).transform.GetPosition());
-						float distanceB = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(b).transform.GetPosition());
-						return distanceA < distanceB;
-					});
+				{
+					float distanceA = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(a).transform.GetPosition());
+					float distanceB = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(b).transform.GetPosition());
+					return distanceA < distanceB;
+				});
 				break;
 
 			case Scene::RenderParameters::SortingByDistance::FarToNear:
 				std::sort(scene.sprites.begin(), scene.sprites.end(), [&](const std::string& a, const std::string& b)
-					{
-						float distanceA = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(a).transform.GetPosition());
-						float distanceB = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(b).transform.GetPosition());
-						return distanceA > distanceB;
-					});
+				{
+					float distanceA = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(a).transform.GetPosition());
+					float distanceB = NSL::Distance(scene.camera.GetPosition(), assetsManager.GetSprite(b).transform.GetPosition());
+					return distanceA > distanceB;
+				});
 				break;
 
 			default:
