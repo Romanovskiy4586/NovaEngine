@@ -21,10 +21,8 @@ export namespace Engine
 		sstr << "::: ##::. ##:. #######::::. ###:::: ##:::: ##:::: ########: ##::. ##:. ######:::'####: ##::. ##: ########:::\n";
 		sstr << ":::..::::..:::.......::::::...:::::..:::::..:::::........::..::::..:::......::::....::..::::..::........::::\n";
 		sstr << "----- \"Nova Engine (copr.)\". version: " << NOVA_VERSION << " -----" << "\n";
+		sstr << "----- Compiler: " << COMPILER << ", Architecture: " << ARCHITECTURE << ", OS: " << OS << " -----\n";
 
-		LogInfo(sstr.str());
-		sstr.str(std::string());
-		sstr << "----- Compiler: " << COMPILER << ", Architecture: " << ARCHITECTURE << ", OS: " << OS << " -----";
 		LogInfo(sstr.str());
 	}
 

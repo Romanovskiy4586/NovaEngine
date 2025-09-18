@@ -280,13 +280,21 @@
     <ClCompile Include="src\Renderer\OpenGL\Mesh.cppm" />
     <ClCompile Include="src\Renderer\Model.cppm" />
     <ClCompile Include="src\Renderer\OpenGL\Shader.cppm" />
-    <ClCompile Include="src\Renderer\ShadersSourceCodeDB.cppm" />
     <ClCompile Include="src\Renderer\OpenGL\Texture2D.cppm" />
     <ClCompile Include="src\Renderer\Renderer.cppm" />
     <ClCompile Include="src\Renderer\RenderHandler.cppm" />
     <ClCompile Include="src\Renderer\Sprite.cppm" />
     <ClCompile Include="src\Renderer\Transform.cppm" />
     <ClCompile Include="src\Resources\ResourcesDB.cppm" />
+    <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm" />
+    <ClCompile Include="src\Resources\Shaders_PostProcessEmpty_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_PostProcessGammaCorrection_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_PostProcessKernel_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_PostProcessSharpener_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_PostProcessTonalCompression_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_PostProcess_vert.cppm" />
+    <ClCompile Include="src\Resources\Shaders_PS1_vert.cppm" />
     <ClCompile Include="src\Resources\Shaders_SpriteInstanced_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_SpriteInstanced_vert.cppm" />
   </ItemGroup>
@@ -338,6 +346,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="rc\Shaders\Basic.frag" />
+    <None Include="rc\Shaders\Basic.vert" />
+    <None Include="rc\Shaders\PostProcess.vert" />
+    <None Include="rc\Shaders\PostProcessEmpty.frag" />
+    <None Include="rc\Shaders\PostProcessGammaCorrection.frag" />
+    <None Include="rc\Shaders\PostProcessKernel.frag" />
+    <None Include="rc\Shaders\PostProcessSharpener.frag" />
+    <None Include="rc\Shaders\PostProcessTonalCompression.frag" />
+    <None Include="rc\Shaders\PS1.vert" />
     <None Include="rc\Shaders\SpriteInstanced.frag" />
     <None Include="rc\Shaders\SpriteInstanced.vert" />
     <None Include="src\Dependencies\zlib-1.3.1\zconf.h.in" />

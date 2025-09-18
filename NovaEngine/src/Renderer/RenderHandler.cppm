@@ -18,7 +18,7 @@ import Mesh;
 import Sprite;
 import ShaderStorageBuffer;
 //import Framebuffer;
-import ShadersSourceCodeDB;
+//import ShadersSourceCodeDB;
 import MeshesDataDB;
 
 import ResourcesDB;
@@ -86,36 +86,68 @@ export namespace Renderer
 			AddMesh(s_spriteMeshName, _meshesDataDB.sprite);
 
 			Shader shader;
-			shader.vertexSourceCode = _shadersSourceCodeDB.positionUVsPVMPS1VertexShader;
-			shader.fragmentSourceCode = _shadersSourceCodeDB.textureMappingFragmentShader;
+
+			{
+				NovaResources::Shaders_PS1_vert vert;
+				NovaResources::Shaders_Basic_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
 			AddShader(s_modelPS1ShaderName, shader);
 
+			{
+				NovaResources::Shaders_SpriteInstanced_vert vert;
+				NovaResources::Shaders_SpriteInstanced_frag frag;
 
-			NovaResources::Shaders_SpriteInstanced_vert vert;
-			NovaResources::Shaders_SpriteInstanced_frag frag;
-
-			shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-			shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			//AddShader(s_spriteShaderName, shader);
-			//AddShader(s_modelShaderName, shader);
-
-			//shader.vertexSourceCode = _shadersSourceCodeDB.positionUVsPVMInstanceOffsetsVertexShader;
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
 			AddShader(s_spriteInstanceOffsetsShaderName, shader);
 
-			shader.vertexSourceCode = _shadersSourceCodeDB.postProcessVertexShader;
-			shader.fragmentSourceCode = _shadersSourceCodeDB.postProcessFragmentShader_Empty;
+			{
+				NovaResources::Shaders_PostProcess_vert vert;
+				NovaResources::Shaders_PostProcessEmpty_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
 			AddShader("Empty", shader);
 
-			shader.fragmentSourceCode = _shadersSourceCodeDB.postProcessFragmentShader_GammaCorrection;
+			{
+				NovaResources::Shaders_PostProcess_vert vert;
+				NovaResources::Shaders_PostProcessGammaCorrection_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
 			AddShader("GammaCorrection", shader);
 
-			shader.fragmentSourceCode = _shadersSourceCodeDB.postProcessFragmentShader_TonalCompression;
+			{
+				NovaResources::Shaders_PostProcess_vert vert;
+				NovaResources::Shaders_PostProcessTonalCompression_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
 			AddShader("TonalCompression", shader);
 
-			shader.fragmentSourceCode = _shadersSourceCodeDB.postProcessFragmentShader_Kernel;
+			{
+				NovaResources::Shaders_PostProcess_vert vert;
+				NovaResources::Shaders_PostProcessKernel_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
 			AddShader("Kernel", shader);
 
-			shader.fragmentSourceCode = _shadersSourceCodeDB.postProcessFragmentShader_Sharpener;
+			{
+				NovaResources::Shaders_PostProcess_vert vert;
+				NovaResources::Shaders_PostProcessSharpener_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
 			AddShader("Sharpener", shader);
 
 			Texture2D texture;
@@ -491,7 +523,7 @@ export namespace Renderer
 
 	private:
 		//NSL::ResourceDB _resourceDB;
-		ShadersSourceCodeDB _shadersSourceCodeDB;
+		//ShadersSourceCodeDB _shadersSourceCodeDB;
 		MeshesDataDB _meshesDataDB;
 		float _scale;
 		int _framebufferWidth;
