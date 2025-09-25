@@ -1,0 +1,1 @@
+SourceGenerator.exe C:\Projects\NovaEngine\NovaEngine\rc\ C:\Projects\NovaEngine\NovaEngine\src\Resources\ NovaResources

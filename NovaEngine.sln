@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NovaEngine", "NovaEngine\No
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SourceGenerator", "SourceGenerator\SourceGenerator.vcxproj", "{C16B32F9-C6A5-48BE-92AD-0B1BCFC7BE5F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceCompressor", "ResourceCompressor\ResourceCompressor.vcxproj", "{C3DE9351-7D10-4362-88A1-540313FBE4D0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NovaDependencies", "NovaDependencies\NovaDependencies.vcxproj", "{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,6 +31,14 @@ Global
 		{C16B32F9-C6A5-48BE-92AD-0B1BCFC7BE5F}.Debug|x64.Build.0 = Debug|x64
 		{C16B32F9-C6A5-48BE-92AD-0B1BCFC7BE5F}.Release|x64.ActiveCfg = Release|x64
 		{C16B32F9-C6A5-48BE-92AD-0B1BCFC7BE5F}.Release|x64.Build.0 = Release|x64
+		{C3DE9351-7D10-4362-88A1-540313FBE4D0}.Debug|x64.ActiveCfg = Debug|x64
+		{C3DE9351-7D10-4362-88A1-540313FBE4D0}.Debug|x64.Build.0 = Debug|x64
+		{C3DE9351-7D10-4362-88A1-540313FBE4D0}.Release|x64.ActiveCfg = Release|x64
+		{C3DE9351-7D10-4362-88A1-540313FBE4D0}.Release|x64.Build.0 = Release|x64
+		{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}.Debug|x64.ActiveCfg = Debug|x64
+		{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}.Debug|x64.Build.0 = Debug|x64
+		{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}.Release|x64.ActiveCfg = Release|x64
+		{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

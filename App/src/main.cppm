@@ -1,15 +1,15 @@
+module;
 #include "Core.h"
-
 #ifdef OS_WINDOWS
 #include <Windows.h>
 #endif
+export module main;
 
 import std;
 import NovaEngine;
-
 import StalkerWindow;
 
-NSL_MAIN
+export NSL_MAIN
 {
 	Engine::Init();
 

@@ -18,27 +18,5 @@
     <ClCompile Include="src\main.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Stalker\StalkerWindow.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Stalker\GameMap.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Stalker\StalkerWorld.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Stalker\NPC.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Stalker\Tile.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
-    <None Include="BugsConfig.json" />
-    <None Include="imgui.ini" />
-    <None Include="WindowState.json" />
-    <None Include="StalkerConfig.json" />
   </ItemGroup>
 </Project>
