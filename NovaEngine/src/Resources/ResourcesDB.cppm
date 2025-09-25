@@ -9,5 +9,5 @@ export import Shaders_PostProcessKernel_frag;
 export import Shaders_PostProcessSharpener_frag;
 export import Shaders_PostProcessTonalCompression_frag;
 export import Shaders_PS1_vert;
-export import Shaders_SpriteInstanced_frag;
 export import Shaders_SpriteInstanced_vert;
+export import Shaders_SpriteInstancedAtlasSampled_vert;

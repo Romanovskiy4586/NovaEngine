@@ -206,7 +206,7 @@
     <ClCompile Include="src\Resources\Shaders_PostProcessTonalCompression_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_PostProcess_vert.cppm" />
     <ClCompile Include="src\Resources\Shaders_PS1_vert.cppm" />
-    <ClCompile Include="src\Resources\Shaders_SpriteInstanced_frag.cppm" />
+    <ClCompile Include="src\Resources\Shaders_SpriteInstancedAtlasSampled_vert.cppm" />
     <ClCompile Include="src\Resources\Shaders_SpriteInstanced_vert.cppm" />
   </ItemGroup>
   <ItemGroup>
@@ -248,7 +248,7 @@
     <None Include="rc\Shaders\PostProcessSharpener.frag" />
     <None Include="rc\Shaders\PostProcessTonalCompression.frag" />
     <None Include="rc\Shaders\PS1.vert" />
-    <None Include="rc\Shaders\SpriteInstanced.frag" />
+    <None Include="rc\Shaders\SpriteInstancedAtlasSampled.vert" />
     <None Include="rc\Shaders\SpriteInstanced.vert" />
     <None Include="src\Dependencies\zlib-1.3.1\zconf.h.in" />
   </ItemGroup>

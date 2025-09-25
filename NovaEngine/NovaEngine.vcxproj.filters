@@ -222,13 +222,10 @@
     <ClCompile Include="src\Resources\ResourcesDB.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resources\Shaders_SpriteInstanced_frag.cppm">
+    <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resources\Shaders_SpriteInstanced_vert.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resources\Shaders_PostProcessTonalCompression_frag.cppm">
+    <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Resources\Shaders_PostProcess_vert.cppm">
@@ -246,13 +243,16 @@
     <ClCompile Include="src\Resources\Shaders_PostProcessSharpener_frag.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\Shaders_PostProcessTonalCompression_frag.cppm">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Resources\Shaders_PS1_vert.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm">
+    <ClCompile Include="src\Resources\Shaders_SpriteInstanced_vert.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm">
+    <ClCompile Include="src\Resources\Shaders_SpriteInstancedAtlasSampled_vert.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -337,8 +337,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="rc\Shaders\SpriteInstanced.frag" />
-    <None Include="rc\Shaders\SpriteInstanced.vert" />
+    <None Include="rc\Shaders\SpriteInstancedAtlasSampled.vert" />
     <None Include="src\Dependencies\zlib-1.3.1\zconf.h.in" />
     <None Include="cpp.hint" />
     <None Include="rc\Shaders\PostProcessTonalCompression.frag" />
@@ -350,5 +349,6 @@
     <None Include="rc\Shaders\Basic.vert" />
     <None Include="rc\Shaders\PS1.vert" />
     <None Include="rc\Shaders\Basic.frag" />
+    <None Include="rc\Shaders\SpriteInstanced.vert" />
   </ItemGroup>
 </Project>

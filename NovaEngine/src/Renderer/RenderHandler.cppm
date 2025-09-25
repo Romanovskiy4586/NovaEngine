@@ -18,7 +18,6 @@ import Mesh;
 import Sprite;
 import ShaderStorageBuffer;
 //import Framebuffer;
-//import ShadersSourceCodeDB;
 import MeshesDataDB;
 
 import ResourcesDB;
@@ -37,6 +36,7 @@ const std::string s_spriteShaderName = "RENDERHANDLER__Sprite";
 const std::string s_modelShaderName = "RENDERHANDLER__Model";
 const std::string s_modelPS1ShaderName = "RENDERHANDLER__ModelPS1";
 const std::string s_spriteInstanceOffsetsShaderName = "RENDERHANDLER__SpriteInstanceOffsets";
+const std::string s_spriteInstanceOffsetsAtlasSampledShaderName = "RENDERHANDLER__SpriteInstanceOffsetsAtlasSampled";
 
 const std::string s_defaultAlbedoTextureName = "RENDERHANDLER__defaultAlbedoTexture";
 const std::string s_defaultNormalTextureName = "RENDERHANDLER__defaultNormalTexture";
@@ -98,12 +98,21 @@ export namespace Renderer
 
 			{
 				NovaResources::Shaders_SpriteInstanced_vert vert;
-				NovaResources::Shaders_SpriteInstanced_frag frag;
+				NovaResources::Shaders_Basic_frag frag;
 
 				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
 				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
 			}
 			AddShader(s_spriteInstanceOffsetsShaderName, shader);
+
+			{
+				NovaResources::Shaders_SpriteInstancedAtlasSampled_vert vert;
+				NovaResources::Shaders_Basic_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
+			AddShader(s_spriteInstanceOffsetsAtlasSampledShaderName, shader);
 
 			{
 				NovaResources::Shaders_PostProcess_vert vert;
@@ -170,6 +179,7 @@ export namespace Renderer
 			//DeleteShader(s_modelShaderName);
 			DeleteShader(s_modelPS1ShaderName);
 			DeleteShader(s_spriteInstanceOffsetsShaderName);
+			DeleteShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
 			DeleteShader("Empty");
 			DeleteShader("GammaCorrection");
 			DeleteShader("TonalCompression");
@@ -522,8 +532,6 @@ export namespace Renderer
 		}
 
 	private:
-		//NSL::ResourceDB _resourceDB;
-		//ShadersSourceCodeDB _shadersSourceCodeDB;
 		MeshesDataDB _meshesDataDB;
 		float _scale;
 		int _framebufferWidth;
