@@ -1,8 +1,5 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <filesystem>
-#include <vector>
+export module main;
+import std;
 
 static std::string _ToHex(unsigned char c)
 {
@@ -36,7 +33,7 @@ static std::string _ConvertFileContentIntoBinaryChars(const std::string& fileCon
 	return result;
 }
 
-int main(int argc, char* argv[])
+export int main(int argc, char* argv[])
 {
 	// Arguments into vector
 	std::vector<std::string> arguments(argc);

@@ -43,8 +43,8 @@ export namespace Stalker
 			static const NSL::Vector2 atlasSize(256);
 			static const NSL::Vector2 tileSize(16);
 
-			static const NSL::Vector2 wallTileIndex(1.0f, 0.0f);
 			static const NSL::Vector2 emptyTileIndex(0.0f, 0.0f);
+			static const NSL::Vector2 wallTileIndex(1.0f, 0.0f);
 			static const NSL::Vector2 pointIndex(2.0f, 0.0f);
 
 			static const NSL::Vector2 lowtierStalkerIndex(0.0f, 1.0f);
@@ -66,16 +66,16 @@ export namespace Stalker
 			//_gameWindow.renderHandler.RenderSpriteInstanced("Point", _camera, "Astar");
 
 			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.0f));
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "EmptyTilesPositions", atlasSize, tileSize, emptyTileIndex);
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "WallTilesPositions", atlasSize, tileSize, wallTileIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "EmptyTilesPositions", atlasSize, tileSize, emptyTileIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "WallTilesPositions", atlasSize, tileSize, wallTileIndex);
 			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.002f));
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "LowtierStalkersPositions", atlasSize, tileSize, lowtierStalkerIndex);
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "MidlowtierStalkersPositions", atlasSize, tileSize, midlowtierStalkerIndex);
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "MidtierStalkersPositions", atlasSize, tileSize, midtierStalkerIndex);
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "MidhightierStalkersPositions", atlasSize, tileSize, midhightierStalkerIndex);
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "HightierStalkersPositions", atlasSize, tileSize, hightierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "LowtierStalkersPositions", atlasSize, tileSize, lowtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidlowtierStalkersPositions", atlasSize, tileSize, midlowtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidtierStalkersPositions", atlasSize, tileSize, midtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidhightierStalkersPositions", atlasSize, tileSize, midhightierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "HightierStalkersPositions", atlasSize, tileSize, hightierStalkerIndex);
 			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.001f));
-			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
 		}
 		void _Unload() NSL_NOEXCEPT
 		{
@@ -125,9 +125,6 @@ export namespace Stalker
 				_path[i].x = static_cast<float>(path[i].x);
 				_path[i].y = static_cast<float>(path[i].y);
 			}
-
-			_tileToAtlasIndex[Tile::Type::Wall] = NSL::Vector2(0.0f, 0.0f);
-			_tileToAtlasIndex[Tile::Type::Empty] = NSL::Vector2(1.0f, 0.0f);
 		}
 		void _SetupEngine() NSL_NOEXCEPT
 		{
@@ -159,7 +156,7 @@ export namespace Stalker
 			//_gameWindow.renderHandler.LoadTexture2D("MidhightierStalker", "Assets/STALKER/MidhightierStalker.png");
 			//_gameWindow.renderHandler.LoadTexture2D("HightierStalker", "Assets/STALKER/HightierStalker.png");
 			//_gameWindow.renderHandler.LoadTexture2D("Point", "Assets/STALKER/Point.png");
-			_gameWindow.renderHandler.LoadTexture2D("TextureAtlas", "Assets/STALKER/TextureAtlas.png");
+			_gameWindow.renderHandler.LoadTexture2D("TextureAtlas", "Assets/STALKER/TextureAtlas.png", Renderer::Texture2DFiltering::Nearest);
 		}
 		void _CreateSprites() NSL_NOEXCEPT
 		{
@@ -171,15 +168,13 @@ export namespace Stalker
 			//_gameWindow.renderHandler.CreateSprite("MidhightierStalker", "MidhightierStalker");
 			//_gameWindow.renderHandler.CreateSprite("HightierStalker", "HightierStalker");
 			//_gameWindow.renderHandler.CreateSprite("Point", "Point");
-
 			_gameWindow.renderHandler.CreateSprite("Atlas", "TextureAtlas");
 		}
 		void _SetSpritesDepths() NSL_NOEXCEPT
 		{
-			NSL::Vector3 position0(0.0f, 0.0f, 0.0f);
-			NSL::Vector3 position1(0.0f, 0.0f, 0.001f);
-			NSL::Vector3 position2(0.0f, 0.0f, 0.002f);
-
+			//NSL::Vector3 position0(0.0f, 0.0f, 0.0f);
+			//NSL::Vector3 position1(0.0f, 0.0f, 0.001f);
+			//NSL::Vector3 position2(0.0f, 0.0f, 0.002f);
 
 			//_gameWindow.renderHandler.GetSprite("EmptyTile").transform.SetPosition(position0);
 			//_gameWindow.renderHandler.GetSprite("WallTile").transform.SetPosition(position0);
@@ -243,7 +238,7 @@ export namespace Stalker
 			static float speed;
 			static bool isNeedToUpdateSSBOs = false;
 			static bool isRebuildingMap = false;
-			speed = 0.00001f * static_cast<float>(delta) * _camera.GetFOV();
+			speed = 0.00002f * static_cast<float>(delta) * _camera.GetFOV();
 
 			_camera.AddToFOV(-_gameWindow.baseWindow.GetMouseScrollDelta() * _camera.GetFOV() * 0.1f);
 
@@ -293,6 +288,5 @@ export namespace Stalker
 		StalkerWorld _world;
 		Renderer::Camera _camera;
 		std::vector<NSL::Vector2> _path;
-		std::unordered_map<Tile::Type, NSL::Vector2> _tileToAtlasIndex;
 	};
 } 

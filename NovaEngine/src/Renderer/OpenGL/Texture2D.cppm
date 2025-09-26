@@ -152,6 +152,6 @@ export namespace Renderer
 
 	private:
 		unsigned int _id;
-		friend class GLTexturesContextManager;
+		friend class GLTexturesManager;
 	};
 }

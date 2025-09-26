@@ -1,4 +1,4 @@
-﻿export module GLBuffersContextManager;
+﻿export module GLBuffersManager;
 #include "Core.h"
 #include "glad.h"
 import std;
@@ -10,10 +10,10 @@ import ShaderStorageBuffer;
 
 export namespace Renderer
 {
-	class NSL_API GLBuffersContextManager
+	class NSL_API GLBuffersManager
 	{
 	public:
-		GLBuffersContextManager()
+		GLBuffersManager()
 			: _bindedVAO(0)
 			, _bindedUBO(0)
 		{

@@ -5,10 +5,10 @@ import NSL;
 import Camera;
 import AssetsManager;
 import ResourcesManager;
-import GLGlobalContextManager;
-import GLTexturesContextManager;
-import GLShadersContextManager;
-import GLBuffersContextManager;
+import GLContextManager;
+import GLTexturesManager;
+import GLShadersManager;
+import GLBuffersManager;
 import GLContext;
 import Model;
 import Scene;
@@ -19,7 +19,6 @@ import Sprite;
 import ShaderStorageBuffer;
 //import Framebuffer;
 import MeshesDataDB;
-
 import ResourcesDB;
 
 
@@ -46,7 +45,7 @@ const std::string s_defaultRoughnessTextureName = "RENDERHANDLER__defaultRoughne
 
 export namespace Renderer
 {
-	using Texture2DFiltering = GLTexturesContextManager::Filtering;
+	using Texture2DFiltering = GLTexturesManager::Filtering;
 
 	class NSL_API RenderHandler final
 		: public NSL::INonCopyable
@@ -72,7 +71,7 @@ export namespace Renderer
 
 	public:
 		RenderHandler(int width, int height) NSL_NOEXCEPT
-			: glGlobalContextManager(width, height)
+			: glContextManager(width, height)
 			, resourcesManager()
 			, assetsManager()
 			, postProcessParameters()
@@ -205,51 +204,51 @@ export namespace Renderer
 		void AddShader(const std::string& name, const Shader& shader) NSL_NOEXCEPT
 		{
 			resourcesManager.AddShader(name, shader);
-			glShadersContextManager.RegisterShader(resourcesManager.GetShader(name));
+			glShadersManager.RegisterShader(resourcesManager.GetShader(name));
 		}
 		void BindShader(const std::string& name) NSL_NOEXCEPT
 		{
-			glShadersContextManager.BindShader(&resourcesManager.GetShader(name));
+			glShadersManager.BindShader(&resourcesManager.GetShader(name));
 		}
 		void SetShaderUniform(const NSL::Vector2& data, const std::string& uniformName) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName);
+			glShadersManager.SetUniform(data, uniformName);
 		}
 		void SetShaderUniform(const std::vector<NSL::Vector2> data, const std::string& uniformName) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName);
+			glShadersManager.SetUniform(data, uniformName);
 		}
 		void SetShaderUniform(const NSL::Vector3& data, const std::string& uniformName) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName);
+			glShadersManager.SetUniform(data, uniformName);
 		}
 		void SetShaderUniform(const NSL::Vector4& data, const std::string& uniformName) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName);
+			glShadersManager.SetUniform(data, uniformName);
 		}
 		void SetShaderUniform(int data, const std::string& uniformName) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName);
+			glShadersManager.SetUniform(data, uniformName);
 		}
 		void SetShaderUniform(bool data, const std::string& uniformName) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName);
+			glShadersManager.SetUniform(data, uniformName);
 		}
 		void SetShaderUniform(float data, const std::string& uniformName) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName);
+			glShadersManager.SetUniform(data, uniformName);
 		}
 		void SetShaderUniform(const NSL::Matrix4x4& data, const std::string& uniformName, bool transpose) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName, transpose);
+			glShadersManager.SetUniform(data, uniformName, transpose);
 		}
 		void SetShaderUniform(const NSL::Matrix3x3& data, const std::string& uniformName, bool transpose) NSL_NOEXCEPT
 		{
-			glShadersContextManager.SetUniform(data, uniformName, transpose);
+			glShadersManager.SetUniform(data, uniformName, transpose);
 		}
 		void DeleteShader(const std::string& name) NSL_NOEXCEPT
 		{
-			glShadersContextManager.FreeShader(resourcesManager.GetShader(name));
+			glShadersManager.FreeShader(resourcesManager.GetShader(name));
 			resourcesManager.DeleteShader(name);
 		}
 
@@ -258,19 +257,19 @@ export namespace Renderer
 		{
 			resourcesManager.AddTexture2D(name, texture);
 			Texture2D& textureRef = resourcesManager.GetTexture2D(name);
-			glTexturesContextManager.RegisterTexture2D(textureRef, filtering);
-			glTexturesContextManager.UpdateTexture2D(textureRef);
+			glTexturesManager.RegisterTexture2D(textureRef, filtering);
+			glTexturesManager.UpdateTexture2D(textureRef);
 		}
 		void LoadTexture2D(const std::string& name, const std::string& pngPath, Texture2DFiltering filtering = Texture2DFiltering::MipmapNearest) NSL_NOEXCEPT
 		{
 			resourcesManager.LoadTexture2D(name, pngPath);
 			Texture2D& textureRef = resourcesManager.GetTexture2D(name);
-			glTexturesContextManager.RegisterTexture2D(textureRef, filtering);
-			glTexturesContextManager.UpdateTexture2D(textureRef);
+			glTexturesManager.RegisterTexture2D(textureRef, filtering);
+			glTexturesManager.UpdateTexture2D(textureRef);
 		}
 		void BindTexture2D(const std::string& name) NSL_NOEXCEPT
 		{
-			glTexturesContextManager.BindTexture2D(&resourcesManager.GetTexture2D(name));
+			glTexturesManager.BindTexture2D(&resourcesManager.GetTexture2D(name));
 		}
 		const Texture2D& GetTexture2D(const std::string& name) const NSL_NOEXCEPT
 		{
@@ -282,11 +281,15 @@ export namespace Renderer
 		}
 		void UpdateTexture2D(const std::string& name) NSL_NOEXCEPT
 		{
-			glTexturesContextManager.UpdateTexture2D(resourcesManager.GetTexture2D(name));
+			glTexturesManager.UpdateTexture2D(resourcesManager.GetTexture2D(name));
+		}
+		void SetTexture2DFiltering(const std::string& name, Texture2DFiltering filtering = Texture2DFiltering::MipmapNearest) NSL_NOEXCEPT
+		{
+
 		}
 		void DeleteTexture2D(const std::string& name) NSL_NOEXCEPT
 		{
-			glTexturesContextManager.FreeTexture2D(resourcesManager.GetTexture2D(name));
+			glTexturesManager.FreeTexture2D(resourcesManager.GetTexture2D(name));
 			resourcesManager.DeleteTexture2D(name);
 		}
 
@@ -294,66 +297,66 @@ export namespace Renderer
 		void AddMesh(const std::string& meshName, const Mesh& mesh) NSL_NOEXCEPT
 		{
 			resourcesManager.AddMesh(meshName, mesh);
-			glBuffersContextManager.RegisterMesh(resourcesManager.GetMesh(meshName));
+			glBuffersManager.RegisterMesh(resourcesManager.GetMesh(meshName));
 		}
 		void LoadMesh(const std::string& meshName, const std::string& pngPath) NSL_NOEXCEPT
 		{
 			resourcesManager.LoadMesh(meshName, pngPath);
-			glBuffersContextManager.RegisterMesh(resourcesManager.GetMesh(meshName));
+			glBuffersManager.RegisterMesh(resourcesManager.GetMesh(meshName));
 		}
 		void DeleteMesh(const std::string& meshName) NSL_NOEXCEPT
 		{
-			glBuffersContextManager.FreeMesh(resourcesManager.GetMesh(meshName));
+			glBuffersManager.FreeMesh(resourcesManager.GetMesh(meshName));
 			resourcesManager.DeleteMesh(meshName);
 		}
 		void DrawMesh(const std::string& meshName, unsigned int instanceCount = 1) NSL_NOEXCEPT
 		{
-			glBuffersContextManager.DrawCall(resourcesManager.GetMesh(meshName), instanceCount);
+			glBuffersManager.DrawCall(resourcesManager.GetMesh(meshName), instanceCount);
 		}
 		void DrawMesh(const Model& model, unsigned int instanceCount = 1) NSL_NOEXCEPT
 		{
-			glBuffersContextManager.DrawCall(model.mesh, instanceCount);
+			glBuffersManager.DrawCall(model.mesh, instanceCount);
 		}
 
 	public:
 		void CreateShaderStorageBuffer(const std::string& name) NSL_NOEXCEPT
 		{
 			resourcesManager.AddShaderStorageBuffer(name, ShaderStorageBuffer());
-			glBuffersContextManager.RegisterShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
+			glBuffersManager.RegisterShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
 		}
 		void AddShaderStorageBuffer(const std::string& name, const ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
 			resourcesManager.AddShaderStorageBuffer(name, shaderStorageBuffer);
-			glBuffersContextManager.RegisterShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
+			glBuffersManager.RegisterShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
 		}
 		template <class T>
 		void UpdateShaderStorageBuffer(const std::string& name, const std::vector<T> data) NSL_NOEXCEPT
 		{
 			resourcesManager.GetShaderStorageBuffer(name).Reallocate(data.data(), static_cast<unsigned long long>(data.size() * sizeof(T)), static_cast<unsigned int>(data.size()));
-			glBuffersContextManager.ReloadShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
+			glBuffersManager.ReloadShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
 		}
 		void DeleteShaderStorageBuffer(const std::string& name) NSL_NOEXCEPT
 		{
-			glBuffersContextManager.FreeShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
+			glBuffersManager.FreeShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
 			resourcesManager.DeleteShaderStorageBuffer(name);
 		}
 
 	public:
 		void Clear()
 		{
-			glGlobalContextManager.Clear();
+			glContextManager.Clear();
 		}
 		void SetClearColor(const NSL::Vector4& color) NSL_NOEXCEPT
 		{
-			glGlobalContextManager.SetClearColor(color);
+			glContextManager.SetClearColor(color);
 		}
 		void SetViewport(int width, int height) NSL_NOEXCEPT
 		{
-			glGlobalContextManager.SetViewport(width, height);
+			glContextManager.SetViewport(width, height);
 		}
 		void SetViewport(int x, int y, int width, int height) NSL_NOEXCEPT
 		{
-			glGlobalContextManager.SetViewport(x, y, width, height);
+			glContextManager.SetViewport(x, y, width, height);
 		}
 
 		void UpdateFramebufferSize(int width, int height) NSL_NOEXCEPT
@@ -447,7 +450,7 @@ export namespace Renderer
 			{
 				Sprite& sprite = assetsManager.GetSprite(spriteName);
 
-				glTexturesContextManager.BindTexture2D(&sprite.texture);
+				glTexturesManager.BindTexture2D(&sprite.texture);
 				SetShaderUniform(scene.camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), "pvm", false);
 
 				DrawMesh(s_spriteMeshName);
@@ -459,7 +462,7 @@ export namespace Renderer
 			Sprite& sprite = assetsManager.GetSprite(spriteName);
 
 			BindShader(s_spriteShaderName);
-			glTexturesContextManager.BindTexture2D(&sprite.texture);
+			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
 			DrawMesh(s_spriteMeshName);
 		}
@@ -469,12 +472,12 @@ export namespace Renderer
 			Sprite& sprite = assetsManager.GetSprite(spriteName);
 
 			BindShader(s_spriteInstanceOffsetsShaderName);
-			glTexturesContextManager.BindTexture2D(&sprite.texture);
+			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
-			glBuffersContextManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
-		void RenderSpriteInstancedAtlasSampled(const std::string& spriteName, const Camera& camera, const std::string& shaderStorageNameWithPositions, const NSL::Vector2& atlasSize, const NSL::Vector2& tileSize, const NSL::Vector2& tileIndex) NSL_NOEXCEPT
+		void RenderSpriteInstancedSampled(const std::string& spriteName, const Camera& camera, const std::string& shaderStorageNameWithPositions, const NSL::Vector2& atlasSize, const NSL::Vector2& tileSize, const NSL::Vector2& tileIndex) NSL_NOEXCEPT
 		{
 			static const std::string pvmUniformName("pvm");
 			static const std::string atlasSizeUniformName("atlasSize");
@@ -483,12 +486,12 @@ export namespace Renderer
 			Sprite& sprite = assetsManager.GetSprite(spriteName);
 
 			BindShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
-			glTexturesContextManager.BindTexture2D(&sprite.texture);
+			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
 			SetShaderUniform(atlasSize, atlasSizeUniformName);
 			SetShaderUniform(tileSize, tileSizeUniformName);
 			SetShaderUniform(tileIndex, tileIndexUniformName);
-			glBuffersContextManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
 
@@ -503,10 +506,10 @@ export namespace Renderer
 
 	public:
 		PostProcessParameters postProcessParameters;
-		GLGlobalContextManager glGlobalContextManager;
-		GLTexturesContextManager glTexturesContextManager;
-		GLShadersContextManager glShadersContextManager;
-		GLBuffersContextManager glBuffersContextManager;
+		GLContextManager glContextManager;
+		GLTexturesManager glTexturesManager;
+		GLShadersManager glShadersManager;
+		GLBuffersManager glBuffersManager;
 		ResourcesManager resourcesManager;
 		AssetsManager assetsManager;
 
@@ -517,11 +520,11 @@ export namespace Renderer
 			Model& model = assetsManager.GetModel(modelName);
 
 			BindShader(shaderName);
-			glTexturesContextManager.BindTexture2D(&model.albedo, 0);
-			glTexturesContextManager.BindTexture2D(&model.normal, 1);
-			glTexturesContextManager.BindTexture2D(&model.metallic, 2);
-			glTexturesContextManager.BindTexture2D(&model.ao, 3);
-			glTexturesContextManager.BindTexture2D(&model.roughness, 4);
+			glTexturesManager.BindTexture2D(&model.albedo, 0);
+			glTexturesManager.BindTexture2D(&model.normal, 1);
+			glTexturesManager.BindTexture2D(&model.metallic, 2);
+			glTexturesManager.BindTexture2D(&model.ao, 3);
+			glTexturesManager.BindTexture2D(&model.roughness, 4);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * model.transform.GetModelMatrix(), pvmUniformName, false);
 			DrawMesh(model);
 		}

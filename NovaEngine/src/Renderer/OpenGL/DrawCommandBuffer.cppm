@@ -39,6 +39,6 @@ export namespace Renderer
 	private:
 		std::vector<DrawElementsIndirectCommand> _commands;
 		unsigned int _id;
-		friend class GLBuffersContextManager;
+		friend class GLBuffersManager;
 	};
 }

@@ -49,6 +49,6 @@ export namespace Renderer
 		unsigned int _eboID;
 		unsigned int _eboSize;
 
-		friend class GLBuffersContextManager;
+		friend class GLBuffersManager;
 	};
 }

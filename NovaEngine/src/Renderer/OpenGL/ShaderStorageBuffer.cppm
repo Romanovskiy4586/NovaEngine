@@ -50,6 +50,6 @@ export namespace Renderer
 		unsigned int _count;
 
 		unsigned int _id;
-		friend class GLBuffersContextManager;
+		friend class GLBuffersManager;
 	};
 }

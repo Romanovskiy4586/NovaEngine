@@ -40,6 +40,6 @@ export namespace Renderer
         unsigned int _id;
         std::unordered_map<std::string, int> _uniforms;
 
-        friend class GLShadersContextManager;
+        friend class GLShadersManager;
     };
 }

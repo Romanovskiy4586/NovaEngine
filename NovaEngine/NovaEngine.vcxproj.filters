@@ -150,7 +150,7 @@
     <ClCompile Include="src\Renderer\OpenGL\GLContext.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\OpenGL\GLGlobalContextManager.cppm">
+    <ClCompile Include="src\Renderer\OpenGL\GLContextManager.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NSL\NSL.Interfaces.cppm">
@@ -183,13 +183,13 @@
     <ClCompile Include="src\NSL\STDHasher.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\OpenGL\GLTexturesContextManager.cppm">
+    <ClCompile Include="src\Renderer\OpenGL\GLTexturesManager.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\OpenGL\GLShadersContextManager.cppm">
+    <ClCompile Include="src\Renderer\OpenGL\GLShadersManager.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Renderer\OpenGL\GLBuffersContextManager.cppm">
+    <ClCompile Include="src\Renderer\OpenGL\GLBuffersManager.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NSL\Mathematics\Ray.cppm">

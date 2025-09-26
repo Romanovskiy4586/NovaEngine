@@ -1,4 +1,4 @@
-export module GLGlobalContextManager;
+export module GLContextManager;
 #include "Core.h"
 #include "glad.h"
 import std;
@@ -13,12 +13,12 @@ export namespace Renderer
 {
 	// При создании инициализирует базовый глобальный контекст: вьюпорт, маску stencil, blending, clear color, включается multisample.
 	// С помощью объекта этого класса меняется глобальный контекст, в лупе вызывается отрисовка мешей
-	class NSL_API GLGlobalContextManager final
+	class NSL_API GLContextManager final
 		: public NSL::INonCopyable
 		, public NSL::INonMovable
 	{
 	public:
-		GLGlobalContextManager(int framebufferWidth, int framebufferHeight) NSL_NOEXCEPT
+		GLContextManager(int framebufferWidth, int framebufferHeight) NSL_NOEXCEPT
 			: _clearColor(0.0f)
 			, _currentContext()
 			, _viewportX(0)

@@ -1,13 +1,13 @@
 {
 	"name": "Stalker",
-	"width": 2560,
+	"width": 2266,
 	"height": 1459,
-	"positionX": 0,
-	"positionY": 45,
+	"positionX": 843,
+	"positionY": 300,
 	"resizable": true,
 	"fullscreen": false,
 	"vsync": true,
 	"fpsLock": 0,
 	"cursorGrabbed": false,
-	"maximized": true
+	"maximized": false
 }

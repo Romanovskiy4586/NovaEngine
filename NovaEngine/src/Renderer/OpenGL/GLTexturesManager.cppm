@@ -1,4 +1,4 @@
-export module GLTexturesContextManager;
+export module GLTexturesManager;
 #include "Core.h"
 #include "glad.h"
 import std;
@@ -7,7 +7,7 @@ import Texture2D;
 
 export namespace Renderer
 {
-	export class NSL_API GLTexturesContextManager final
+	export class NSL_API GLTexturesManager final
 		: public NSL::INonCopyable
 		, public NSL::INonMovable
 	{
@@ -17,10 +17,10 @@ export namespace Renderer
 			Nearest, Linear, MipmapNearest, MipmapLinear
 		};
 
-		using Texture2DFiltering = GLTexturesContextManager::Filtering;
+		using Texture2DFiltering = GLTexturesManager::Filtering;
 
 	public:
-		GLTexturesContextManager()
+		GLTexturesManager()
 		{
 			SetActiveTextureUnit(0);
 

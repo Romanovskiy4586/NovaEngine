@@ -1,4 +1,4 @@
-export module GLShadersContextManager;
+export module GLShadersManager;
 #include "Core.h"
 #include "glad.h"
 import std;
@@ -7,12 +7,12 @@ import Shader;
 
 export namespace Renderer
 {
-	class NSL_API GLShadersContextManager
+	class NSL_API GLShadersManager
 		: public NSL::INonCopyable
 		, public NSL::INonMovable
 	{
 	public:
-		GLShadersContextManager()
+        GLShadersManager()
             : _bindedShader(0)
             , _bindedShaderUniforms()
 		{
