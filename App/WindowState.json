@@ -6,8 +6,8 @@
 	"positionY": 45,
 	"resizable": true,
 	"fullscreen": false,
-	"vsync": false,
-	"fpsLock": 60,
+	"vsync": true,
+	"fpsLock": 0,
 	"cursorGrabbed": false,
 	"maximized": true
 }

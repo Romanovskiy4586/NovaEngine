@@ -97,6 +97,15 @@ export namespace Renderer
 			AddShader(s_modelPS1ShaderName, shader);
 
 			{
+				NovaResources::Shaders_Basic_vert vert;
+				NovaResources::Shaders_Basic_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
+			AddShader(s_spriteShaderName, shader);
+
+			{
 				NovaResources::Shaders_SpriteInstanced_vert vert;
 				NovaResources::Shaders_Basic_frag frag;
 
@@ -175,9 +184,8 @@ export namespace Renderer
 			DeleteMesh(s_screenspaceMeshName);
 			DeleteMesh(s_spriteMeshName);
 			
-			//DeleteShader(s_spriteShaderName);
-			//DeleteShader(s_modelShaderName);
 			DeleteShader(s_modelPS1ShaderName);
+			DeleteShader(s_spriteShaderName);
 			DeleteShader(s_spriteInstanceOffsetsShaderName);
 			DeleteShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
 			DeleteShader("Empty");
@@ -463,6 +471,23 @@ export namespace Renderer
 			BindShader(s_spriteInstanceOffsetsShaderName);
 			glTexturesContextManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
+			glBuffersContextManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
+		}
+		void RenderSpriteInstancedAtlasSampled(const std::string& spriteName, const Camera& camera, const std::string& shaderStorageNameWithPositions, const NSL::Vector2& atlasSize, const NSL::Vector2& tileSize, const NSL::Vector2& tileIndex) NSL_NOEXCEPT
+		{
+			static const std::string pvmUniformName("pvm");
+			static const std::string atlasSizeUniformName("atlasSize");
+			static const std::string tileSizeUniformName("tileSize");
+			static const std::string tileIndexUniformName("tileIndex");
+			Sprite& sprite = assetsManager.GetSprite(spriteName);
+
+			BindShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
+			glTexturesContextManager.BindTexture2D(&sprite.texture);
+			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
+			SetShaderUniform(atlasSize, atlasSizeUniformName);
+			SetShaderUniform(tileSize, tileSizeUniformName);
+			SetShaderUniform(tileIndex, tileIndexUniformName);
 			glBuffersContextManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}

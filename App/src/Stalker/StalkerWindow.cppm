@@ -40,17 +40,42 @@ export namespace Stalker
 		}
 		void _Render(double delta) NSL_NOEXCEPT
 		{
-			_gameWindow.renderHandler.Clear();
-			_gameWindow.renderHandler.RenderSpriteInstanced("EmptyTile", _camera, "EmptyTilesPositions");
-			_gameWindow.renderHandler.RenderSpriteInstanced("WallTile", _camera, "WallTilesPositions");
-			_gameWindow.renderHandler.RenderSpriteInstanced("LowtierStalker", _camera, "LowtierStalkersPositions");
-			_gameWindow.renderHandler.RenderSpriteInstanced("MidlowtierStalker", _camera, "MidlowtierStalkersPositions");
-			_gameWindow.renderHandler.RenderSpriteInstanced("MidtierStalker", _camera, "MidtierStalkersPositions");
-			_gameWindow.renderHandler.RenderSpriteInstanced("MidhightierStalker", _camera, "MidhightierStalkersPositions");
-			_gameWindow.renderHandler.RenderSpriteInstanced("HightierStalker", _camera, "HightierStalkersPositions");
-			_gameWindow.renderHandler.RenderSpriteInstanced("Point", _camera, "Astar");
+			static const NSL::Vector2 atlasSize(256);
+			static const NSL::Vector2 tileSize(16);
 
-			//renderHandler.RenderSpriteSampledFromAtlas("SpriteName", _camera, NSL::Vector2ui());
+			static const NSL::Vector2 wallTileIndex(1.0f, 0.0f);
+			static const NSL::Vector2 emptyTileIndex(0.0f, 0.0f);
+			static const NSL::Vector2 pointIndex(2.0f, 0.0f);
+
+			static const NSL::Vector2 lowtierStalkerIndex(0.0f, 1.0f);
+			static const NSL::Vector2 midlowtierStalkerIndex(1.0f, 1.0f);
+			static const NSL::Vector2 midtierStalkerIndex(2.0f, 1.0f);
+			static const NSL::Vector2 midhightierStalkerIndex(3.0f, 1.0f);
+			static const NSL::Vector2 hightierStalkerIndex(4.0f, 1.0f);
+			
+
+			_gameWindow.renderHandler.Clear();
+			//_gameWindow.renderHandler.RenderSprite("Atlas", _camera);
+			//_gameWindow.renderHandler.RenderSpriteInstanced("EmptyTile", _camera, "EmptyTilesPositions");
+			//_gameWindow.renderHandler.RenderSpriteInstanced("WallTile", _camera, "WallTilesPositions");
+			//_gameWindow.renderHandler.RenderSpriteInstanced("LowtierStalker", _camera, "LowtierStalkersPositions");
+			//_gameWindow.renderHandler.RenderSpriteInstanced("MidlowtierStalker", _camera, "MidlowtierStalkersPositions");
+			//_gameWindow.renderHandler.RenderSpriteInstanced("MidtierStalker", _camera, "MidtierStalkersPositions");
+			//_gameWindow.renderHandler.RenderSpriteInstanced("MidhightierStalker", _camera, "MidhightierStalkersPositions");
+			//_gameWindow.renderHandler.RenderSpriteInstanced("HightierStalker", _camera, "HightierStalkersPositions");
+			//_gameWindow.renderHandler.RenderSpriteInstanced("Point", _camera, "Astar");
+
+			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.0f));
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "EmptyTilesPositions", atlasSize, tileSize, emptyTileIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "WallTilesPositions", atlasSize, tileSize, wallTileIndex);
+			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.002f));
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "LowtierStalkersPositions", atlasSize, tileSize, lowtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "MidlowtierStalkersPositions", atlasSize, tileSize, midlowtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "MidtierStalkersPositions", atlasSize, tileSize, midtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "MidhightierStalkersPositions", atlasSize, tileSize, midhightierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "HightierStalkersPositions", atlasSize, tileSize, hightierStalkerIndex);
+			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.001f));
+			_gameWindow.renderHandler.RenderSpriteInstancedAtlasSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
 		}
 		void _Unload() NSL_NOEXCEPT
 		{
@@ -100,12 +125,15 @@ export namespace Stalker
 				_path[i].x = static_cast<float>(path[i].x);
 				_path[i].y = static_cast<float>(path[i].y);
 			}
+
+			_tileToAtlasIndex[Tile::Type::Wall] = NSL::Vector2(0.0f, 0.0f);
+			_tileToAtlasIndex[Tile::Type::Empty] = NSL::Vector2(1.0f, 0.0f);
 		}
 		void _SetupEngine() NSL_NOEXCEPT
 		{
 			_gameWindow.baseWindow.UI.LoadFont("Assets/Fonts/CascadiaMono.ttf", _gameWindow.baseWindow.monitor.GetPPM() * 4.0f);
 			_gameWindow.baseWindow.renderWindowState = true;
-			//renderHandler.SetClearColor(NSL::Vector4(0.5f, 0.9f, 1.0f, 1.0f));
+			_gameWindow.renderHandler.SetClearColor(NSL::Vector4(0.5f, 0.9f, 1.0f, 1.0f));
 		}
 		void _InitCamera() NSL_NOEXCEPT
 		{
@@ -122,26 +150,29 @@ export namespace Stalker
 		}
 		void _LoadTextures() NSL_NOEXCEPT
 		{
-			_gameWindow.renderHandler.LoadTexture2D("Font", "Assets/STALKER/Font.png");
-			_gameWindow.renderHandler.LoadTexture2D("EmptyTile", "Assets/STALKER/EmptyTile.png");
-			_gameWindow.renderHandler.LoadTexture2D("WallTile", "Assets/STALKER/WallTile.png");
-			_gameWindow.renderHandler.LoadTexture2D("LowtierStalker", "Assets/STALKER/LowtierStalker.png");
-			_gameWindow.renderHandler.LoadTexture2D("MidlowtierStalker", "Assets/STALKER/MidlowtierStalker.png");
-			_gameWindow.renderHandler.LoadTexture2D("MidtierStalker", "Assets/STALKER/MidtierStalker.png");
-			_gameWindow.renderHandler.LoadTexture2D("MidhightierStalker", "Assets/STALKER/MidhightierStalker.png");
-			_gameWindow.renderHandler.LoadTexture2D("HightierStalker", "Assets/STALKER/HightierStalker.png");
-			_gameWindow.renderHandler.LoadTexture2D("Point", "Assets/STALKER/Point.png");
+			//_gameWindow.renderHandler.LoadTexture2D("Font", "Assets/STALKER/Font.png");
+			//_gameWindow.renderHandler.LoadTexture2D("EmptyTile", "Assets/STALKER/EmptyTile.png");
+			//_gameWindow.renderHandler.LoadTexture2D("WallTile", "Assets/STALKER/WallTile.png");
+			//_gameWindow.renderHandler.LoadTexture2D("LowtierStalker", "Assets/STALKER/LowtierStalker.png");
+			//_gameWindow.renderHandler.LoadTexture2D("MidlowtierStalker", "Assets/STALKER/MidlowtierStalker.png");
+			//_gameWindow.renderHandler.LoadTexture2D("MidtierStalker", "Assets/STALKER/MidtierStalker.png");
+			//_gameWindow.renderHandler.LoadTexture2D("MidhightierStalker", "Assets/STALKER/MidhightierStalker.png");
+			//_gameWindow.renderHandler.LoadTexture2D("HightierStalker", "Assets/STALKER/HightierStalker.png");
+			//_gameWindow.renderHandler.LoadTexture2D("Point", "Assets/STALKER/Point.png");
+			_gameWindow.renderHandler.LoadTexture2D("TextureAtlas", "Assets/STALKER/TextureAtlas.png");
 		}
 		void _CreateSprites() NSL_NOEXCEPT
 		{
-			_gameWindow.renderHandler.CreateSprite("EmptyTile", "EmptyTile");
-			_gameWindow.renderHandler.CreateSprite("WallTile", "WallTile");
-			_gameWindow.renderHandler.CreateSprite("LowtierStalker", "LowtierStalker");
-			_gameWindow.renderHandler.CreateSprite("MidlowtierStalker", "MidlowtierStalker");
-			_gameWindow.renderHandler.CreateSprite("MidtierStalker", "MidtierStalker");
-			_gameWindow.renderHandler.CreateSprite("MidhightierStalker", "MidhightierStalker");
-			_gameWindow.renderHandler.CreateSprite("HightierStalker", "HightierStalker");
-			_gameWindow.renderHandler.CreateSprite("Point", "Point");
+			//_gameWindow.renderHandler.CreateSprite("EmptyTile", "EmptyTile");
+			//_gameWindow.renderHandler.CreateSprite("WallTile", "WallTile");
+			//_gameWindow.renderHandler.CreateSprite("LowtierStalker", "LowtierStalker");
+			//_gameWindow.renderHandler.CreateSprite("MidlowtierStalker", "MidlowtierStalker");
+			//_gameWindow.renderHandler.CreateSprite("MidtierStalker", "MidtierStalker");
+			//_gameWindow.renderHandler.CreateSprite("MidhightierStalker", "MidhightierStalker");
+			//_gameWindow.renderHandler.CreateSprite("HightierStalker", "HightierStalker");
+			//_gameWindow.renderHandler.CreateSprite("Point", "Point");
+
+			_gameWindow.renderHandler.CreateSprite("Atlas", "TextureAtlas");
 		}
 		void _SetSpritesDepths() NSL_NOEXCEPT
 		{
@@ -150,14 +181,14 @@ export namespace Stalker
 			NSL::Vector3 position2(0.0f, 0.0f, 0.002f);
 
 
-			_gameWindow.renderHandler.GetSprite("EmptyTile").transform.SetPosition(position0);
-			_gameWindow.renderHandler.GetSprite("WallTile").transform.SetPosition(position0);
-			_gameWindow.renderHandler.GetSprite("LowtierStalker").transform.SetPosition(position1);
-			_gameWindow.renderHandler.GetSprite("MidlowtierStalker").transform.SetPosition(position1);
-			_gameWindow.renderHandler.GetSprite("MidtierStalker").transform.SetPosition(position1);
-			_gameWindow.renderHandler.GetSprite("MidhightierStalker").transform.SetPosition(position1);
-			_gameWindow.renderHandler.GetSprite("HightierStalker").transform.SetPosition(position1);
-			_gameWindow.renderHandler.GetSprite("Point").transform.SetPosition(position1);
+			//_gameWindow.renderHandler.GetSprite("EmptyTile").transform.SetPosition(position0);
+			//_gameWindow.renderHandler.GetSprite("WallTile").transform.SetPosition(position0);
+			//_gameWindow.renderHandler.GetSprite("LowtierStalker").transform.SetPosition(position1);
+			//_gameWindow.renderHandler.GetSprite("MidlowtierStalker").transform.SetPosition(position1);
+			//_gameWindow.renderHandler.GetSprite("MidtierStalker").transform.SetPosition(position1);
+			//_gameWindow.renderHandler.GetSprite("MidhightierStalker").transform.SetPosition(position1);
+			//_gameWindow.renderHandler.GetSprite("HightierStalker").transform.SetPosition(position1);
+			//_gameWindow.renderHandler.GetSprite("Point").transform.SetPosition(position1);
 		}
 		void _CreateSSBOs() NSL_NOEXCEPT
 		{
@@ -184,15 +215,16 @@ export namespace Stalker
 
 		void _UnloadTextures() NSL_NOEXCEPT
 		{
-			_gameWindow.renderHandler.DeleteTexture2D("Font");
-			_gameWindow.renderHandler.DeleteTexture2D("EmptyTile");
-			_gameWindow.renderHandler.DeleteTexture2D("WallTile");
-			_gameWindow.renderHandler.DeleteTexture2D("LowtierStalker");
-			_gameWindow.renderHandler.DeleteTexture2D("MidlowtierStalker");
-			_gameWindow.renderHandler.DeleteTexture2D("MidtierStalker");
-			_gameWindow.renderHandler.DeleteTexture2D("MidhightierStalker");
-			_gameWindow.renderHandler.DeleteTexture2D("HightierStalker");
-			_gameWindow.renderHandler.DeleteTexture2D("Point");
+			//_gameWindow.renderHandler.DeleteTexture2D("Font");
+			//_gameWindow.renderHandler.DeleteTexture2D("EmptyTile");
+			//_gameWindow.renderHandler.DeleteTexture2D("WallTile");
+			//_gameWindow.renderHandler.DeleteTexture2D("LowtierStalker");
+			//_gameWindow.renderHandler.DeleteTexture2D("MidlowtierStalker");
+			//_gameWindow.renderHandler.DeleteTexture2D("MidtierStalker");
+			//_gameWindow.renderHandler.DeleteTexture2D("MidhightierStalker");
+			//_gameWindow.renderHandler.DeleteTexture2D("HightierStalker");
+			//_gameWindow.renderHandler.DeleteTexture2D("Point");
+			_gameWindow.renderHandler.DeleteTexture2D("TextureAtlas");
 		}
 		void _UnloadSSBOs() NSL_NOEXCEPT
 		{
@@ -261,5 +293,6 @@ export namespace Stalker
 		StalkerWorld _world;
 		Renderer::Camera _camera;
 		std::vector<NSL::Vector2> _path;
+		std::unordered_map<Tile::Type, NSL::Vector2> _tileToAtlasIndex;
 	};
 } 

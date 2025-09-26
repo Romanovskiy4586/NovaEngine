@@ -7,14 +7,14 @@ out vec2 textureCoordinates;
 
 uniform mat4 pvm;
 
-layout (std430) readonly buffer OffsetsBuffer
+layout (std430) readonly buffer PositionOffsetsBuffer
 {
-    vec2 offsets[];
-};  
+    vec2 positionOffsets[];
+};
 
 void main()
 {
-    vec2 offset = offsets[gl_InstanceID];
+    vec2 offset = positionOffsets[gl_InstanceID];
     gl_Position = pvm * vec4(aPosition.xy + offset, aPosition.z, 1.0);
     textureCoordinates = aTextureCoordinates;
 }

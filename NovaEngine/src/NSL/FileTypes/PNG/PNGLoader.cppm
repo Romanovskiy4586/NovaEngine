@@ -256,7 +256,7 @@ export namespace NSL
 					case ScanlineFiltering::Sub:
 						for (size_t j = 0; j < currentScanline.scanline.size(); ++j)
 						{
-							const PixelRGB& leftPixel = j == 0 ? PixelRGB{ 0, 0, 0 } : currentScanline.scanline[j - 1];
+							const PixelRGB& leftPixel = j == 0 ? PixelRGB(0, 0, 0) : currentScanline.scanline[j - 1];
 							PixelRGB& currentPixel = currentScanline.scanline[j];
 
 							currentPixel = currentPixel + leftPixel;
@@ -276,7 +276,7 @@ export namespace NSL
 					case ScanlineFiltering::Average:
 						for (size_t j = 0; j < currentScanline.scanline.size(); ++j)
 						{
-							const PixelRGB& leftPixel = j == 0 ? PixelRGB{ 0, 0, 0 } : currentScanline.scanline[j - 1];
+							const PixelRGB& leftPixel = j == 0 ? PixelRGB(0, 0, 0) : currentScanline.scanline[j - 1];
 							const PixelRGB& abovePixel = previousScanline.scanline[j];
 
 							PixelRGB resultPixel;
@@ -291,9 +291,9 @@ export namespace NSL
 					case ScanlineFiltering::Paeth:
 						for (size_t j = 0; j < currentScanline.scanline.size(); ++j)
 						{
-							const PixelRGB& leftPixel = j == 0 ? PixelRGB{ 0, 0, 0 } : currentScanline.scanline[j - 1];
+							const PixelRGB& leftPixel = j == 0 ? PixelRGB(0, 0, 0) : currentScanline.scanline[j - 1];
 							const PixelRGB& abovePixel = previousScanline.scanline[j];
-							const PixelRGB& upperLeftPixel = j == 0 ? PixelRGB{ 0, 0, 0 } : previousScanline.scanline[j - 1];
+							const PixelRGB& upperLeftPixel = j == 0 ? PixelRGB(0, 0, 0) : previousScanline.scanline[j - 1];
 
 							PixelRGB resultPixel;
 							resultPixel.R = Paeth(leftPixel.R, abovePixel.R, upperLeftPixel.R);
@@ -381,6 +381,28 @@ export namespace NSL
 			}
 			void Unfilter() NSL_NOEXCEPT
 			{
+				PNGScanLineRGBA& firstScanline = _scanlines[0];
+
+				switch (firstScanline.filtering)
+				{
+				case ScanlineFiltering::None:
+					break;
+
+				case ScanlineFiltering::Sub:
+					for (size_t j = 0; j < firstScanline.scanline.size(); ++j)
+					{
+						const PixelRGBA& leftPixel = j == 0 ? PixelRGBA(0, 0, 0, 0) : firstScanline.scanline[j - 1];
+						PixelRGBA& currentPixel = firstScanline.scanline[j];
+
+						currentPixel = currentPixel + leftPixel;
+					}
+					break;
+
+				default:
+					break;
+				}
+				firstScanline.filtering = ScanlineFiltering::None;
+
 				for (size_t i = 1; i < _scanlines.size(); ++i)
 				{
 					PNGScanLineRGBA& previousScanline = _scanlines[i - 1];
@@ -392,9 +414,9 @@ export namespace NSL
 						break;
 
 					case ScanlineFiltering::Sub:
-						for (size_t j = 1; j < currentScanline.scanline.size(); ++j)
+						for (size_t j = 0; j < currentScanline.scanline.size(); ++j)
 						{
-							const PixelRGBA& leftPixel = currentScanline.scanline[j - 1];
+							const PixelRGBA& leftPixel = j == 0 ? PixelRGBA(0, 0, 0, 0) : currentScanline.scanline[j - 1];
 							PixelRGBA& currentPixel = currentScanline.scanline[j];
 
 							currentPixel += leftPixel;
@@ -402,7 +424,7 @@ export namespace NSL
 						break;
 
 					case ScanlineFiltering::Up:
-						for (size_t j = 1; j < currentScanline.scanline.size(); ++j)
+						for (size_t j = 0; j < currentScanline.scanline.size(); ++j)
 						{
 							PixelRGBA& abovePixel = previousScanline.scanline[j];
 							PixelRGBA& currentPixel = currentScanline.scanline[j];
@@ -412,9 +434,9 @@ export namespace NSL
 						break;
 
 					case ScanlineFiltering::Average:
-						for (size_t j = 1; j < currentScanline.scanline.size(); ++j)
+						for (size_t j = 0; j < currentScanline.scanline.size(); ++j)
 						{
-							PixelRGBA& leftPixel = currentScanline.scanline[j - 1];
+							const PixelRGBA& leftPixel = j == 0 ? PixelRGBA(0, 0, 0, 0) : currentScanline.scanline[j - 1];
 							PixelRGBA& abovePixel = previousScanline.scanline[j];
 
 							PixelRGBA resultPixel;
@@ -423,16 +445,16 @@ export namespace NSL
 							resultPixel.B = Average(leftPixel.B, abovePixel.B);
 							resultPixel.A = Average(leftPixel.A, abovePixel.A);
 
-							currentScanline.scanline[j] += resultPixel;
+							currentScanline.scanline[j] = currentScanline.scanline[j] + resultPixel;
 						}
 						break;
 
 					case ScanlineFiltering::Paeth:
-						for (size_t j = 1; j < currentScanline.scanline.size(); ++j)
+						for (size_t j = 0; j < currentScanline.scanline.size(); ++j)
 						{
-							PixelRGBA& leftPixel = currentScanline.scanline[j - 1];
+							const PixelRGBA& leftPixel = j == 0 ? PixelRGBA(0, 0, 0, 0) : currentScanline.scanline[j - 1];
 							PixelRGBA& abovePixel = previousScanline.scanline[j];
-							PixelRGBA& upperLeftPixel = previousScanline.scanline[j - 1];
+							const PixelRGBA& upperLeftPixel = j == 0 ? PixelRGBA(0, 0, 0, 0) : previousScanline.scanline[j - 1];
 
 							PixelRGBA resultPixel;
 							resultPixel.R = Paeth(leftPixel.R, abovePixel.R, upperLeftPixel.R);
@@ -440,7 +462,7 @@ export namespace NSL
 							resultPixel.B = Paeth(leftPixel.B, abovePixel.B, upperLeftPixel.B);
 							resultPixel.A = Paeth(leftPixel.A, abovePixel.A, upperLeftPixel.A);
 
-							currentScanline.scanline[j] += resultPixel;
+							currentScanline.scanline[j] = currentScanline.scanline[j] + resultPixel;
 						}
 						break;
 
