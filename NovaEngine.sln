@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceCompressor", "Resou
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NovaDependencies", "NovaDependencies\NovaDependencies.vcxproj", "{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenerateSources", "GenerateSources\GenerateSources.vcxproj", "{25C1E3F1-2E03-4686-8630-CAD88655662C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -39,6 +41,10 @@ Global
 		{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}.Debug|x64.Build.0 = Debug|x64
 		{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}.Release|x64.ActiveCfg = Release|x64
 		{45AD508C-07AC-46E9-8D7B-FB2A5BC19BDB}.Release|x64.Build.0 = Release|x64
+		{25C1E3F1-2E03-4686-8630-CAD88655662C}.Debug|x64.ActiveCfg = Debug|x64
+		{25C1E3F1-2E03-4686-8630-CAD88655662C}.Debug|x64.Build.0 = Debug|x64
+		{25C1E3F1-2E03-4686-8630-CAD88655662C}.Release|x64.ActiveCfg = Release|x64
+		{25C1E3F1-2E03-4686-8630-CAD88655662C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

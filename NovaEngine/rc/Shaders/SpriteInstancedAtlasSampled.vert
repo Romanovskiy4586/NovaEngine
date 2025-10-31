@@ -6,9 +6,8 @@ in vec2 aTextureCoordinates;
 out vec2 textureCoordinates;
 
 uniform mat4 pvm;
-uniform vec2 atlasSize;// 256, 256
-uniform vec2 tileSize; // 16, 16
-uniform vec2 tileBorderSize; // 1
+uniform vec2 atlasSize;
+uniform vec2 tileSize;
 uniform vec2 tileIndex;
 
 layout (std430) readonly buffer PositionOffsetsBuffer
@@ -21,8 +20,11 @@ void main()
     vec2 offset = positionOffsets[gl_InstanceID];
     gl_Position = pvm * vec4(aPosition.xy + offset, aPosition.z, 1.0);
 
+    const vec2 shrinkingSize = tileSize * 0.0000;
     vec2 pixelSizeInUV = 1 / atlasSize;
     vec2 tileSizeInUV = tileSize / atlasSize;
-    vec2 uvOffset = tileIndex * tileSizeInUV + pixelSizeInUV + (pixelSizeInUV * tileIndex * 2);
-    textureCoordinates = aTextureCoordinates * tileSizeInUV + uvOffset;
+    vec2 uvOffset = tileIndex * tileSizeInUV;
+
+    vec2 shrinkingOffset = aTextureCoordinates * (-shrinkingSize * 2);
+    textureCoordinates = aTextureCoordinates * tileSizeInUV + uvOffset + shrinkingSize + shrinkingOffset;
 }

@@ -24,6 +24,7 @@ import ResourcesDB;
 
 const std::string s_screenspaceMeshName = "RENDERHANDLER__screenspaceFace";
 const std::string s_spriteMeshName = "RENDERHNDLER__sprite";
+const std::string s_glyphMeshName = "RENDERHNDLER__glyph";
 const std::string s_spriteBitmapMeshName = "RENDERHNDLER__ spriteBitmap";
 
 const std::string s_framebufferTextureName1 = "FRAMEBUFFER_TEXTURE__PostProcess1";
@@ -83,6 +84,7 @@ export namespace Renderer
 		{
 			AddMesh(s_screenspaceMeshName, _meshesDataDB.screenspaceSprite);
 			AddMesh(s_spriteMeshName, _meshesDataDB.sprite);
+			AddMesh(s_glyphMeshName, _meshesDataDB.glyph);
 
 			Shader shader;
 
@@ -182,7 +184,8 @@ export namespace Renderer
 		{
 			DeleteMesh(s_screenspaceMeshName);
 			DeleteMesh(s_spriteMeshName);
-			
+			DeleteMesh(s_glyphMeshName);
+
 			DeleteShader(s_modelPS1ShaderName);
 			DeleteShader(s_spriteShaderName);
 			DeleteShader(s_spriteInstanceOffsetsShaderName);
@@ -452,7 +455,7 @@ export namespace Renderer
 
 				glTexturesManager.BindTexture2D(&sprite.texture);
 				SetShaderUniform(scene.camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), "pvm", false);
-
+				glContextManager.SetContext(sprite.context);
 				DrawMesh(s_spriteMeshName);
 			}
 		}
@@ -464,6 +467,7 @@ export namespace Renderer
 			BindShader(s_spriteShaderName);
 			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
+			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_spriteMeshName);
 		}
 		void RenderSpriteInstanced(const std::string& spriteName, const Camera& camera, const std::string& shaderStorageNameWithPositions) NSL_NOEXCEPT
@@ -475,6 +479,7 @@ export namespace Renderer
 			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
 			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
 		void RenderSpriteInstancedSampled(const std::string& spriteName, const Camera& camera, const std::string& shaderStorageNameWithPositions, const NSL::Vector2& atlasSize, const NSL::Vector2& tileSize, const NSL::Vector2& tileIndex) NSL_NOEXCEPT
@@ -492,7 +497,26 @@ export namespace Renderer
 			SetShaderUniform(tileSize, tileSizeUniformName);
 			SetShaderUniform(tileIndex, tileIndexUniformName);
 			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
+		}
+		void RenderGlyphInstancedSampled(const std::string& spriteName, const Camera& camera, const std::string& shaderStorageNameWithPositions, const NSL::Vector2& atlasSize, const NSL::Vector2& tileSize, const NSL::Vector2& tileIndex) NSL_NOEXCEPT
+		{
+			static const std::string pvmUniformName("pvm");
+			static const std::string atlasSizeUniformName("atlasSize");
+			static const std::string tileSizeUniformName("tileSize");
+			static const std::string tileIndexUniformName("tileIndex");
+			Sprite& sprite = assetsManager.GetSprite(spriteName);
+
+			BindShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
+			glTexturesManager.BindTexture2D(&sprite.texture);
+			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
+			SetShaderUniform(atlasSize, atlasSizeUniformName);
+			SetShaderUniform(tileSize, tileSizeUniformName);
+			SetShaderUniform(tileIndex, tileIndexUniformName);
+			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			glContextManager.SetContext(sprite.context);
+			DrawMesh(s_glyphMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
 
 		void RenderModel(const std::string& modelName, const Camera& camera) NSL_NOEXCEPT
@@ -526,6 +550,7 @@ export namespace Renderer
 			glTexturesManager.BindTexture2D(&model.ao, 3);
 			glTexturesManager.BindTexture2D(&model.roughness, 4);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * model.transform.GetModelMatrix(), pvmUniformName, false);
+			glContextManager.SetContext(model.context);
 			DrawMesh(model);
 		}
 		void _Sort(Scene& scene) NSL_NOEXCEPT

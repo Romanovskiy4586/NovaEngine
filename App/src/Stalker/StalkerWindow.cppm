@@ -52,6 +52,10 @@ export namespace Stalker
 			static const NSL::Vector2 midtierStalkerIndex(2.0f, 1.0f);
 			static const NSL::Vector2 midhightierStalkerIndex(3.0f, 1.0f);
 			static const NSL::Vector2 hightierStalkerIndex(4.0f, 1.0f);
+
+
+			static const NSL::Vector2 fontAtlasSize(156, 56);
+			static const NSL::Vector2 fontGlyphSize(6, 14);
 			
 
 			_gameWindow.renderHandler.Clear();
@@ -76,6 +80,7 @@ export namespace Stalker
 			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "HightierStalkersPositions", atlasSize, tileSize, hightierStalkerIndex);
 			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.001f));
 			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
+			_gameWindow.renderHandler.RenderGlyphInstancedSampled("Font", _camera, "Font", fontAtlasSize, fontGlyphSize, {0, 3});
 		}
 		void _Unload() NSL_NOEXCEPT
 		{
@@ -125,6 +130,8 @@ export namespace Stalker
 				_path[i].x = static_cast<float>(path[i].x);
 				_path[i].y = static_cast<float>(path[i].y);
 			}
+
+			_glyphs = { { 0, -2 }, { 0.6, -2 }, { 1.2, -2 } };
 		}
 		void _SetupEngine() NSL_NOEXCEPT
 		{
@@ -157,6 +164,7 @@ export namespace Stalker
 			//_gameWindow.renderHandler.LoadTexture2D("HightierStalker", "Assets/STALKER/HightierStalker.png");
 			//_gameWindow.renderHandler.LoadTexture2D("Point", "Assets/STALKER/Point.png");
 			_gameWindow.renderHandler.LoadTexture2D("TextureAtlas", "Assets/STALKER/TextureAtlas.png", Renderer::Texture2DFiltering::Nearest);
+			_gameWindow.renderHandler.LoadTexture2D("Font", "Assets/STALKER/Font.png");
 		}
 		void _CreateSprites() NSL_NOEXCEPT
 		{
@@ -169,6 +177,7 @@ export namespace Stalker
 			//_gameWindow.renderHandler.CreateSprite("HightierStalker", "HightierStalker");
 			//_gameWindow.renderHandler.CreateSprite("Point", "Point");
 			_gameWindow.renderHandler.CreateSprite("Atlas", "TextureAtlas");
+			_gameWindow.renderHandler.CreateSprite("Font", "Font");
 		}
 		void _SetSpritesDepths() NSL_NOEXCEPT
 		{
@@ -195,6 +204,7 @@ export namespace Stalker
 			_gameWindow.renderHandler.CreateShaderStorageBuffer("MidhightierStalkersPositions");
 			_gameWindow.renderHandler.CreateShaderStorageBuffer("HightierStalkersPositions");
 			_gameWindow.renderHandler.CreateShaderStorageBuffer("Astar");
+			_gameWindow.renderHandler.CreateShaderStorageBuffer("Font");
 		}
 		void _UpdateSSBOs() NSL_NOEXCEPT
 		{
@@ -206,6 +216,7 @@ export namespace Stalker
 			_gameWindow.renderHandler.UpdateShaderStorageBuffer("MidhightierStalkersPositions", _world.GetMidhightierStalkersPositions());
 			_gameWindow.renderHandler.UpdateShaderStorageBuffer("HightierStalkersPositions", _world.GetHightierStalkersPositions());
 			_gameWindow.renderHandler.UpdateShaderStorageBuffer("Astar", _path);
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("Font", _glyphs);
 		}
 
 		void _UnloadTextures() NSL_NOEXCEPT
@@ -220,6 +231,7 @@ export namespace Stalker
 			//_gameWindow.renderHandler.DeleteTexture2D("HightierStalker");
 			//_gameWindow.renderHandler.DeleteTexture2D("Point");
 			_gameWindow.renderHandler.DeleteTexture2D("TextureAtlas");
+			_gameWindow.renderHandler.DeleteTexture2D("Font");
 		}
 		void _UnloadSSBOs() NSL_NOEXCEPT
 		{
@@ -231,6 +243,7 @@ export namespace Stalker
 			_gameWindow.renderHandler.DeleteShaderStorageBuffer("MidhightierStalkersPositions");
 			_gameWindow.renderHandler.DeleteShaderStorageBuffer("HightierStalkersPositions");
 			_gameWindow.renderHandler.DeleteShaderStorageBuffer("Astar");
+			_gameWindow.renderHandler.DeleteShaderStorageBuffer("Font");
 		}
 
 		void _HandleInput(double delta) NSL_NOEXCEPT
@@ -281,6 +294,12 @@ export namespace Stalker
 				_UpdateSSBOs();
 				isNeedToUpdateSSBOs = false;
 			}
+
+			if (_gameWindow.baseWindow.IsKeyboardKeyPressed(IO::KeyboardKey::Tab))
+			{
+				bool& currentPolygonFill = _gameWindow.renderHandler.GetSprite("Font").context.polygonFill;
+				currentPolygonFill = !currentPolygonFill;
+			}
 		}
 
 	private:
@@ -288,5 +307,6 @@ export namespace Stalker
 		StalkerWorld _world;
 		Renderer::Camera _camera;
 		std::vector<NSL::Vector2> _path;
+		std::vector<NSL::Vector2> _glyphs;
 	};
 } 
