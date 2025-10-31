@@ -255,6 +255,9 @@
     <ClCompile Include="src\Resources\Shaders_SpriteInstancedAtlasSampled_vert.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\Font.cppm">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core.h">

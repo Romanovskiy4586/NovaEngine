@@ -131,7 +131,7 @@ export namespace Stalker
 				_path[i].y = static_cast<float>(path[i].y);
 			}
 
-			_glyphs = { { 0, -2 }, { 0.6, -2 }, { 1.2, -2 } };
+			_glyphs = { { 0, -2 }, { 0.6f, -2 }, { 1.2f, -2 } };
 		}
 		void _SetupEngine() NSL_NOEXCEPT
 		{

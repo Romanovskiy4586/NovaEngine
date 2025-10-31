@@ -9,6 +9,7 @@ uniform mat4 pvm;
 uniform vec2 atlasSize;
 uniform vec2 tileSize;
 uniform vec2 tileIndex;
+uniform float shrinkingSize;
 
 layout (std430) readonly buffer PositionOffsetsBuffer
 {
@@ -20,7 +21,7 @@ void main()
     vec2 offset = positionOffsets[gl_InstanceID];
     gl_Position = pvm * vec4(aPosition.xy + offset, aPosition.z, 1.0);
 
-    const vec2 shrinkingSize = tileSize * 0.0000;
+    const vec2 shrinkingSize = tileSize * shrinkingSize;
     vec2 pixelSizeInUV = 1 / atlasSize;
     vec2 tileSizeInUV = tileSize / atlasSize;
     vec2 uvOffset = tileIndex * tileSizeInUV;

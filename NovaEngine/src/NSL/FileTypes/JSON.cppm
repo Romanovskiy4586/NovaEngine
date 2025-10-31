@@ -11,6 +11,8 @@ namespace NSL
 	class JSONObject;
 }
 
+enum class JSONPropertyType { Property, Array, Object };
+
 export namespace NSL
 {
 	class NSL_API JSONArray
@@ -45,17 +47,17 @@ export namespace NSL
 		void AddProperty(const std::string& value) NSL_NOEXCEPT
 		{
 			_properties.push_back(value);
-			_order.push_back(1);
+			_order.push_back(JSONPropertyType::Property);
 		}
 		void AddArray(JSONArray&& value) NSL_NOEXCEPT
 		{
 			_arrays.emplace_back(std::move(value));
-			_order.push_back(2);
+			_order.push_back(JSONPropertyType::Array);
 		}
 		void AddChild(JSONObject&& value) NSL_NOEXCEPT
 		{
 			_children.emplace_back(std::move(value));
-			_order.push_back(3);
+			_order.push_back(JSONPropertyType::Object);
 		}
 
 		const std::vector<std::string>& Properties() const NSL_NOEXCEPT
@@ -70,7 +72,7 @@ export namespace NSL
 		{
 			return _children;
 		}
-		const std::vector<int>& Order() const NSL_NOEXCEPT
+		const std::vector<JSONPropertyType>& Order() const NSL_NOEXCEPT
 		{
 			return _order;
 		}
@@ -79,7 +81,7 @@ export namespace NSL
 		std::vector<std::string> _properties;
 		std::vector<JSONArray> _arrays;
 		std::vector<JSONObject> _children;
-		std::vector<int> _order;
+		std::vector<JSONPropertyType> _order;
 	};
 
 	class NSL_API JSONObject
@@ -120,12 +122,12 @@ export namespace NSL
 		void AddStringAsProperty(const std::string& key, const std::string& value) NSL_NOEXCEPT
 		{
 			_properties[key] = value;
-			_order.push_back(std::pair(1, key));
+			_order.push_back(std::pair(JSONPropertyType::Property, key));
 		}
 		void AddProperty(const std::string& key, const std::string& value) NSL_NOEXCEPT
 		{
 			_properties[key] = '\"' + value + '\"';
-			_order.push_back(std::pair(1, key));
+			_order.push_back(std::pair(JSONPropertyType::Property, key));
 		}
 		void AddProperty(const std::string& key, const char* value) NSL_NOEXCEPT
 		{
@@ -134,7 +136,7 @@ export namespace NSL
 		void AddProperty(const std::string& key, long long value) NSL_NOEXCEPT
 		{
 			_properties[key] = std::to_string(value);
-			_order.push_back(std::pair(1, key));
+			_order.push_back(std::pair(JSONPropertyType::Property, key));
 		}
 		void AddProperty(const std::string& key, int value) NSL_NOEXCEPT
 		{
@@ -143,7 +145,7 @@ export namespace NSL
 		void AddProperty(const std::string& key, double value) NSL_NOEXCEPT
 		{
 			_properties[key] = std::to_string(value);
-			_order.push_back(std::pair(1, key));
+			_order.push_back(std::pair(JSONPropertyType::Property, key));
 		}
 		void AddProperty(const std::string& key, float value) NSL_NOEXCEPT
 		{
@@ -152,17 +154,17 @@ export namespace NSL
 		void AddProperty(const std::string& key, bool value) NSL_NOEXCEPT
 		{
 			_properties[key] = value ? "true" : "false";
-			_order.push_back(std::pair(1, key));
+			_order.push_back(std::pair(JSONPropertyType::Property, key));
 		}
 		void AddArray(const std::string& key, JSONArray&& value) NSL_NOEXCEPT
 		{
 			_arrays.try_emplace(key, std::move(value));
-			_order.push_back(std::pair(2, key));
+			_order.push_back(std::pair(JSONPropertyType::Array, key));
 		}
 		void AddChild(const std::string& key, JSONObject&& value) NSL_NOEXCEPT
 		{
 			_children.try_emplace(key, std::move(value));
-			_order.push_back(std::pair(3, key));
+			_order.push_back(std::pair(JSONPropertyType::Object, key));
 		}
 
 		const std::map<std::string, std::string>& Properties() const NSL_NOEXCEPT
@@ -177,7 +179,7 @@ export namespace NSL
 		{
 			return _children;
 		}
-		const std::vector<std::pair<int, std::string>>& Order() const NSL_NOEXCEPT
+		const std::vector<std::pair<JSONPropertyType, std::string>>& Order() const NSL_NOEXCEPT
 		{
 			return _order;
 		}
@@ -186,7 +188,7 @@ export namespace NSL
 		std::map<std::string, std::string> _properties;
 		std::map<std::string, JSONArray> _arrays;
 		std::map<std::string, JSONObject> _children;
-		std::vector<std::pair<int, std::string>> _order;
+		std::vector<std::pair<JSONPropertyType, std::string>> _order;
 	};
 
 	class NSL_API JSON
@@ -225,15 +227,15 @@ export namespace NSL
 					isNotFirstProperty = true;
 				}
 
-				if (current.first == 1)
+				if (current.first == JSONPropertyType::Property)
 				{
 					str << tabulations << '\"' << current.second << "\": " << properties.at(current.second);
 				}
-				if (current.first == 2)
+				if (current.first == JSONPropertyType::Array)
 				{
 					str << tabulations << '\"' << current.second << "\": " << ParseArrayIntoString(arrays.at(current.second), tabulations);
 				}
-				if (current.first == 3)
+				if (current.first == JSONPropertyType::Object)
 				{
 					str << tabulations << '\"' << current.second << "\": " << ParseObjectIntoString(children.at(current.second), tabulations);
 				}
@@ -383,15 +385,15 @@ export namespace NSL
 					isNotFirstProperty = true;
 				}
 
-				if (current == 1)
+				if (current == JSONPropertyType::Property)
 				{
 					str << tabulations << *properties++;
 				}
-				if (current == 2)
+				if (current == JSONPropertyType::Array)
 				{
 					str << tabulations << ParseArrayIntoString(*arrays++, tabulations);
 				}
-				if (current == 3)
+				if (current == JSONPropertyType::Object)
 				{
 					str << tabulations << ParseObjectIntoString(*children++, tabulations);
 				}

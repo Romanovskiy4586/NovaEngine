@@ -172,6 +172,7 @@
     <ClCompile Include="src\NSL\STDHasher.cppm" />
     <ClCompile Include="src\NSL\STDLess.cppm" />
     <ClCompile Include="src\NSL\Time.cppm" />
+    <ClCompile Include="src\Renderer\Font.cppm" />
     <ClCompile Include="src\Renderer\MeshesDataDB.cppm" />
     <ClCompile Include="src\Renderer\OpenGL\DrawCommandBuffer.cppm" />
     <ClCompile Include="src\Renderer\OpenGL\GLBuffersManager.cppm" />
