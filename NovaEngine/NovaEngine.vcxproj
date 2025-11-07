@@ -197,6 +197,7 @@
     <ClCompile Include="src\Renderer\RenderHandler.cppm" />
     <ClCompile Include="src\Renderer\Sprite.cppm" />
     <ClCompile Include="src\Renderer\Transform.cppm" />
+    <ClCompile Include="src\Engine\WorkThread.cppm" />
     <ClCompile Include="src\Resources\ResourcesDB.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm" />

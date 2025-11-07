@@ -11,3 +11,4 @@ export import Scene;
 export import Model;
 export import Sprite;
 export import Transform;
+export import Font;

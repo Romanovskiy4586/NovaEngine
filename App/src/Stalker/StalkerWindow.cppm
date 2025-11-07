@@ -25,6 +25,7 @@ export namespace Stalker
 		void _Load() NSL_NOEXCEPT
 		{
 			_gameWindow.baseWindow.SubscribeOnFramebuffer([this](int width, int height) { _FramebufferSizeCallback(width, height); });
+
 			_InitGame();
 			_SetupEngine();
 			_InitCamera();
@@ -57,6 +58,7 @@ export namespace Stalker
 			static const NSL::Vector2 fontAtlasSize(156, 56);
 			static const NSL::Vector2 fontGlyphSize(6, 14);
 			
+			Renderer::Font font("Assets/STALKER/Font.json");
 
 			_gameWindow.renderHandler.Clear();
 			//_gameWindow.renderHandler.RenderSprite("Atlas", _camera);
@@ -81,6 +83,7 @@ export namespace Stalker
 			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.001f));
 			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
 			_gameWindow.renderHandler.RenderGlyphInstancedSampled("Font", _camera, "Font", fontAtlasSize, fontGlyphSize, {0, 3});
+			_gameWindow.renderHandler.RenderText("Hello, World!");
 		}
 		void _Unload() NSL_NOEXCEPT
 		{
@@ -277,9 +280,9 @@ export namespace Stalker
 			}
 			if (_gameWindow.baseWindow.IsKeyboardKeyPressed(IO::KeyboardKey::Space) && !isRebuildingMap)
 			{
+				isRebuildingMap = true;
 				std::thread thrd([this]()
 				{
-					isRebuildingMap = true;
 					do
 					{
 						_InitGame();

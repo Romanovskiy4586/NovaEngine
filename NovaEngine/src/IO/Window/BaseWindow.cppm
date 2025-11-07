@@ -373,16 +373,7 @@ export namespace IO
 		}
 		bool _InitMiniaudio() NSL_NOEXCEPT
 		{
-			// Настройка конфигурации устройства для вывода
 			_deviceConfig = ma_device_config_init(ma_device_type_playback);
-
-			// Попытка использовать WASAPI
-			_deviceConfig.playback.format = ma_format_f32;  // 32-bit float
-			_deviceConfig.playback.channels = 2;             // стерео
-			_deviceConfig.sampleRate = 48000;         // частота дискретизации
-			_deviceConfig.dataCallback = NULL;          // ты можешь установить свой callback
-			_deviceConfig.pUserData = NULL;
-
 			ma_result result = ma_device_init(NULL, &_deviceConfig, &_device);
 
 			if (result != MA_SUCCESS)
@@ -391,7 +382,6 @@ export namespace IO
 				return false;
 			}
 
-			// Запуск устройства
 			if (ma_device_start(&_device) != MA_SUCCESS)
 			{
 				LogInfo("Fail to start device");
@@ -399,8 +389,7 @@ export namespace IO
 				return false;
 			}
 
-			LogInfo("Audio device succsessfully started");
-			LogInfo("Used backend: " + _GetMiniaudioUsedBackend());
+			LogInfo("Audio device succsessfully started. Used backend: " + _GetMiniaudioUsedBackend());
 			return true;
 		}
 

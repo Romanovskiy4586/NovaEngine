@@ -518,7 +518,10 @@ export namespace Renderer
 			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_glyphMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
+		void RenderText(const std::string& text) NSL_NOEXCEPT
+		{
 
+		}
 		void RenderModel(const std::string& modelName, const Camera& camera) NSL_NOEXCEPT
 		{
 			_RenderModel(modelName, camera, s_modelShaderName);
