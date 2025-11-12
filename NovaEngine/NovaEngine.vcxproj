@@ -201,6 +201,7 @@
     <ClCompile Include="src\Resources\ResourcesDB.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm" />
+    <ClCompile Include="src\Resources\Shaders_Glyph_vert.cppm" />
     <ClCompile Include="src\Resources\Shaders_PostProcessEmpty_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_PostProcessGammaCorrection_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_PostProcessKernel_frag.cppm" />
@@ -252,6 +253,7 @@
     <None Include="rc\Shaders\PS1.vert" />
     <None Include="rc\Shaders\SpriteInstancedAtlasSampled.vert" />
     <None Include="rc\Shaders\SpriteInstanced.vert" />
+    <None Include="rc\Shaders\Glyph.vert" />
     <None Include="src\Dependencies\zlib-1.3.1\zconf.h.in" />
   </ItemGroup>
   <ItemGroup>

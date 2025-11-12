@@ -122,6 +122,10 @@ export namespace IO
 			_windowState.positionY = value;
 			glfwSetWindowPos(_glfwWindow, _windowState.positionX, value);
 		}
+		void SetWindowPosition(const NSL::Vector2i position) NSL_NOEXCEPT
+		{
+			glfwSetWindowPos(_glfwWindow, position.x, position.y);
+		}
 		void SetWindowMaximized(bool value) NSL_NOEXCEPT
 		{
 			_windowState.maximized = value;
@@ -130,8 +134,7 @@ export namespace IO
 		void SetFullscreen(bool value) NSL_NOEXCEPT
 		{
 			_windowState.fullscreen = value;
-			glfwSetWindowMonitor(_glfwWindow, value ? _glfwMonitor : 0, 0, 0, monitor.ResolutionWidth(), monitor.ResolutionWidth(), monitor.RefreshRate());
-
+			glfwSetWindowMonitor(_glfwWindow, value ? _glfwMonitor : 0, 0, 0, monitor.GetResolutionWidth(), monitor.GetResolutionWidth(), monitor.GetRefreshRate());
 		}
 		void SetCursorGrabbed(bool value) NSL_NOEXCEPT
 		{
@@ -229,6 +232,15 @@ export namespace IO
 
 			// Controls FPS and writes delta frame
 			_deltaFrame = _fpsController.EndFrame();
+		}
+		void CenterWindow() NSL_NOEXCEPT
+		{
+			int halfMonitorWidth = monitor.GetResolutionWidth() / 2;
+			int halfMonitorHeight = monitor.GetResolutionHeight() / 2;
+			int halfWindowWidth = GetWidth() / 2;
+			int halfWindowHeight = GetHeight() / 2;
+
+			SetWindowPosition(NSL::Vector2i(halfMonitorWidth - halfWindowWidth, halfMonitorHeight - halfWindowHeight));
 		}
 
 	public: // Public members

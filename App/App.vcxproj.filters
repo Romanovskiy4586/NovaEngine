@@ -18,7 +18,7 @@
     <ClCompile Include="src\main.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Stalker\StalkerWindow.cppm">
+    <ClCompile Include="src\Stalker\StalkerGame.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Stalker\GameMap.cppm">
@@ -38,7 +38,6 @@
     <None Include="cpp.hint" />
     <None Include="BugsConfig.json" />
     <None Include="imgui.ini" />
-    <None Include="WindowState.json" />
     <None Include="StalkerConfig.json" />
   </ItemGroup>
 </Project>

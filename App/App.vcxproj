@@ -123,7 +123,7 @@
   <ItemGroup>
     <ClCompile Include="src\main.cppm" />
     <ClCompile Include="src\Stalker\NPC.cppm" />
-    <ClCompile Include="src\Stalker\StalkerWindow.cppm" />
+    <ClCompile Include="src\Stalker\StalkerGame.cppm" />
     <ClCompile Include="src\Stalker\GameMap.cppm" />
     <ClCompile Include="src\Stalker\StalkerWorld.cppm" />
     <ClCompile Include="src\Stalker\Tile.cppm" />
@@ -133,7 +133,6 @@
     <None Include="cpp.hint" />
     <None Include="BugsConfig.json" />
     <None Include="imgui.ini" />
-    <None Include="WindowState.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

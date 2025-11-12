@@ -7,15 +7,15 @@ export module main;
 
 import std;
 import NovaEngine;
-import StalkerWindow;
+import StalkerGame;
 
 export NSL_MAIN
 {
 	Engine::Init();
 
 	{
-		Stalker::StalkerWindow window;
-		window.Run();
+		Stalker::StalkerGame game;
+		game.Run();
 	}
 
 	return Engine::Exit();

@@ -11,10 +11,10 @@ export namespace IO
 	{
 		WindowState() NSL_NOEXCEPT
 			: name()
-			, width(1600)
-			, height(900)
-			, positionX(0)
-			, positionY(40)
+			, width(1280)
+			, height(720)
+			, positionX(40)
+			, positionY(80)
 			, maximized(false)
 			, resizable(true)
 			, fullscreen(false)

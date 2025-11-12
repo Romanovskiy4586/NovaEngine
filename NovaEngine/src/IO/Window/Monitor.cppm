@@ -43,23 +43,23 @@ export namespace IO
 		}
 
 	public:
-		int Width() const NSL_NOEXCEPT
+		int GetPhysicalWidth() const NSL_NOEXCEPT
 		{
 			return _width;
 		}
-		int Height() const NSL_NOEXCEPT
+		int GetPhysicalHeight() const NSL_NOEXCEPT
 		{
 			return _height;
 		}
-		int ResolutionWidth() const NSL_NOEXCEPT
+		int GetResolutionWidth() const NSL_NOEXCEPT
 		{
 			return _resolutionWidth;
 		}
-		int ResolutionHeight() const NSL_NOEXCEPT
+		int GetResolutionHeight() const NSL_NOEXCEPT
 		{
 			return _resolutionHeight;
 		}
-		int RefreshRate() const NSL_NOEXCEPT
+		int GetRefreshRate() const NSL_NOEXCEPT
 		{
 			return _refreshRate;
 		}
@@ -67,7 +67,7 @@ export namespace IO
 		{
 			return static_cast<float>(_resolutionWidth) / static_cast<float>(_width);
 		}
-		float Scale() const NSL_NOEXCEPT
+		float GetScale() const NSL_NOEXCEPT
 		{
 			return _scale;
 		}

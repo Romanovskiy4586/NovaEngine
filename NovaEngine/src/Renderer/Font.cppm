@@ -16,6 +16,11 @@ export namespace Renderer
 		{
 			NSL::JSON parameters = NSL::JSON::Load(jsonPath);
 
+			_atlasSize.x = parameters.root.Array("AtlasSize").Real(0);
+			_atlasSize.y = parameters.root.Array("AtlasSize").Real(1);
+			_glyphSize.x = parameters.root.Array("GlyphSize").Real(0);
+			_glyphSize.y = parameters.root.Array("GlyphSize").Real(1);
+
 			MACRO('A', 0);
 			MACRO('B', 1);
 			MACRO('C', 2);
@@ -80,15 +85,30 @@ export namespace Renderer
 			MACRO('7', 59);
 			MACRO('8', 60);
 			MACRO('9', 61);
+			MACRO(' ', 62);
 
-			MACRO('@', 62);
-			MACRO('.', 63);
-			MACRO(',', 64);
-			MACRO(':', 65);
-			MACRO(';', 66);
-			MACRO('~', 67);
-			MACRO('!', 68);
-			MACRO('?', 69);
+			MACRO('@', 63);
+			MACRO('.', 64);
+			MACRO(',', 65);
+			MACRO(':', 66);
+			MACRO(';', 67);
+			MACRO('~', 68);
+			MACRO('!', 69);
+			MACRO('?', 70);
+		}
+
+		const NSL::Vector2& GetAtlasSize() const NSL_NOEXCEPT
+		{
+			return _atlasSize;
+		}
+		const NSL::Vector2& GetGlyphSize() const NSL_NOEXCEPT
+		{
+			return _glyphSize;
+		}
+		const NSL::Vector2& CharToTileIndex(char c) const NSL_NOEXCEPT
+		{
+			NSL_ASSERT(_charToTileIndex.contains(c), "Font do not contains char \"" + std::string{c} + "\"")
+			return _charToTileIndex.at(c);
 		}
 
 	private:

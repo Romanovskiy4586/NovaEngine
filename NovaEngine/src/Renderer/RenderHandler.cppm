@@ -20,12 +20,13 @@ import ShaderStorageBuffer;
 //import Framebuffer;
 import MeshesDataDB;
 import ResourcesDB;
+import Font;
 
 
 const std::string s_screenspaceMeshName = "RENDERHANDLER__screenspaceFace";
-const std::string s_spriteMeshName = "RENDERHNDLER__sprite";
-const std::string s_glyphMeshName = "RENDERHNDLER__glyph";
-const std::string s_spriteBitmapMeshName = "RENDERHNDLER__ spriteBitmap";
+const std::string s_spriteMeshName = "RENDERHANDLER__sprite";
+const std::string s_glyphMeshName = "RENDERHANDLER__glyph";
+const std::string s_spriteBitmapMeshName = "RENDERHANDLER__spriteBitmap";
 
 const std::string s_framebufferTextureName1 = "FRAMEBUFFER_TEXTURE__PostProcess1";
 const std::string s_framebufferTextureName2 = "FRAMEBUFFER_TEXTURE__PostProcess2";
@@ -37,6 +38,7 @@ const std::string s_modelShaderName = "RENDERHANDLER__Model";
 const std::string s_modelPS1ShaderName = "RENDERHANDLER__ModelPS1";
 const std::string s_spriteInstanceOffsetsShaderName = "RENDERHANDLER__SpriteInstanceOffsets";
 const std::string s_spriteInstanceOffsetsAtlasSampledShaderName = "RENDERHANDLER__SpriteInstanceOffsetsAtlasSampled";
+const std::string s_glyphShaderName = "RENDERHANDLER__glyph";
 
 const std::string s_defaultAlbedoTextureName = "RENDERHANDLER__defaultAlbedoTexture";
 const std::string s_defaultNormalTextureName = "RENDERHANDLER__defaultNormalTexture";
@@ -125,6 +127,15 @@ export namespace Renderer
 			AddShader(s_spriteInstanceOffsetsAtlasSampledShaderName, shader);
 
 			{
+				NovaResources::Shaders_Glyph_vert vert;
+				NovaResources::Shaders_Basic_frag frag;
+
+				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
+				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
+			}
+			AddShader(s_glyphShaderName, shader);
+
+			{
 				NovaResources::Shaders_PostProcess_vert vert;
 				NovaResources::Shaders_PostProcessEmpty_frag frag;
 
@@ -175,6 +186,10 @@ export namespace Renderer
 			AddTexture2D(s_defaultMetallicTextureName, texture);
 			AddTexture2D(s_defaultAOTextureName, texture);
 			AddTexture2D(s_defaultRoughnessTextureName, texture);
+
+			LoadTexture2D("RENDERER__Font", "Assets/STALKER/Font.png");
+			CreateSprite("RENDERER__Font", "RENDERER__Font");
+			CreateShaderStorageBuffer("RENDERER__FontSSBO");
 			//resourcesManager.CreateTexture2D(s_framebufferTextureName1, Texture2D::Data(_scaledWidth, _scaledHeight, Texture2D::Data::Channels::RGBA, Texture2D::Data::ColorSpace::Linear, std::vector<unsigned char>(), false, false));
 			//resourcesManager.CreateTexture2D(s_framebufferTextureName2, Texture2D::Data(_scaledWidth, _scaledHeight, Texture2D::Data::Channels::RGBA, Texture2D::Data::ColorSpace::Linear, std::vector<unsigned char>(), false, false));
 			//resourcesManager.CreateFramebuffer(s_framebufferName1, Framebuffer::Data(s_framebufferTextureName1, &resourcesManager.GetTexture2D(s_framebufferTextureName1)));
@@ -190,6 +205,7 @@ export namespace Renderer
 			DeleteShader(s_spriteShaderName);
 			DeleteShader(s_spriteInstanceOffsetsShaderName);
 			DeleteShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
+			DeleteShader(s_glyphShaderName);
 			DeleteShader("Empty");
 			DeleteShader("GammaCorrection");
 			DeleteShader("TonalCompression");
@@ -201,6 +217,9 @@ export namespace Renderer
 			DeleteTexture2D(s_defaultMetallicTextureName);
 			DeleteTexture2D(s_defaultAOTextureName);
 			DeleteTexture2D(s_defaultRoughnessTextureName);
+
+			DeleteTexture2D("RENDERER__Font");
+			DeleteShaderStorageBuffer("RENDERER__FontSSBO");
 		}
 
 	public: // Shaders
@@ -488,6 +507,7 @@ export namespace Renderer
 			static const std::string atlasSizeUniformName("atlasSize");
 			static const std::string tileSizeUniformName("tileSize");
 			static const std::string tileIndexUniformName("tileIndex");
+			static const std::string shrinkingSizeUniformName("shrinkingSize");
 			Sprite& sprite = assetsManager.GetSprite(spriteName);
 
 			BindShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
@@ -496,31 +516,39 @@ export namespace Renderer
 			SetShaderUniform(atlasSize, atlasSizeUniformName);
 			SetShaderUniform(tileSize, tileSizeUniformName);
 			SetShaderUniform(tileIndex, tileIndexUniformName);
+			//SetShaderUniform(0.0005f, shrinkingSizeUniformName);
 			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
 			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
-		void RenderGlyphInstancedSampled(const std::string& spriteName, const Camera& camera, const std::string& shaderStorageNameWithPositions, const NSL::Vector2& atlasSize, const NSL::Vector2& tileSize, const NSL::Vector2& tileIndex) NSL_NOEXCEPT
+		void RenderText(const Camera& camera, const std::string& text) NSL_NOEXCEPT
 		{
+			static const Font font("Assets/STALKER/Font.json");
+
+			std::vector<NSL::Vector2> textIndices(text.size());
+
+			for (size_t i = 0; i < textIndices.size(); ++i)
+			{
+				textIndices[i] = font.CharToTileIndex(text[i]);
+			}
+
+			UpdateShaderStorageBuffer("RENDERER__FontSSBO", textIndices);
+
+
 			static const std::string pvmUniformName("pvm");
 			static const std::string atlasSizeUniformName("atlasSize");
 			static const std::string tileSizeUniformName("tileSize");
-			static const std::string tileIndexUniformName("tileIndex");
-			Sprite& sprite = assetsManager.GetSprite(spriteName);
+			static const std::string shrinkingSizeUniformName("shrinkingSize");
+			Sprite& sprite = assetsManager.GetSprite("RENDERER__Font");
 
-			BindShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
+			BindShader(s_glyphShaderName);
 			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
-			SetShaderUniform(atlasSize, atlasSizeUniformName);
-			SetShaderUniform(tileSize, tileSizeUniformName);
-			SetShaderUniform(tileIndex, tileIndexUniformName);
-			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			SetShaderUniform(font.GetAtlasSize(), atlasSizeUniformName);
+			SetShaderUniform(font.GetGlyphSize(), tileSizeUniformName);
+			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer("RENDERER__FontSSBO"), 0);
 			glContextManager.SetContext(sprite.context);
-			DrawMesh(s_glyphMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
-		}
-		void RenderText(const std::string& text) NSL_NOEXCEPT
-		{
-
+			DrawMesh(s_glyphMeshName, resourcesManager.GetShaderStorageBuffer("RENDERER__FontSSBO").Count());
 		}
 		void RenderModel(const std::string& modelName, const Camera& camera) NSL_NOEXCEPT
 		{

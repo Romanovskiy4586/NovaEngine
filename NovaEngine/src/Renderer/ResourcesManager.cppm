@@ -110,12 +110,12 @@ export namespace Renderer
 		}
 		ShaderStorageBuffer& GetShaderStorageBuffer(const std::string& name) NSL_NOEXCEPT
 		{
-			NSL_DEBUG(if (!_shaderStorageBuffers.contains(name)) LogError("Shader with name \"" + name + "\" is not present"); )
+			NSL_DEBUG(if (!_shaderStorageBuffers.contains(name)) LogError("ShaderStorageBuffer with name \"" + name + "\" is not present"); )
 			return _shaderStorageBuffers.at(name);
 		}
 		const ShaderStorageBuffer& GetShaderStorageBuffer(const std::string& name) const NSL_NOEXCEPT
 		{
-			NSL_DEBUG(if (!_shaderStorageBuffers.contains(name)) LogError("Shader with name \"" + name + "\" is not present"); )
+			NSL_DEBUG(if (!_shaderStorageBuffers.contains(name)) LogError("ShaderStorageBuffer with name \"" + name + "\" is not present"); )
 			return _shaderStorageBuffers.at(name);
 		}
 		//Framebuffer& GetFramebuffer(const std::string& name) NSL_NOEXCEPT
