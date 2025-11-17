@@ -67,6 +67,7 @@
       </CreateHotpatchableImage>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,6 +106,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

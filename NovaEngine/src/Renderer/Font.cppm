@@ -95,6 +95,15 @@ export namespace Renderer
 			MACRO('~', 68);
 			MACRO('!', 69);
 			MACRO('?', 70);
+
+			MACRO('\'', 71);
+			MACRO('(', 72);
+			MACRO(')', 73);
+			MACRO('{', 74);
+			MACRO('}', 75);
+			//MACRO('~', 76);
+			//MACRO('!', 77);
+			//MACRO('?', 78);
 		}
 
 		const NSL::Vector2& GetAtlasSize() const NSL_NOEXCEPT

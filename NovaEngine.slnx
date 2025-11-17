@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="App\App.vcxproj" Id="07cad93d-dffa-4376-ba6c-85015b5f8742" />
+  <Project Path="NovaEngine/NovaEngine.vcxproj" Id="c6b9542d-16c0-4e14-bbc7-ae7ad63bb0da" />
+  <Project Path="SourceGenerator\SourceGenerator.vcxproj" Id="c16b32f9-c6a5-48be-92ad-0b1bcfc7be5f" />
+  <Project Path="NovaDependencies\NovaDependencies.vcxproj" Id="45ad508c-07ac-46e9-8d7b-fb2a5bc19bdb" />
+  <Project Path="GenerateSources\GenerateSources.vcxproj" Id="25c1e3f1-2e03-4686-8630-cad88655662c" />
+</Solution>

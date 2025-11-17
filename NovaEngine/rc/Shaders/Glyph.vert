@@ -24,5 +24,6 @@ void main()
     vec2 tileSizeInUV = tileSize / atlasSize;
     vec2 uvOffset = currentGlyphIndex * tileSizeInUV;
 
-    textureCoordinates = aTextureCoordinates * tileSizeInUV + uvOffset + vec2(pixelSizeInUV.x / 2, 0.0);
+    textureCoordinates = aTextureCoordinates * tileSizeInUV + uvOffset;
+    textureCoordinates += vec2(pixelSizeInUV.x / 2, 0.0);
 }

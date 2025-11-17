@@ -76,7 +76,18 @@ export namespace Stalker
 			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "HightierStalkersPositions", atlasSize, tileSize, hightierStalkerIndex);
 			//_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.001f));
 			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
-			_gameWindow.renderHandler.RenderText(_camera, "Hello, World!");
+
+			static int i = 0;
+			static NSL::Vector3 pos;
+
+			pos = NSL::Vector3::Zero;
+			_gameWindow.renderHandler.RenderText(_camera, "Hello, World! This is a long text with different symbols: " + std::to_string(i++), pos);
+			pos.y -= 2.0f;
+			_gameWindow.renderHandler.RenderText(_camera, "I uses the same SSBO as the last time, in a line at the top", pos);
+			pos.y -= 2.0f;
+			_gameWindow.renderHandler.RenderText(_camera, "This line uses the same SSBO, i'm trying to (load) {it}", pos);
+			pos.y -= 2.0f;
+
 		}
 		void _Unload() NSL_NOEXCEPT
 		{
@@ -131,7 +142,8 @@ export namespace Stalker
 		{
 			_gameWindow.baseWindow.UI.LoadFont("Assets/Fonts/CascadiaMono.ttf", _gameWindow.baseWindow.monitor.GetPPM() * 4.0f);
 			_gameWindow.baseWindow.renderWindowState = true;
-			_gameWindow.renderHandler.SetClearColor(NSL::Vector4(0.5f, 0.9f, 1.0f, 1.0f));
+			//_gameWindow.renderHandler.SetClearColor(NSL::Vector4(0.5f, 0.9f, 1.0f, 1.0f));
+			_gameWindow.renderHandler.SetClearColor(NSL::Vector4(0.3f, 0.3f, 0.3f, 1.0f));
 		}
 		void _InitCamera() NSL_NOEXCEPT
 		{

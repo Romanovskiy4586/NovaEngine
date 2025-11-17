@@ -346,6 +346,10 @@ export namespace Renderer
 			resourcesManager.AddShaderStorageBuffer(name, ShaderStorageBuffer());
 			glBuffersManager.RegisterShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
 		}
+		void BindShaderStorageBuffer(const std::string& name, unsigned int index = 0) NSL_NOEXCEPT
+		{
+			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(name), index);
+		}
 		void AddShaderStorageBuffer(const std::string& name, const ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
 			resourcesManager.AddShaderStorageBuffer(name, shaderStorageBuffer);
@@ -497,7 +501,7 @@ export namespace Renderer
 			BindShader(s_spriteInstanceOffsetsShaderName);
 			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
-			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			BindShaderStorageBuffer(shaderStorageNameWithPositions);
 			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
@@ -517,11 +521,11 @@ export namespace Renderer
 			SetShaderUniform(tileSize, tileSizeUniformName);
 			SetShaderUniform(tileIndex, tileIndexUniformName);
 			//SetShaderUniform(0.0005f, shrinkingSizeUniformName);
-			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions), 0);
+			BindShaderStorageBuffer(shaderStorageNameWithPositions);
 			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
 		}
-		void RenderText(const Camera& camera, const std::string& text) NSL_NOEXCEPT
+		void RenderText(const Camera& camera, const std::string& text, const NSL::Vector3& position = NSL::Vector3::Zero) NSL_NOEXCEPT
 		{
 			static const Font font("Assets/STALKER/Font.json");
 
@@ -541,12 +545,13 @@ export namespace Renderer
 			static const std::string shrinkingSizeUniformName("shrinkingSize");
 			Sprite& sprite = assetsManager.GetSprite("RENDERER__Font");
 
+			sprite.transform.SetPosition(position);
 			BindShader(s_glyphShaderName);
 			glTexturesManager.BindTexture2D(&sprite.texture);
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
 			SetShaderUniform(font.GetAtlasSize(), atlasSizeUniformName);
 			SetShaderUniform(font.GetGlyphSize(), tileSizeUniformName);
-			glBuffersManager.BindShaderStorageBuffer(&resourcesManager.GetShaderStorageBuffer("RENDERER__FontSSBO"), 0);
+			BindShaderStorageBuffer("RENDERER__FontSSBO");
 			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_glyphMeshName, resourcesManager.GetShaderStorageBuffer("RENDERER__FontSSBO").Count());
 		}
