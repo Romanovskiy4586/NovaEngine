@@ -144,7 +144,7 @@ export namespace Renderer
 		void RegisterShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
 			GLCall(glGenBuffers(1, &shaderStorageBuffer._id));
-			_BindShaderStorageBuffer(&shaderStorageBuffer);
+			_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
 			GLCall(glBufferData(GL_SHADER_STORAGE_BUFFER,
 				shaderStorageBuffer.Size(),
 				shaderStorageBuffer.Data(), GL_DYNAMIC_READ));
@@ -154,21 +154,18 @@ export namespace Renderer
 			NSL_ASSERT(index <= _bindedSSBOs.size() - 1,
 				"Index for binding ShaderStorageBuffer is bigger than max " + std::to_string(_bindedSSBOs.size() - 1) +
 				". Index: " + std::to_string(index))
-			if (_bindedSSBOs[index] == shaderStorageBuffer->_id) return;
-
-			_bindedSSBOs[index] = shaderStorageBuffer->_id;
-			GLCall(glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, shaderStorageBuffer->_id));
+			_BindShaderStorageBuffer(shaderStorageBuffer, index);
 		}
 		void UpdateShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
-			_BindShaderStorageBuffer(&shaderStorageBuffer);
+			_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
 			GLCall(glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0,
 				shaderStorageBuffer.Size(),
 				shaderStorageBuffer.Data()));
 		}
 		void ReloadShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
-			_BindShaderStorageBuffer(&shaderStorageBuffer);
+			_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
 			GLCall(glBufferData(GL_SHADER_STORAGE_BUFFER,
 				shaderStorageBuffer.Size(),
 				shaderStorageBuffer.Data(), GL_DYNAMIC_READ));
@@ -215,18 +212,17 @@ export namespace Renderer
 		}
 
 	private:
-		void _BindShaderStorageBuffer(const ShaderStorageBuffer* shaderStorageBuffer) NSL_NOEXCEPT
+		void _BindShaderStorageBuffer(const ShaderStorageBuffer* shaderStorageBuffer, unsigned int index) NSL_NOEXCEPT
 		{
-			if (_bindedSSBO == shaderStorageBuffer->_id) return;
+			if (_bindedSSBOs[index] == shaderStorageBuffer->_id) return;
 
-			_bindedSSBO = shaderStorageBuffer->_id;
-			GLCall(glBindBuffer(GL_SHADER_STORAGE_BUFFER, shaderStorageBuffer->_id));
+			_bindedSSBOs[index] = shaderStorageBuffer->_id;
+			GLCall(glBindBufferBase(GL_SHADER_STORAGE_BUFFER, index, shaderStorageBuffer->_id));
 		}
 
 	private:
 		unsigned int _bindedVAO;
 		unsigned int _bindedUBO;
-		unsigned int _bindedSSBO;
 		std::array<unsigned int, 32> _bindedSSBOs;
 	};
 }

@@ -65,29 +65,30 @@ export namespace Stalker
 			//_gameWindow.renderHandler.RenderSpriteInstanced("HightierStalker", _camera, "HightierStalkersPositions");
 			//_gameWindow.renderHandler.RenderSpriteInstanced("Point", _camera, "Astar");
 
-			//_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.0f));
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "EmptyTilesPositions", atlasSize, tileSize, emptyTileIndex);
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "WallTilesPositions", atlasSize, tileSize, wallTileIndex);
-			//_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.002f));
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "LowtierStalkersPositions", atlasSize, tileSize, lowtierStalkerIndex);
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidlowtierStalkersPositions", atlasSize, tileSize, midlowtierStalkerIndex);
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidtierStalkersPositions", atlasSize, tileSize, midtierStalkerIndex);
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidhightierStalkersPositions", atlasSize, tileSize, midhightierStalkerIndex);
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "HightierStalkersPositions", atlasSize, tileSize, hightierStalkerIndex);
-			//_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.001f));
-			//_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
+			
+
+			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.0f));
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "EmptyTilesPositions", atlasSize, tileSize, emptyTileIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "WallTilesPositions", atlasSize, tileSize, wallTileIndex);
+			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.02f));
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "LowtierStalkersPositions", atlasSize, tileSize, lowtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidlowtierStalkersPositions", atlasSize, tileSize, midlowtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidtierStalkersPositions", atlasSize, tileSize, midtierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "MidhightierStalkersPositions", atlasSize, tileSize, midhightierStalkerIndex);
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "HightierStalkersPositions", atlasSize, tileSize, hightierStalkerIndex);
+			_gameWindow.renderHandler.GetSprite("Atlas").transform.SetPosition(NSL::Vector3(0.0f, 0.0f, 0.01f));
+			_gameWindow.renderHandler.RenderSpriteInstancedSampled("Atlas", _camera, "Astar", atlasSize, tileSize, pointIndex);
 
 			static int i = 0;
 			static NSL::Vector3 pos;
 
 			pos = NSL::Vector3::Zero;
+			pos.y -= 4.0f;
 			_gameWindow.renderHandler.RenderText(_camera, "Hello, World! This is a long text with different symbols: " + std::to_string(i++), pos);
 			pos.y -= 2.0f;
 			_gameWindow.renderHandler.RenderText(_camera, "I uses the same SSBO as the last time, in a line at the top", pos);
 			pos.y -= 2.0f;
-			_gameWindow.renderHandler.RenderText(_camera, "This line uses the same SSBO, i'm trying to (load) {it}", pos);
-			pos.y -= 2.0f;
-
+			_gameWindow.renderHandler.RenderText(_camera, "This line uses the same SSBO, i'm trying to (load) {it}", pos);	
 		}
 		void _Unload() NSL_NOEXCEPT
 		{

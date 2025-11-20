@@ -64,7 +64,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)bin\x64-Debug\SourceGenerator\SourceGenerator.exe $(SolutionDir)NovaEngine\rc\ $(SolutionDir)NovaEngine\src\Resources\ NovaResources</Command>
+      <Command>$(SolutionDir)bin\$(Configuration)\SourceGenerator\SourceGenerator.exe $(SolutionDir)NovaEngine\rc\ $(SolutionDir)NovaEngine\src\Resources\ NovaResources</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -82,7 +82,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)bin</Command>
+      <Command>$(SolutionDir)bin\$(Configuration)\SourceGenerator\SourceGenerator.exe $(SolutionDir)NovaEngine\rc\ $(SolutionDir)NovaEngine\src\Resources\ NovaResources</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

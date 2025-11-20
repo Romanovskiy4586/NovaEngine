@@ -207,7 +207,8 @@ export namespace NSL
 		static JSON Parse(const std::string& jsonContent) NSL_NOEXCEPT
 		{
 			JSON json;
-			NSL::BinaryStream stream = NSL::Replace(jsonContent, "\r\n", "\n");
+			std::string jsonContentWithProperNewLineSequence = NSL::Replace(jsonContent, "\r\n", "\n");
+			NSL::BinaryStream stream = NSL::Replace(jsonContentWithProperNewLineSequence, "\r", "\n");
 
 			// Read root
 			json.root = ParseObject(stream);
@@ -276,7 +277,7 @@ export namespace NSL
 			std::stringstream string;
 
 			stream.SkipBytes(1);
-			while (/*stream.PeekInt8() != '\'' && */stream.PeekInt8() != '\"') string << stream.ReadInt8();
+			while (stream.PeekInt8() != '\"') string << stream.ReadInt8();
 			stream.SkipBytes(1);
 
 			return string.str();
@@ -285,10 +286,10 @@ export namespace NSL
 		{
 			std::stringstream value;
 
-			if (/*stream.PeekInt8() == '\'' || */stream.PeekInt8() == '\"')
+			if (stream.PeekInt8() == '\"')
 			{
 				value << stream.ReadInt8();
-				while (/*stream.PeekInt8() != '\'' && */stream.PeekInt8() != '\"')
+				while (stream.PeekInt8() != '\"')
 				{
 					value << stream.ReadInt8();
 				}

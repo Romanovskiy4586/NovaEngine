@@ -509,7 +509,6 @@ export namespace Renderer
 			static const std::string atlasSizeUniformName("atlasSize");
 			static const std::string tileSizeUniformName("tileSize");
 			static const std::string tileIndexUniformName("tileIndex");
-			static const std::string shrinkingSizeUniformName("shrinkingSize");
 			Sprite& sprite = assetsManager.GetSprite(spriteName);
 
 			BindShader(s_spriteInstanceOffsetsAtlasSampledShaderName);
@@ -518,7 +517,6 @@ export namespace Renderer
 			SetShaderUniform(atlasSize, atlasSizeUniformName);
 			SetShaderUniform(tileSize, tileSizeUniformName);
 			SetShaderUniform(tileIndex, tileIndexUniformName);
-			//SetShaderUniform(0.0005f, shrinkingSizeUniformName);
 			BindShaderStorageBuffer(shaderStorageNameWithPositions);
 			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_spriteMeshName, resourcesManager.GetShaderStorageBuffer(shaderStorageNameWithPositions).Count());
@@ -527,22 +525,17 @@ export namespace Renderer
 		{
 			static NovaResources::Fonts_Font_json jsonParameters;
 			static const Font font(NSL::ToString(jsonParameters.data, jsonParameters.size));
+			static const std::string pvmUniformName("pvm");
+			static const std::string atlasSizeUniformName("atlasSize");
+			static const std::string tileSizeUniformName("tileSize");
+			static Sprite& sprite = assetsManager.GetSprite("RENDERER__Font");
 
 			std::vector<NSL::Vector2> textIndices(text.size());
-
 			for (size_t i = 0; i < textIndices.size(); ++i)
 			{
 				textIndices[i] = font.CharToTileIndex(text[i]);
 			}
-
 			UpdateShaderStorageBuffer("RENDERER__FontSSBO", textIndices);
-
-
-			static const std::string pvmUniformName("pvm");
-			static const std::string atlasSizeUniformName("atlasSize");
-			static const std::string tileSizeUniformName("tileSize");
-			static const std::string shrinkingSizeUniformName("shrinkingSize");
-			Sprite& sprite = assetsManager.GetSprite("RENDERER__Font");
 
 			sprite.transform.SetPosition(position);
 			BindShader(s_glyphShaderName);
