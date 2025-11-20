@@ -39,5 +39,6 @@
     <None Include="BugsConfig.json" />
     <None Include="imgui.ini" />
     <None Include="StalkerConfig.json" />
+    <None Include="WindowState.json" />
   </ItemGroup>
 </Project>

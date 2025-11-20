@@ -133,6 +133,7 @@
     <None Include="cpp.hint" />
     <None Include="BugsConfig.json" />
     <None Include="imgui.ini" />
+    <None Include="WindowState.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
