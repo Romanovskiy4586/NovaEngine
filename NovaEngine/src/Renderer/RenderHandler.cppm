@@ -187,7 +187,9 @@ export namespace Renderer
 			AddTexture2D(s_defaultAOTextureName, texture);
 			AddTexture2D(s_defaultRoughnessTextureName, texture);
 
-			LoadTexture2D("RENDERER__Font", "Assets/STALKER/Font.png");
+			NovaResources::Fonts_Font_png png;
+			_ParseTexture2D("RENDERER__Font", NSL::ToString(png.data, png.size));
+			//LoadTexture2D("RENDERER__Font", "Assets/STALKER/Font.png");
 			CreateSprite("RENDERER__Font", "RENDERER__Font");
 			CreateShaderStorageBuffer("RENDERER__FontSSBO");
 			//resourcesManager.CreateTexture2D(s_framebufferTextureName1, Texture2D::Data(_scaledWidth, _scaledHeight, Texture2D::Data::Channels::RGBA, Texture2D::Data::ColorSpace::Linear, std::vector<unsigned char>(), false, false));
@@ -304,10 +306,6 @@ export namespace Renderer
 		void UpdateTexture2D(const std::string& name) NSL_NOEXCEPT
 		{
 			glTexturesManager.UpdateTexture2D(resourcesManager.GetTexture2D(name));
-		}
-		void SetTexture2DFiltering(const std::string& name, Texture2DFiltering filtering = Texture2DFiltering::MipmapNearest) NSL_NOEXCEPT
-		{
-
 		}
 		void DeleteTexture2D(const std::string& name) NSL_NOEXCEPT
 		{
@@ -527,7 +525,8 @@ export namespace Renderer
 		}
 		void RenderText(const Camera& camera, const std::string& text, const NSL::Vector3& position = NSL::Vector3::Zero) NSL_NOEXCEPT
 		{
-			static const Font font("Assets/STALKER/Font.json");
+			static NovaResources::Fonts_Font_json jsonParameters;
+			static const Font font(NSL::ToString(jsonParameters.data, jsonParameters.size));
 
 			std::vector<NSL::Vector2> textIndices(text.size());
 
@@ -574,6 +573,13 @@ export namespace Renderer
 		AssetsManager assetsManager;
 
 	private:
+		void _ParseTexture2D(const std::string& name, const std::string& pngContent, Texture2DFiltering filtering = Texture2DFiltering::MipmapNearest) NSL_NOEXCEPT
+		{
+			resourcesManager.ParseTexture2D(name, pngContent);
+			Texture2D& textureRef = resourcesManager.GetTexture2D(name);
+			glTexturesManager.RegisterTexture2D(textureRef, filtering);
+			glTexturesManager.UpdateTexture2D(textureRef);
+		}
 		void _RenderModel(const std::string& modelName, const Camera& camera, const std::string& shaderName) NSL_NOEXCEPT
 		{
 			static const std::string pvmUniformName("pvm");

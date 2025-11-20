@@ -12,10 +12,33 @@ export namespace Renderer
 	class NSL_API Font
 	{
 	public:
-		Font(const std::string& jsonPath) NSL_NOEXCEPT
+		Font(const NSL::JSON& parameters) NSL_NOEXCEPT
 		{
-			NSL::JSON parameters = NSL::JSON::Load(jsonPath);
+			_Init(parameters);
+		}
+		Font(const std::string& jsonParameters) NSL_NOEXCEPT
+		{
+			NSL::JSON parameters = NSL::JSON::Parse(jsonParameters);
+			_Init(parameters);
+		}
 
+		const NSL::Vector2& GetAtlasSize() const NSL_NOEXCEPT
+		{
+			return _atlasSize;
+		}
+		const NSL::Vector2& GetGlyphSize() const NSL_NOEXCEPT
+		{
+			return _glyphSize;
+		}
+		const NSL::Vector2& CharToTileIndex(char c) const NSL_NOEXCEPT
+		{
+			NSL_ASSERT(_charToTileIndex.contains(c), "Font do not contains char \"" + std::string{c} + "\"")
+			return _charToTileIndex.at(c);
+		}
+
+	private:
+		void _Init(const NSL::JSON& parameters) NSL_NOEXCEPT
+		{
 			_atlasSize.x = parameters.root.Array("AtlasSize").Real(0);
 			_atlasSize.y = parameters.root.Array("AtlasSize").Real(1);
 			_glyphSize.x = parameters.root.Array("GlyphSize").Real(0);
@@ -104,20 +127,6 @@ export namespace Renderer
 			//MACRO('~', 76);
 			//MACRO('!', 77);
 			//MACRO('?', 78);
-		}
-
-		const NSL::Vector2& GetAtlasSize() const NSL_NOEXCEPT
-		{
-			return _atlasSize;
-		}
-		const NSL::Vector2& GetGlyphSize() const NSL_NOEXCEPT
-		{
-			return _glyphSize;
-		}
-		const NSL::Vector2& CharToTileIndex(char c) const NSL_NOEXCEPT
-		{
-			NSL_ASSERT(_charToTileIndex.contains(c), "Font do not contains char \"" + std::string{c} + "\"")
-			return _charToTileIndex.at(c);
 		}
 
 	private:

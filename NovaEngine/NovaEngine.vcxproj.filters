@@ -264,6 +264,12 @@
     <ClCompile Include="src\Resources\Shaders_Glyph_vert.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\Fonts_Font_png.cppm">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resources\Fonts_Font_json.cppm">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core.h">
@@ -360,5 +366,11 @@
     <None Include="rc\Shaders\Basic.frag" />
     <None Include="rc\Shaders\SpriteInstanced.vert" />
     <None Include="rc\Shaders\Glyph.vert" />
+    <None Include="rc\Fonts\Font.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="rc\Fonts\Font.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

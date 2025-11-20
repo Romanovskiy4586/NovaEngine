@@ -1,5 +1,7 @@
 export module ResourcesDB;
 
+export import Fonts_Font_json;
+export import Fonts_Font_png;
 export import Shaders_Basic_frag;
 export import Shaders_Basic_vert;
 export import Shaders_Glyph_vert;

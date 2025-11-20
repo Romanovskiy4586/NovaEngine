@@ -16,87 +16,13 @@ export namespace NSL
 	public:
 		PNG Load(const std::string& filePath) const NSL_NOEXCEPT
 		{
-			PNG result;
-			result.width = 1;
-			result.height = 1;
-			result.channels = PNG::Channels::RED;
-			result.colorSpace = PNG::ColorSpace::Linear;
-
 			NSL::BinaryStream binaryStream = NSL::ReadBinaryFile(filePath);
-			if (!IsPNGValid(binaryStream))
-			{
-				return result;
-			}
-
-			PNGHeaderChunk headerChunk = ReadIHDRChunk(binaryStream);
-
-			if (headerChunk.Interlace != 0)
-			{
-				LogError("Fail to load PNG. Interlacing (type of data storage) of that PNG is not supported");
-				return result;
-			}
-
-			if (binaryStream.Search("IDAT") == binaryStream.NullPointerPosition)
-			{
-				LogError("Fail to load PNG. IDAT chunk are not present");
-				return result;
-			}
-
-			std::vector<unsigned char> pngData = ExtractPNGData(binaryStream);
-
-			bool isSRGB = binaryStream.Search("sRGB") != binaryStream.NullPointerPosition;
-
-			if (isSRGB)
-			{
-				binaryStream.MovePointerTo(binaryStream.Search("gAMA") + 4);
-				unsigned int gamma = binaryStream.ReadUint32(BinaryStream::BytesReadOrder::RightToLeft);
-				if (gamma != 45455U)
-				{
-					LogWarning("PNG gamma value is not the standart 1/2.2");
-				}
-				result.gamma = gamma / 100000.0f;
-			}
-			else
-			{
-				result.gamma = 0.0f;
-				LogWarning("Loading PNG " + filePath + ". PNG is not in sRGB space");
-			}
-
-			if (headerChunk.ColorType == 0x02)
-			{
-				result.channels = /*isSRGB ? PNG::Channels::SRGB :*/ PNG::Channels::RGB;
-				RawPNGRGB rawPng(pngData, headerChunk.Width, headerChunk.Height);
-				pngData = rawPng.GetData();
-				//for (auto& i : pngData)
-				//{
-				//	i = static_cast<unsigned char>(ConvertSRGBToLinear((float)i / 256.0f) * 256.0f);
-				//}
-				FlipImage(pngData, headerChunk, 3);
-			}
-			else if (headerChunk.ColorType == 0x06)
-			{
-				result.channels = /*isSRGB ? PNG::Channels::SRGBA :*/ PNG::Channels::RGBA;
-				RawPNGRGBA rawPngRgba(pngData, headerChunk.Width, headerChunk.Height);
-				pngData = rawPngRgba.GetData();
-				//for (size_t i = 0; i < pngData.size() / 4; ++i)
-				//{
-				//	pngData[0 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[0 + 4 * i] / 256.0f) * 256.0f);
-				//	pngData[1 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[1 + 4 * i] / 256.0f) * 256.0f);
-				//	pngData[2 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[2 + 4 * i] / 256.0f) * 256.0f);
-				//}
-				FlipImage(pngData, headerChunk, 4);
-			}
-			else
-			{
-				LogError("Current PNG Color type are not supported");
-				return result;
-			}
-
-			result.width = headerChunk.Width;
-			result.height = headerChunk.Height;
-			result.data = pngData;
-
-			return result;
+			return _Parse(binaryStream);
+		}
+		PNG Parse(const std::string& phgContent) const NSL_NOEXCEPT
+		{
+			NSL::BinaryStream binaryStream = phgContent;
+			return _Parse(binaryStream);
 		}
 
 	private:
@@ -479,6 +405,90 @@ export namespace NSL
 			int _width;
 			int _height;
 		};
+
+		PNG _Parse(NSL::BinaryStream& binaryStream) const NSL_NOEXCEPT
+		{
+			PNG result;
+			result.width = 1;
+			result.height = 1;
+			result.channels = PNG::Channels::RED;
+			result.colorSpace = PNG::ColorSpace::Linear;
+
+			if (!IsPNGValid(binaryStream))
+			{
+				return result;
+			}
+
+			PNGHeaderChunk headerChunk = ReadIHDRChunk(binaryStream);
+
+			if (headerChunk.Interlace != 0)
+			{
+				LogError("Fail to load PNG. Interlacing (type of data storage) of that PNG is not supported");
+				return result;
+			}
+
+			if (binaryStream.Search("IDAT") == binaryStream.NullPointerPosition)
+			{
+				LogError("Fail to load PNG. IDAT chunk are not present");
+				return result;
+			}
+
+			std::vector<unsigned char> pngData = ExtractPNGData(binaryStream);
+
+			bool isSRGB = binaryStream.Search("sRGB") != binaryStream.NullPointerPosition;
+
+			if (isSRGB)
+			{
+				binaryStream.MovePointerTo(binaryStream.Search("gAMA") + 4);
+				unsigned int gamma = binaryStream.ReadUint32(BinaryStream::BytesReadOrder::RightToLeft);
+				if (gamma != 45455U)
+				{
+					LogWarning("PNG gamma value is not the standart 1/2.2");
+				}
+				result.gamma = gamma / 100000.0f;
+			}
+			else
+			{
+				result.gamma = 0.0f;
+				LogWarning("PNG is not in sRGB space");
+			}
+
+			if (headerChunk.ColorType == 0x02)
+			{
+				result.channels = /*isSRGB ? PNG::Channels::SRGB :*/ PNG::Channels::RGB;
+				RawPNGRGB rawPng(pngData, headerChunk.Width, headerChunk.Height);
+				pngData = rawPng.GetData();
+				//for (auto& i : pngData)
+				//{
+				//	i = static_cast<unsigned char>(ConvertSRGBToLinear((float)i / 256.0f) * 256.0f);
+				//}
+				FlipImage(pngData, headerChunk, 3);
+			}
+			else if (headerChunk.ColorType == 0x06)
+			{
+				result.channels = /*isSRGB ? PNG::Channels::SRGBA :*/ PNG::Channels::RGBA;
+				RawPNGRGBA rawPngRgba(pngData, headerChunk.Width, headerChunk.Height);
+				pngData = rawPngRgba.GetData();
+				//for (size_t i = 0; i < pngData.size() / 4; ++i)
+				//{
+				//	pngData[0 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[0 + 4 * i] / 256.0f) * 256.0f);
+				//	pngData[1 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[1 + 4 * i] / 256.0f) * 256.0f);
+				//	pngData[2 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[2 + 4 * i] / 256.0f) * 256.0f);
+				//}
+				FlipImage(pngData, headerChunk, 4);
+			}
+			else
+			{
+				LogError("Current PNG Color type are not supported");
+				return result;
+			}
+
+			result.width = headerChunk.Width;
+			result.height = headerChunk.Height;
+			result.data = pngData;
+
+			return result;
+		}
 
 		bool IsPNGValid(NSL::BinaryStream& binaryStream) const NSL_NOEXCEPT
 		{

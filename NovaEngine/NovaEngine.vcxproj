@@ -45,12 +45,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -200,6 +200,8 @@
     <ClCompile Include="src\Renderer\Sprite.cppm" />
     <ClCompile Include="src\Renderer\Transform.cppm" />
     <ClCompile Include="src\Engine\WorkThread.cppm" />
+    <ClCompile Include="src\Resources\Fonts_Font_json.cppm" />
+    <ClCompile Include="src\Resources\Fonts_Font_png.cppm" />
     <ClCompile Include="src\Resources\ResourcesDB.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm" />
@@ -244,6 +246,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="rc\Fonts\Font.json" />
     <None Include="rc\Shaders\Basic.frag" />
     <None Include="rc\Shaders\Basic.vert" />
     <None Include="rc\Shaders\PostProcess.vert" />
@@ -265,6 +268,9 @@
     <ProjectReference Include="..\NovaDependencies\NovaDependencies.vcxproj">
       <Project>{45ad508c-07ac-46e9-8d7b-fb2a5bc19bdb}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="rc\Fonts\Font.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

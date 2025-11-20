@@ -19,11 +19,8 @@ export namespace Renderer
 	public:
 		void LoadMesh(const std::string& name, const std::string& fbxPath) NSL_NOEXCEPT
 		{
-			NSL_DEBUG
-			(
-				if (_meshes.contains(name)) LogError("Mesh cannot be loaded with name \"" + name + "\". Mesh with that name is already present");
-				else LogInfo("Mesh is loaded. Name: \"" + name + "\"" + " Path: " + fbxPath);
-			)
+			NSL_ASSERT(!_meshes.contains(name), "Mesh cannot be loaded with name \"" + name + "\". Mesh with that name is already present");
+			LogInfo("Mesh is loaded. Name: \"" + name + "\"" + " Path: " + fbxPath);
 			_meshes.try_emplace(name, _LoadFBX(fbxPath));
 		}
 		void LoadShader(const std::string& name, const std::string& folderPath) NSL_NOEXCEPT
@@ -44,6 +41,12 @@ export namespace Renderer
 			)
 			Texture2D texture = _LoadPNG(pngPath);
 
+			AddTexture2D(name, std::move(texture));
+		}
+		void ParseTexture2D(const std::string& name, const std::string& pngContent) NSL_NOEXCEPT
+		{
+			Texture2D texture = _ParsePNG(pngContent);
+			LogInfo("Texture2D is parsed. Name: \"" + name + "\"");
 			AddTexture2D(name, std::move(texture));
 		}
 
@@ -241,6 +244,45 @@ export namespace Renderer
 
 			return texture;
 		}
+		Texture2D _ParsePNG(const std::string& pngContent) const NSL_NOEXCEPT
+		{
+			NSL::PNG png = _pngLoader.Parse(pngContent);
+
+			Texture2D texture;
+
+			texture.width = png.width;
+			texture.height = png.height;
+			texture.pixels = png.data;
+
+			switch (png.channels)
+			{
+			case NSL::PNG::Channels::RED:
+				texture.channels = Texture2D::RED;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
+
+			case NSL::PNG::Channels::RG:
+				texture.channels = Texture2D::RG;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
+
+			case NSL::PNG::Channels::RGB:
+				texture.channels = Texture2D::RGB;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
+
+			case NSL::PNG::Channels::RGBA:
+				texture.channels = Texture2D::RGBA;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
+
+			default:
+				break;
+			}
+
+			return texture;
+		}
+
 		Mesh _LoadFBX(const std::string& filePath) const NSL_NOEXCEPT
 		{
 			NSL::FBX fbx = _fbxLoader.Load(filePath);

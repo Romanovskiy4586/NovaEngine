@@ -204,6 +204,16 @@ export namespace NSL
 
 			return json;
 		}
+		static JSON Parse(const std::string& jsonContent) NSL_NOEXCEPT
+		{
+			JSON json;
+			NSL::BinaryStream stream = NSL::Replace(jsonContent, "\r\n", "\n");
+
+			// Read root
+			json.root = ParseObject(stream);
+
+			return json;
+		}
 		static std::string ParseObjectIntoString(const JSONObject& object, std::string& tabulations) NSL_NOEXCEPT
 		{
 			std::stringstream str;
