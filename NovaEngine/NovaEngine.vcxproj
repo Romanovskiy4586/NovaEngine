@@ -205,6 +205,7 @@
     <ClCompile Include="src\Resources\ResourcesDB.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm" />
+    <ClCompile Include="src\Resources\Shaders_Glyph_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Glyph_vert.cppm" />
     <ClCompile Include="src\Resources\Shaders_PostProcessEmpty_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_PostProcessGammaCorrection_frag.cppm" />
@@ -249,6 +250,7 @@
     <None Include="rc\Fonts\Font.json" />
     <None Include="rc\Shaders\Basic.frag" />
     <None Include="rc\Shaders\Basic.vert" />
+    <None Include="rc\Shaders\Glyph.frag" />
     <None Include="rc\Shaders\PostProcess.vert" />
     <None Include="rc\Shaders\PostProcessEmpty.frag" />
     <None Include="rc\Shaders\PostProcessGammaCorrection.frag" />

@@ -4,10 +4,12 @@ in vec3 aPosition;
 in vec2 aTextureCoordinates;
 
 out vec2 textureCoordinates;
+out vec2 screenPixelSize;
 
 uniform mat4 pvm;
 uniform vec2 atlasSize;
 uniform vec2 tileSize;
+uniform vec2 screenSize;
 
 layout (std430) readonly buffer GlyphsIndicesBuffer
 {
@@ -26,4 +28,6 @@ void main()
 
     textureCoordinates = aTextureCoordinates * tileSizeInUV + uvOffset;
     textureCoordinates += vec2(pixelSizeInUV.x / 2, 0.0);
+    screenPixelSize.x = 1.0 / screenSize.y;
+    screenPixelSize.y = 1.0 / screenSize.x;
 }

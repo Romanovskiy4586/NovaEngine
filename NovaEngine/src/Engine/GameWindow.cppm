@@ -15,7 +15,8 @@ export namespace Engine
 			: baseWindow()
 			, renderHandler(baseWindow.GetFramebufferWidth(), baseWindow.GetFramebufferHeight())
 		{
-			baseWindow.SubscribeOnFramebuffer([this](int width, int height) { _OnFramebuffer(width, height); });
+			baseWindow.SubscribeOnFramebuffer([this](int width, int height) { renderHandler.UpdateFramebufferSize(width, height); });
+			renderHandler.SetScreenSize(NSL::Vector2(static_cast<float>(baseWindow.monitor.GetResolutionWidth()), static_cast<float>(baseWindow.monitor.GetResolutionHeight())));
 		}
 
 	public:
@@ -42,11 +43,5 @@ export namespace Engine
 		std::function<void(double)> update;
 		std::function<void(double)> render;
 		std::function<void()> unload;
-
-	private:
-		void _OnFramebuffer(int width, int height) NSL_NOEXCEPT
-		{
-			renderHandler.UpdateFramebufferSize(width, height);
-		}
 	};
 }

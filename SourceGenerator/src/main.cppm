@@ -87,7 +87,8 @@ export int main(int argc, char* argv[])
 			{
 				outStream << "#include \"pch.h\"\n";
 			}
-			outStream << "export module " << structName << ";\n\n";
+			outStream << "export module " << structName << ";\n";
+			outStream << "import std;\n\n";
 			outStream << "export namespace " << namespaceName << '\n';
 			outStream << "{\n";
 			tabs += '\t';
@@ -114,6 +115,21 @@ export int main(int argc, char* argv[])
 			outStream << tabs << "{\n";
 			tabs += '\t';
 			outStream << tabs << "delete[] data;\n";
+			tabs.pop_back();
+			outStream << tabs << "};\n\n";
+
+			// ToString() method
+			outStream << tabs << "std::string ToString()\n";
+			outStream << tabs << "{\n";
+			tabs += '\t';
+			outStream << tabs << "std::string result(size, 0);\n";
+			outStream << tabs << "for (unsigned long long i = 0; i < size; ++i)\n";
+			outStream << tabs << "{\n";
+			tabs += '\t';
+			outStream << tabs << "result[i] = data[i];\n";
+			tabs.pop_back();
+			outStream << tabs << "}\n";
+			outStream << tabs << "return result;\n";
 			tabs.pop_back();
 			outStream << tabs << "};\n\n";
 

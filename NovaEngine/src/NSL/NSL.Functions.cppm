@@ -55,6 +55,48 @@ export namespace NSL
     {
         return _ReadFile(filePath, std::ios::binary);
     }
+    std::string Replace(const std::string& text, const std::string& replacable, const std::string& replaceWith) NSL_NOEXCEPT
+    {
+        if (replacable.empty())
+        {
+            LogWarning("Attempt to make a replace in string, but replace string is empty");
+            return text;
+        }
+
+        std::stringstream result;
+        std::stringstream buffer;
+        auto it = text.begin();
+
+        while (it != text.end())
+        {
+            // If character is not match first character of replacable - continue
+            if (*it != replacable[0])
+            {
+                result << *it++;
+                continue;
+            }
+
+            // If it does - read num of symbols size of replacable sequence
+            // If readed string matches replacable string - write in result replaceWith sequence
+            for (size_t j = 0; j < replacable.size(); ++j)
+            {
+                buffer << *(it + j);
+            }
+            if (buffer.str() == replacable)
+            {
+                result << replaceWith;
+                it += replacable.size();
+                buffer.str(std::string());
+                continue;
+            }
+
+            // If sequence do not match replacable sequence - just write that symbol in result
+            buffer.str(std::string());
+            result << *it++;
+        }
+
+        return result.str();
+    }
     std::string GetNameOfLastFolderInFolderPath(const std::string& folderPath, char foldersDelimiter) NSL_NOEXCEPT
     {
         size_t indexOfLastSlash = folderPath.find_last_of(foldersDelimiter, folderPath.size());
@@ -62,11 +104,14 @@ export namespace NSL
         size_t lengthOfFolderName = folderPath.size() - indexOfLastSlash - 1;
         return folderPath.substr(indexOfFirstCharacterOfFolderName, lengthOfFolderName);
     }
-    std::string GetFileNameFromFilePath(const std::string& filePath, char foldersDelimiter) NSL_NOEXCEPT
+    std::string GetFileNameFromFilePath(const std::string& filePath) NSL_NOEXCEPT
     {
         std::string result;
+        std::string delimiter = "/";
 
-        size_t indexOfLastSlash = filePath.find_last_of(foldersDelimiter, filePath.size());
+        std::string pathCopy = Replace(filePath, "\\", delimiter);
+
+        size_t indexOfLastSlash = filePath.find_last_of(delimiter, filePath.size());
         size_t indexOfFirstCharacterOfFolderName = indexOfLastSlash + 1;
         size_t lengthOfFolderName = filePath.size() - indexOfLastSlash - 1;
         result = filePath.substr(indexOfFirstCharacterOfFolderName, lengthOfFolderName);
@@ -133,48 +178,6 @@ export namespace NSL
     std::string DiscardAllTabulations(const std::string& text) NSL_NOEXCEPT
     {
         return DiscardCharacter(text, '\t');
-    }
-    std::string Replace(const std::string& text, const std::string& replacable, const std::string& replaceWith) NSL_NOEXCEPT
-    {
-        if (replacable.empty())
-        {
-            LogWarning("Attempt to make a replace in string, but replace string is empty");
-            return text;
-        }
-
-        std::stringstream result;
-        std::stringstream buffer;
-        auto it = text.begin();
-
-        while (it != text.end())
-        {
-            // If character is not match first character of replacable - continue
-            if (*it != replacable[0])
-            {
-                result << *it++;
-                continue;
-            }
-
-            // If it does - read num of symbols size of replacable sequence
-            // If readed string matches replacable string - write in result replaceWith sequence
-            for (size_t j = 0; j < replacable.size(); ++j)
-            {
-                buffer << *(it + j);
-            }
-            if (buffer.str() == replacable)
-            {
-                result << replaceWith;
-                it += replacable.size();
-                buffer.str(std::string());
-                continue;
-            }
-
-            // If sequence do not match replacable sequence - just write that symbol in result
-            buffer.str(std::string());
-            result << *it++;
-        }
-
-        return result.str();
     }
     void CutFront(std::string& text, size_t cuttingIndex) NSL_NOEXCEPT
     {
@@ -387,16 +390,5 @@ export namespace NSL
     {
         std::string inputFileString = ReadBinaryFile(compressedInputFilePath);
         WriteBinaryFile(uncompressedOutputFilePath, DecompressData(inputFileString));
-    }
-    std::string ToString(const unsigned char* const text, long long size) NSL_NOEXCEPT
-    {
-        std::string result(size, '\0');
-
-        for (long long i = 0; i < size; ++i)
-        {
-            result[i] = text[i];
-        }
-
-        return result;
     }
 }

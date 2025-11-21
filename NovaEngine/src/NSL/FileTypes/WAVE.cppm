@@ -35,13 +35,20 @@ export namespace NSL
 		};
 
 	public:
+		WAVE(const Header& header, const Format& format, const Data& data) NSL_NOEXCEPT
+			: header(header)
+			, format(format)
+			, data(data)
+		{
+		}
+
 		static WAVE Load(const std::string& wavePath) NSL_NOEXCEPT
 		{
 			// Read WAVE into stream
 			NSL::BinaryStream stream = NSL::ReadBinaryFile(wavePath);
 
 			// Init data
-			std::string fileName = NSL::GetFileNameFromFilePath(wavePath, '\\');
+			std::string fileName = NSL::GetFileNameFromFilePath(wavePath);
 			Header header;
 			Format format;
 			Data data;

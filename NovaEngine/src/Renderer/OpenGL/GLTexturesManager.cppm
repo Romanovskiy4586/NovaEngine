@@ -55,7 +55,7 @@ export namespace Renderer
 
 			GLCall(glBindTexture(GL_TEXTURE_2D, texture->_id ? texture->_id : 0));
 		}
-		void RegisterTexture2D(Texture2D& texture, Filtering filtering = Filtering::Nearest) NSL_NOEXCEPT
+		void RegisterTexture2D(Texture2D& texture, Filtering filtering = Filtering::Nearest, bool generateMipmap = true) NSL_NOEXCEPT
 		{
 			GLCall(glGenTextures(1, &texture._id));
 			BindTexture2D(&texture);
@@ -63,7 +63,10 @@ export namespace Renderer
 			int format = _GetGLFormatFromTexture(texture);
 
 			GLCall(glTexImage2D(GL_TEXTURE_2D, 0, format, texture.width, texture.height, 0, format, GL_UNSIGNED_BYTE, texture.GetPixels()));
-			GLCall(glGenerateTextureMipmap(texture._id));
+			if (generateMipmap)
+			{
+				GLCall(glGenerateTextureMipmap(texture._id));
+			}
 
 			GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 			GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));

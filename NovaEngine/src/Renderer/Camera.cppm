@@ -30,7 +30,7 @@ export namespace Renderer
 			, _orthographicMatrix(NSL::Matrix4x4::Unit)
 			, _projectionViewMatrix(NSL::Matrix4x4::Unit)
 			, _inverseProjectionViewMatrix(NSL::Matrix4x4::Unit)
-			, _fov(60.0f)
+			, _fov(80.0f)
 			, _depthNear(0.001f)
 			, _depthFar(1000.0f)
 			, _aspectRatio(1.0f)
@@ -69,6 +69,7 @@ export namespace Renderer
 
 		void SetWidth(int value)
 		{
+			NSL_ASSERT(value > 0, "Camera Width cannot be zero or less. Value was: " + std::to_string(value))
 			_width = value;
 			_UpdateAspectRatio();
 			_projectionType == ProjectionType::Perspective ? _UpdatePerspectiveMatrix() : _UpdateOrthographicMatrix();
@@ -76,6 +77,7 @@ export namespace Renderer
 		}
 		void SetHeight(int value)
 		{
+			NSL_ASSERT(value > 0, "Camera Height cannot be zero or less. Value was: " + std::to_string(value))
 			_height = value;
 			_UpdateAspectRatio();
 			_projectionType == ProjectionType::Perspective ? _UpdatePerspectiveMatrix() : _UpdateOrthographicMatrix(); 
@@ -130,6 +132,8 @@ export namespace Renderer
 
 		void SetWidthAndHeight(int width, int height) NSL_NOEXCEPT
 		{
+			NSL_ASSERT(width > 0, "Camera Width cannot be zero or less. Value was: " + std::to_string(width))
+			NSL_ASSERT(height > 0, "Camera Height cannot be zero or less. Value was: " + std::to_string(height))
 			_width = width;
 			_height = height;
 			_UpdateAspectRatio();

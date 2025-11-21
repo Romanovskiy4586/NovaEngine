@@ -90,94 +90,44 @@ export namespace Renderer
 
 			Shader shader;
 
-			{
-				NovaResources::Shaders_PS1_vert vert;
-				NovaResources::Shaders_Basic_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_PS1_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_Basic_frag().ToString();
 			AddShader(s_modelPS1ShaderName, shader);
 
-			{
-				NovaResources::Shaders_Basic_vert vert;
-				NovaResources::Shaders_Basic_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_Basic_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_Basic_frag().ToString();
 			AddShader(s_spriteShaderName, shader);
 
-			{
-				NovaResources::Shaders_SpriteInstanced_vert vert;
-				NovaResources::Shaders_Basic_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_SpriteInstanced_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_Basic_frag().ToString();
 			AddShader(s_spriteInstanceOffsetsShaderName, shader);
 
-			{
-				NovaResources::Shaders_SpriteInstancedAtlasSampled_vert vert;
-				NovaResources::Shaders_Basic_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_SpriteInstancedAtlasSampled_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_Basic_frag().ToString();
 			AddShader(s_spriteInstanceOffsetsAtlasSampledShaderName, shader);
 
-			{
-				NovaResources::Shaders_Glyph_vert vert;
-				NovaResources::Shaders_Basic_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_Glyph_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_Glyph_frag().ToString();
 			AddShader(s_glyphShaderName, shader);
 
-			{
-				NovaResources::Shaders_PostProcess_vert vert;
-				NovaResources::Shaders_PostProcessEmpty_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_PostProcess_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_PostProcessEmpty_frag().ToString();
 			AddShader("Empty", shader);
 
-			{
-				NovaResources::Shaders_PostProcess_vert vert;
-				NovaResources::Shaders_PostProcessGammaCorrection_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_PostProcess_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_PostProcessGammaCorrection_frag().ToString();
 			AddShader("GammaCorrection", shader);
 
-			{
-				NovaResources::Shaders_PostProcess_vert vert;
-				NovaResources::Shaders_PostProcessTonalCompression_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_PostProcess_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_PostProcessTonalCompression_frag().ToString();
 			AddShader("TonalCompression", shader);
 
-			{
-				NovaResources::Shaders_PostProcess_vert vert;
-				NovaResources::Shaders_PostProcessKernel_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_PostProcess_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_PostProcessKernel_frag().ToString();
 			AddShader("Kernel", shader);
 
-			{
-				NovaResources::Shaders_PostProcess_vert vert;
-				NovaResources::Shaders_PostProcessSharpener_frag frag;
-
-				shader.vertexSourceCode = NSL::ToString(vert.data, vert.size);
-				shader.fragmentSourceCode = NSL::ToString(frag.data, frag.size);
-			}
+			shader.vertexSourceCode = NovaResources::Shaders_PostProcess_vert().ToString();
+			shader.fragmentSourceCode = NovaResources::Shaders_PostProcessSharpener_frag().ToString();
 			AddShader("Sharpener", shader);
 
 			Texture2D texture;
@@ -187,9 +137,8 @@ export namespace Renderer
 			AddTexture2D(s_defaultAOTextureName, texture);
 			AddTexture2D(s_defaultRoughnessTextureName, texture);
 
-			NovaResources::Fonts_Font_png png;
-			_ParseTexture2D("RENDERER__Font", NSL::ToString(png.data, png.size));
-			//LoadTexture2D("RENDERER__Font", "Assets/STALKER/Font.png");
+			_ParseTexture2D("RENDERER__Font", NovaResources::Fonts_Font_png().ToString(), Texture2DFiltering::Nearest);
+
 			CreateSprite("RENDERER__Font", "RENDERER__Font");
 			CreateShaderStorageBuffer("RENDERER__FontSSBO");
 			//resourcesManager.CreateTexture2D(s_framebufferTextureName1, Texture2D::Data(_scaledWidth, _scaledHeight, Texture2D::Data::Channels::RGBA, Texture2D::Data::ColorSpace::Linear, std::vector<unsigned char>(), false, false));
@@ -410,6 +359,10 @@ export namespace Renderer
 
 			UpdateFramebufferSize(_framebufferWidth, _framebufferHeight);
 		}
+		void SetScreenSize(const NSL::Vector2 size) NSL_NOEXCEPT
+		{
+			_screenSize = size;
+		}
 
 	public:
 		void CreateSprite(const std::string& spriteName, const std::string& textureName) NSL_NOEXCEPT
@@ -523,12 +476,14 @@ export namespace Renderer
 		}
 		void RenderText(const Camera& camera, const std::string& text, const NSL::Vector3& position = NSL::Vector3::Zero) NSL_NOEXCEPT
 		{
-			static NovaResources::Fonts_Font_json jsonParameters;
-			static const Font font(NSL::ToString(jsonParameters.data, jsonParameters.size));
+			static const Font font(NovaResources::Fonts_Font_json().ToString());
 			static const std::string pvmUniformName("pvm");
 			static const std::string atlasSizeUniformName("atlasSize");
 			static const std::string tileSizeUniformName("tileSize");
+			static const std::string screenSizeUniformName("screenSize");
 			static Sprite& sprite = assetsManager.GetSprite("RENDERER__Font");
+
+			AddMesh(s_glyphMeshName, _meshesDataDB.glyph);
 
 			std::vector<NSL::Vector2> textIndices(text.size());
 			for (size_t i = 0; i < textIndices.size(); ++i)
@@ -543,6 +498,7 @@ export namespace Renderer
 			SetShaderUniform(camera.GetProjectionViewMatrix() * sprite.transform.GetModelMatrix(), pvmUniformName, false);
 			SetShaderUniform(font.GetAtlasSize(), atlasSizeUniformName);
 			SetShaderUniform(font.GetGlyphSize(), tileSizeUniformName);
+			SetShaderUniform(NSL::Vector2(1.0f / _screenSize.x, 1.0f / _screenSize.y), screenSizeUniformName);
 			BindShaderStorageBuffer("RENDERER__FontSSBO");
 			glContextManager.SetContext(sprite.context);
 			DrawMesh(s_glyphMeshName, resourcesManager.GetShaderStorageBuffer("RENDERER__FontSSBO").Count());
@@ -566,11 +522,11 @@ export namespace Renderer
 		AssetsManager assetsManager;
 
 	private:
-		void _ParseTexture2D(const std::string& name, const std::string& pngContent, Texture2DFiltering filtering = Texture2DFiltering::MipmapNearest) NSL_NOEXCEPT
+		void _ParseTexture2D(const std::string& name, const std::string& pngContent, Texture2DFiltering filtering = Texture2DFiltering::MipmapNearest, bool generateMipmap = true) NSL_NOEXCEPT
 		{
 			resourcesManager.ParseTexture2D(name, pngContent);
 			Texture2D& textureRef = resourcesManager.GetTexture2D(name);
-			glTexturesManager.RegisterTexture2D(textureRef, filtering);
+			glTexturesManager.RegisterTexture2D(textureRef, filtering, generateMipmap);
 			glTexturesManager.UpdateTexture2D(textureRef);
 		}
 		void _RenderModel(const std::string& modelName, const Camera& camera, const std::string& shaderName) NSL_NOEXCEPT
@@ -626,5 +582,6 @@ export namespace Renderer
 		int _framebufferHeight;
 		int _scaledWidth;
 		int _scaledHeight;
+		NSL::Vector2 _screenSize;
 	};
 }

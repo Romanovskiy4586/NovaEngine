@@ -1,4 +1,5 @@
 export module Shaders_SpriteInstancedAtlasSampled_vert;
+import std;
 
 export namespace NovaResources
 {
@@ -117,6 +118,16 @@ export namespace NovaResources
 		~Shaders_SpriteInstancedAtlasSampled_vert()
 		{
 			delete[] data;
+		};
+
+		std::string ToString()
+		{
+			std::string result(size, 0);
+			for (unsigned long long i = 0; i < size; ++i)
+			{
+				result[i] = data[i];
+			}
+			return result;
 		};
 
 		unsigned long long size;

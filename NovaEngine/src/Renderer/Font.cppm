@@ -39,10 +39,10 @@ export namespace Renderer
 	private:
 		void _Init(const NSL::JSON& parameters) NSL_NOEXCEPT
 		{
-			_atlasSize.x = parameters.root.Array("AtlasSize").Real(0);
-			_atlasSize.y = parameters.root.Array("AtlasSize").Real(1);
-			_glyphSize.x = parameters.root.Array("GlyphSize").Real(0);
-			_glyphSize.y = parameters.root.Array("GlyphSize").Real(1);
+			_atlasSize.x = static_cast<float>(parameters.root.Array("AtlasSize").Real(0));
+			_atlasSize.y = static_cast<float>(parameters.root.Array("AtlasSize").Real(1));
+			_glyphSize.x = static_cast<float>(parameters.root.Array("GlyphSize").Real(0));
+			_glyphSize.y = static_cast<float>(parameters.root.Array("GlyphSize").Real(1));
 
 			MACRO('A', 0);
 			MACRO('B', 1);
@@ -124,9 +124,6 @@ export namespace Renderer
 			MACRO(')', 73);
 			MACRO('{', 74);
 			MACRO('}', 75);
-			//MACRO('~', 76);
-			//MACRO('!', 77);
-			//MACRO('?', 78);
 		}
 
 	private:

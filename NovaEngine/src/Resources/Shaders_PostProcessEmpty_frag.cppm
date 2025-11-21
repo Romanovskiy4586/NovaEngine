@@ -1,4 +1,5 @@
 export module Shaders_PostProcessEmpty_frag;
+import std;
 
 export namespace NovaResources
 {
@@ -35,6 +36,16 @@ export namespace NovaResources
 		~Shaders_PostProcessEmpty_frag()
 		{
 			delete[] data;
+		};
+
+		std::string ToString()
+		{
+			std::string result(size, 0);
+			for (unsigned long long i = 0; i < size; ++i)
+			{
+				result[i] = data[i];
+			}
+			return result;
 		};
 
 		unsigned long long size;

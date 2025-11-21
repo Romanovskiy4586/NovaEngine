@@ -249,7 +249,7 @@ export namespace NSL
 		void ParseBinaryFBXToHumanReadableTxtFile(const std::string& filePath) const NSL_NOEXCEPT
 		{
 			NSL::BinaryStream bstream = NSL::ReadFile(filePath);
-			std::ofstream outStream(NSL::GetFileNameFromFilePath(filePath, '/') + ".txt");
+			std::ofstream outStream(NSL::GetFileNameFromFilePath(filePath) + ".txt");
 
 			bstream.SkipBytes(23); // Пропускаем заголовок
 			auto version = bstream.ReadUint32();
