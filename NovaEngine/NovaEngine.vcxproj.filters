@@ -24,16 +24,16 @@
     <ClCompile Include="src\NSL\NSL.BinaryStream.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Window\BaseWindow.cppm">
+    <ClCompile Include="src\IO\BaseWindow.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Window\WindowState.cppm">
+    <ClCompile Include="src\IO\WindowState.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NSL\FileTypes\JSON.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Window\FPSController.cppm">
+    <ClCompile Include="src\IO\FPSController.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NSL\NSL.cppm">
@@ -63,7 +63,7 @@
     <ClCompile Include="src\NSL\Mathematics\Mathematics.Constants.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Window\Monitor.cppm">
+    <ClCompile Include="src\IO\Monitor.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NovaEngine.cppm">
@@ -81,19 +81,19 @@
     <ClCompile Include="src\NSL\Time.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Input\KeyboardState.cppm">
+    <ClCompile Include="src\IO\KeyboardState.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Input\KeyboardKeys.cppm">
+    <ClCompile Include="src\IO\KeyboardKeys.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\IO\IO.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Input\MouseState.cppm">
+    <ClCompile Include="src\IO\MouseState.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Input\MouseButtons.cppm">
+    <ClCompile Include="src\IO\MouseButtons.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NSL\FileTypes\FBX\FBX.cppm">
@@ -109,12 +109,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NSL\FileTypes\PNG\PNG.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NSL\FileTypes\PNG\PixelRGB.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NSL\FileTypes\PNG\PixelRGBA.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\RenderHandler.cppm">
@@ -138,7 +132,7 @@
     <ClCompile Include="src\Renderer\OpenGL\Shader.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IO\Window\ImGuiUI.cppm">
+    <ClCompile Include="src\IO\ImGuiUI.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\Model.cppm">
@@ -271,6 +265,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Resources\Shaders_Glyph_frag.cppm">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NSL\Color3.cppm">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NSL\CRC.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

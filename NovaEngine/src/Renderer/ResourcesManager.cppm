@@ -208,77 +208,77 @@ export namespace Renderer
 		}
 		Texture2D _LoadPNG(const std::string& filePath) const NSL_NOEXCEPT
 		{
-			NSL::PNG png = _pngLoader.Load(filePath);
+			NSL::PNG png = NSL::PNG::Load(filePath);
 
 			Texture2D texture;
 
-			texture.width  = png.width;
-			texture.height = png.height;
-			texture.pixels = png.data;
+			//texture.width  = png.width;
+			//texture.height = png.height;
+			//texture.pixels = png.data;
 
-			switch (png.channels)
-			{
-			case NSL::PNG::Channels::RED:
-				texture.channels = Texture2D::RED;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//switch (png.channels)
+			//{
+			//case NSL::PNG::Channels::RED:
+			//	texture.channels = Texture2D::RED;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			case NSL::PNG::Channels::RG:
-				texture.channels = Texture2D::RG;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//case NSL::PNG::Channels::RG:
+			//	texture.channels = Texture2D::RG;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			case NSL::PNG::Channels::RGB:
-				texture.channels = Texture2D::RGB;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//case NSL::PNG::Channels::RGB:
+			//	texture.channels = Texture2D::RGB;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			case NSL::PNG::Channels::RGBA:
-				texture.channels = Texture2D::RGBA;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//case NSL::PNG::Channels::RGBA:
+			//	texture.channels = Texture2D::RGBA;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			default:
-				break;
-			}
+			//default:
+			//	break;
+			//}
 
 			return texture;
 		}
 		Texture2D _ParsePNG(const std::string& pngContent) const NSL_NOEXCEPT
 		{
-			NSL::PNG png = _pngLoader.Parse(pngContent);
+			NSL::PNG png = NSL::PNG::Parse(pngContent);
 
 			Texture2D texture;
 
-			texture.width = png.width;
-			texture.height = png.height;
-			texture.pixels = png.data;
+			//texture.width = png.width;
+			//texture.height = png.height;
+			//texture.pixels = png.data;
 
-			switch (png.channels)
-			{
-			case NSL::PNG::Channels::RED:
-				texture.channels = Texture2D::RED;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//switch (png.channels)
+			//{
+			//case NSL::PNG::Channels::RED:
+			//	texture.channels = Texture2D::RED;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			case NSL::PNG::Channels::RG:
-				texture.channels = Texture2D::RG;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//case NSL::PNG::Channels::RG:
+			//	texture.channels = Texture2D::RG;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			case NSL::PNG::Channels::RGB:
-				texture.channels = Texture2D::RGB;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//case NSL::PNG::Channels::RGB:
+			//	texture.channels = Texture2D::RGB;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			case NSL::PNG::Channels::RGBA:
-				texture.channels = Texture2D::RGBA;
-				texture.colorSpace = Texture2D::ColorSpace::Linear;
-				break;
+			//case NSL::PNG::Channels::RGBA:
+			//	texture.channels = Texture2D::RGBA;
+			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
+			//	break;
 
-			default:
-				break;
-			}
+			//default:
+			//	break;
+			//}
 
 			return texture;
 		}
@@ -320,7 +320,7 @@ export namespace Renderer
 		}
 
 	private:
-		NSL::PNGLoader _pngLoader;
+		//NSL::PNGLoader _pngLoader;
 		NSL::FBXLoader _fbxLoader;
 		std::unordered_map<std::string, Mesh> _meshes;
 		std::unordered_map<std::string, Texture2D> _textures2D;

@@ -130,27 +130,27 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\IO\Input\KeyboardState.cppm" />
-    <ClCompile Include="src\IO\Input\KeyboardKeys.cppm" />
-    <ClCompile Include="src\IO\Input\MouseButtons.cppm" />
-    <ClCompile Include="src\IO\Input\MouseState.cppm" />
+    <ClCompile Include="src\IO\KeyboardState.cppm" />
+    <ClCompile Include="src\IO\KeyboardKeys.cppm" />
+    <ClCompile Include="src\IO\MouseButtons.cppm" />
+    <ClCompile Include="src\IO\MouseState.cppm" />
     <ClCompile Include="src\IO\IO.cppm" />
     <ClCompile Include="src\NSL\Astar.cppm" />
     <ClCompile Include="src\NSL\Astar2DGrid.cppm" />
+    <ClCompile Include="src\NSL\Color3.cppm" />
     <ClCompile Include="src\NSL\Color4.cppm" />
+    <ClCompile Include="src\NSL\CRC.cppm" />
     <ClCompile Include="src\NSL\FileTypes\FBX\FBX.cppm" />
     <ClCompile Include="src\NSL\FileTypes\FBX\FBXLoader.cppm" />
     <ClCompile Include="src\NSL\FileTypes\FBX\RawFBX.cppm" />
-    <ClCompile Include="src\NSL\FileTypes\PNG\PixelRGB.cppm" />
-    <ClCompile Include="src\NSL\FileTypes\PNG\PixelRGBA.cppm" />
     <ClCompile Include="src\NSL\FileTypes\PNG\PNG.cppm" />
     <ClCompile Include="src\NSL\FileTypes\PNG\PNGLoader.cppm" />
     <ClCompile Include="src\NSL\FileTypes\WAVE.cppm" />
     <ClCompile Include="src\Engine\Engine.cppm" />
-    <ClCompile Include="src\IO\Window\BaseWindow.cppm" />
-    <ClCompile Include="src\IO\Window\FPSController.cppm" />
-    <ClCompile Include="src\IO\Window\Monitor.cppm" />
-    <ClCompile Include="src\IO\Window\WindowState.cppm" />
+    <ClCompile Include="src\IO\BaseWindow.cppm" />
+    <ClCompile Include="src\IO\FPSController.cppm" />
+    <ClCompile Include="src\IO\Monitor.cppm" />
+    <ClCompile Include="src\IO\WindowState.cppm" />
     <ClCompile Include="src\NovaEngine.cppm" />
     <ClCompile Include="src\Engine\GameWindow.cppm" />
     <ClCompile Include="src\NSL\Mathematics\Mathematics.Functions.cppm" />
@@ -188,7 +188,7 @@
     <ClCompile Include="src\Renderer\Scene.cppm" />
     <ClCompile Include="src\Renderer\AssetsManager.cppm" />
     <ClCompile Include="src\Renderer\Camera.cppm" />
-    <ClCompile Include="src\IO\Window\ImGuiUI.cppm" />
+    <ClCompile Include="src\IO\ImGuiUI.cppm" />
     <ClCompile Include="src\Renderer\OpenGL\GLContext.cppm" />
     <ClCompile Include="src\Renderer\OpenGL\GLContextManager.cppm" />
     <ClCompile Include="src\Renderer\OpenGL\Mesh.cppm" />

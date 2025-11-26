@@ -429,15 +429,15 @@ export namespace NSL
 	{
 		return inches * 25.4f;
 	}
-	float ConvertLinearToSRGB(float value, float gamma = 2.4f) NSL_NOEXCEPT
+	float ConvertLinearToSRGB(float value, float gamma = 2.2f) NSL_NOEXCEPT
 	{
-		return value <= 0.0031308f ? value * 12.92f : powf(value, 1.0f / gamma) * 1.055f - 0.055f;
+		return value <= 0.0031308f ? value * 12.92f : std::powf(value, 1.0f / gamma) * 1.055f - 0.055f;
 	}
-	float ConvertSRGBToLinear(float value, float gamma = 2.4f) NSL_NOEXCEPT
+	float ConvertSRGBToLinear(float value, float gamma = 2.2f) NSL_NOEXCEPT
 	{
-		return value <= 0.04045f ? value / 12.92f : powf((value + 0.055f) / 1.055f, gamma);
+		return value <= 0.04045f ? value / 12.92f : std::powf((value + 0.055f) / 1.055f, gamma);
 	}
-	Vector3 ConvertLinearToSRGB(const Vector3& value, float gamma = 2.4f) NSL_NOEXCEPT
+	Vector3 ConvertLinearToSRGB(const Vector3& value, float gamma = 2.2f) NSL_NOEXCEPT
 	{
 		Vector3 result;
 
@@ -447,7 +447,7 @@ export namespace NSL
 
 		return result;
 	}
-	Vector3 ConvertSRGBToLinear(const Vector3& value, float gamma = 2.4f) NSL_NOEXCEPT
+	Vector3 ConvertSRGBToLinear(const Vector3& value, float gamma = 2.2f) NSL_NOEXCEPT
 	{
 		Vector3 result;
 

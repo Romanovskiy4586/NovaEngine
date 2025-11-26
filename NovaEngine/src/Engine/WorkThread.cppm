@@ -47,6 +47,8 @@ export namespace Engine
 		bool _shouldClose;
 		std::thread thrd;
 		int _id;
+
+	private:
 		static int s_threadsCounter;
 	};
 
