@@ -483,8 +483,6 @@ export namespace Renderer
 			static const std::string screenSizeUniformName("screenSize");
 			static Sprite& sprite = assetsManager.GetSprite("RENDERER__Font");
 
-			AddMesh(s_glyphMeshName, _meshesDataDB.glyph);
-
 			std::vector<NSL::Vector2> textIndices(text.size());
 			for (size_t i = 0; i < textIndices.size(); ++i)
 			{

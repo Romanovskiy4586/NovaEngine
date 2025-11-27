@@ -14,18 +14,22 @@ export namespace NSL
 {
 	struct NSL_API PNG
 	{
-		enum Filtering : unsigned char
-		{
-			None = 0, Sub = 1, Up = 2, Average = 3, Paeth = 4
-		};
-
 		enum Channels : unsigned char
 		{
 			Red = 1, RG = 2, RGB = 3, RGBA = 4
 		};
-		
 		struct Scanline
 		{
+			enum class Filtering : unsigned char
+			{
+				None = 0, Sub = 1, Up = 2, Average = 3, Paeth = 4
+			};
+			Scanline() = default;
+			Scanline(size_t size) NSL_NOEXCEPT
+				: filtering(Filtering::None)
+				, scanline(size)
+			{
+			}
 			Filtering filtering;
 			std::vector<unsigned char> scanline;
 		};
@@ -50,17 +54,29 @@ export namespace NSL
 			NSL::BinaryStream binaryStream = pngContent;
 			return _Parse(binaryStream);
 		}
-		
+
+		std::vector<unsigned char> GetPixelsData() const NSL_NOEXCEPT
+		{
+			std::vector<unsigned char> result;
+
+			for (size_t i = 0; i < scanlines.size(); ++i)
+			{
+				result.insert(result.end(), scanlines[i].scanline.begin(), scanlines[i].scanline.end());
+			}
+
+			return result;
+		}
+
 		std::vector<Scanline> scanlines;
 		NSL::Vector2i size;
 		float gamma;
 		Channels channels;
 		bool srgb;
 
-	public:
-		struct IHDR
+	private:
+		struct _IHDR
 		{
-			enum ColorType : unsigned char
+			enum class ColorType : unsigned char
 			{
 				Grayscale = 0,
 				RGB = 2,
@@ -72,20 +88,20 @@ export namespace NSL
 			unsigned int width = 0;
 			unsigned int height = 0;
 			unsigned char bitDepth = 0;
-			ColorType colorType = Grayscale;
+			ColorType colorType = ColorType::Grayscale;
 			unsigned char compression = 0;
 			unsigned char filter = 0;
 			unsigned char interlace = 0;
 		};
-		struct PLTE
+		struct _PLTE
 		{
 			std::vector<NSL::Color3> colors;
 		};
-		struct gAMA
+		struct _gAMA
 		{
 			unsigned int gamma = 0;
 		};
-		struct cHRM
+		struct _cHRM
 		{
 			unsigned int whitePointX = 0;
 			unsigned int whitePointY = 0;
@@ -96,18 +112,19 @@ export namespace NSL
 			unsigned int BlueX = 0;
 			unsigned int BlueY = 0;
 		};
-		struct sRGB
+		struct _sRGB
 		{
-			enum Mode : unsigned char
+			enum class Mode : unsigned char
 			{
 				Perceptual = 0,
 				RelativeColorimetric = 1,
-				Saturation = 2, 
-				AbsoluteColorimetric = 3
+				Saturation = 2,
+				AbsoluteColorimetric = 3,
+				None = 255U
 			};
-			Mode mode = Perceptual;
+			Mode mode = Mode::None;
 		};
-		struct Chunk
+		struct _Chunk
 		{
 			std::string type;
 			std::string data;
@@ -115,54 +132,6 @@ export namespace NSL
 		};
 
 	private:
-		//static std::vector<unsigned char> ExtractPNGData(NSL::BinaryStream& binaryStream) NSL_NOEXCEPT
-		//{
-		//	Chunk chunk;
-		//	std::vector<unsigned char> result;
-
-		//	do
-		//	{
-		//		binaryStream.MovePointerTo(binaryStream.SearchFromCurrentPosition("IDAT") - 4);
-
-		//		chunk.dataLength = binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-		//		chunk.type = binaryStream.ReadBytes(4);
-		//		chunk.data = binaryStream.ReadBytes(chunk.dataLength);
-		//		chunk.crc = binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-
-		//		result.resize(result.size() + chunk.data.size());
-		//		for (size_t i = 0; i < chunk.data.size(); i++)
-		//		{
-		//			result[result.size() - chunk.data.size() + i] = chunk.data[i];
-		//		}
-		//	} while (binaryStream.SearchFromCurrentPosition("IDAT") != binaryStream.NullPointerPosition);
-
-		//	return NSL::DecompressData(result);
-		//}
-		static void FlipImage(std::vector<unsigned char>& image, NSL::Vector2i size, int channelsNum) NSL_NOEXCEPT
-		{
-			//const int pixelSize = 3;
-			size_t halfHeight = size.y / 2;
-			size_t buffersSize = size.x * channelsNum;
-			std::vector<char> beginBuffer(buffersSize);
-			std::vector<char> endBuffer(buffersSize);
-
-			for (size_t i = 0; i < halfHeight; ++i)
-			{
-				// Filling buffers
-				for (size_t j = 0; j < buffersSize; ++j)
-				{
-					beginBuffer[j] = image[j + (buffersSize * i)];
-					endBuffer[j] = image[image.size() - buffersSize + j - (buffersSize * i)];
-				}
-
-				// Filling pngData from buffers
-				for (size_t j = 0; j < buffersSize; ++j)
-				{
-					image[j + (buffersSize * i)] = endBuffer[j];
-					image[image.size() - buffersSize + j - (buffersSize * i)] = beginBuffer[j];
-				}
-			}
-		}
 		static PNG _Parse(NSL::BinaryStream& binaryStream) NSL_NOEXCEPT
 		{
 			PNG result;
@@ -180,13 +149,14 @@ export namespace NSL
 			}
 
 			// Parse stream into Chunks
-			std::vector<Chunk> chunks;
+			std::vector<_Chunk> chunks;
 			std::string chunkContent;
-			Chunk chunk;
+			_Chunk chunk;
+			unsigned int dataLength;
 			do
 			{
 				// As long as they are unprocessed chunks - read them
-				auto dataLength = binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+				dataLength = binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
 				chunkContent = binaryStream.PeekBytes(dataLength + 4);
 				chunk.type = binaryStream.ReadBytes(4);
 				chunk.data = binaryStream.ReadBytes(dataLength);
@@ -200,15 +170,14 @@ export namespace NSL
 
 			} while (!binaryStream.Empty());
 
-
 			// Parse Chunks
 			NSL::BinaryStream dataStream;
 			std::vector<unsigned char> pixels;
-			IHDR ihdr;
-			PLTE plte;
-			gAMA gama;
-			cHRM chrm;
-			sRGB srgb;
+			_IHDR ihdr;
+			_PLTE plte;
+			_gAMA gama;
+			_cHRM chrm;
+			_sRGB srgb;
 			do
 			{
 				if (chunks.back().type == "IHDR")
@@ -217,7 +186,7 @@ export namespace NSL
 					ihdr.width = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
 					ihdr.height = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
 					ihdr.bitDepth = dataStream.ReadUint8();
-					ihdr.colorType = (IHDR::ColorType)(dataStream.ReadUint8());
+					ihdr.colorType = (_IHDR::ColorType)(dataStream.ReadUint8());
 					ihdr.compression = dataStream.ReadUint8();
 					ihdr.filter = dataStream.ReadUint8();
 					ihdr.interlace = dataStream.ReadUint8();
@@ -262,7 +231,7 @@ export namespace NSL
 				else if (chunks.back().type == "sRGB")
 				{
 					dataStream = chunks.back().data;
-					srgb.mode = (sRGB::Mode)(dataStream.ReadUint8());
+					srgb.mode = (_sRGB::Mode)(dataStream.ReadUint8());
 				}
 				chunks.pop_back();
 
@@ -270,26 +239,27 @@ export namespace NSL
 
 			// PNG size and channels
 			result.size = NSL::Vector2i(ihdr.width, ihdr.height);
+			result.gamma = gama.gamma / 100000.0f;
 			switch (ihdr.colorType)
 			{
-				case IHDR::Grayscale:		result.channels = PNG::Red;		break;
-				case IHDR::RGB:				result.channels = PNG::RGB;		break;
-				case IHDR::PaletteIndex:	result.channels = PNG::RGB;		break;
-				case IHDR::GrayscaleAlpha:	result.channels = PNG::RG;		break;
-				case IHDR::RGBA:			result.channels = PNG::RGBA;	break;
-				default: LogError("Unknown PNG color type"); break;
+			case _IHDR::ColorType::Grayscale:		result.channels = PNG::Red;		break;
+			case _IHDR::ColorType::RGB:				result.channels = PNG::RGB;		break;
+			case _IHDR::ColorType::PaletteIndex:	result.channels = PNG::RGB;		break;
+			case _IHDR::ColorType::GrayscaleAlpha:	result.channels = PNG::RG;		break;
+			case _IHDR::ColorType::RGBA:			result.channels = PNG::RGBA;	break;
+			default: LogError("Unknown PNG color type"); break;
 			}
 
 			// Decompress
 			pixels = NSL::DecompressData(pixels);
 
 			// If palette - pixels indexing from palette table
-			if (ihdr.colorType == IHDR::PaletteIndex)
+			if (ihdr.colorType == _IHDR::ColorType::PaletteIndex)
 			{
 				std::vector<unsigned char> indexedPixels;
-				for (size_t y = 0; y < result.size.y; ++y)
+				for (unsigned int y = 0; y < result.size.y; ++y)
 				{
-					for (size_t x = 1; x < result.size.x; ++x)
+					for (unsigned int x = 1; x < result.size.x + 1; ++x)
 					{
 						Color3 color = plte.colors[x + y * result.size.x];
 						indexedPixels.push_back(color.r);
@@ -300,44 +270,151 @@ export namespace NSL
 				pixels = indexedPixels;
 			}
 
+			// Parse pixels into PNG scanlines
+			Scanline scanline;
+			std::vector<unsigned char> rawScanline;
+			for (unsigned int i = 0; i < result.size.y; ++i)
+			{
+				rawScanline = std::vector<unsigned char>(pixels.begin(), (pixels.begin() + result.size.x * result.channels) + 1);
+				scanline.filtering = (NSL::PNG::Scanline::Filtering)rawScanline[0];
+				scanline.scanline = std::vector<unsigned char>(rawScanline.begin() + 1, rawScanline.end());
+				result.scanlines.push_back(scanline);
+				pixels.erase(pixels.begin(), (pixels.begin() + result.size.x * result.channels) + 1);
+			}
+
+			result._Unfilter();
+
+			// Flip image
+			const unsigned int halfHeight = result.size.y / 2;
+			unsigned int endScanlineIndex;
+			for (unsigned int i = 0; i < halfHeight; ++i)
+			{
+				endScanlineIndex = result.scanlines.size() - 1 - i;
+				scanline = result.scanlines[i];
+
+				result.scanlines[i] = result.scanlines[endScanlineIndex];
+				result.scanlines[endScanlineIndex] = scanline;
+			}
+
 			
-
-			//if (headerChunk.colorType == 0x02)
-			//{
-			//	result.channels = /*isSRGB ? PNG::Channels::SRGB :*/ PNG::Channels::RGB;
-			//	RawPNGRGB rawPng(pngData, headerChunk.Width, headerChunk.Height);
-			//	pngData = rawPng.GetData();
-			//	//for (auto& i : pngData)
-			//	//{
-			//	//	i = static_cast<unsigned char>(ConvertSRGBToLinear((float)i / 256.0f) * 256.0f);
-			//	//}
-			//	FlipImage(pngData, headerChunk, 3);
-			//}
-			//else if (headerChunk.ColorType == 0x06)
-			//{
-			//	result.channels = /*isSRGB ? PNG::Channels::SRGBA :*/ PNG::Channels::RGBA;
-			//	RawPNGRGBA rawPngRgba(pngData, headerChunk.width, headerChunk.height);
-			//	pngData = rawPngRgba.GetData();
-			//	//for (size_t i = 0; i < pngData.size() / 4; ++i)
-			//	//{
-			//	//	pngData[0 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[0 + 4 * i] / 256.0f) * 256.0f);
-			//	//	pngData[1 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[1 + 4 * i] / 256.0f) * 256.0f);
-			//	//	pngData[2 + 4 * i] = static_cast<unsigned char>(ConvertSRGBToLinear((float)pngData[2 + 4 * i] / 256.0f) * 256.0f);
-			//	//}
-			//	FlipImage(pngData, headerChunk, 4);
-			//}
-			//else
-			//{
-			//	LogError("Current PNG Color type are not supported");
-			//	return result;
-			//}
-
-			//result.width = headerChunk.width;
-			//result.height = headerChunk.height;
-			//result.data = pngData;
 
 			return result;
 		}
+
+		int _Paeth(int left, int above, int upperLeft) NSL_NOEXCEPT
+		{
+			int estimated = left + above - upperLeft;
+
+			int pa = std::abs(estimated - left);
+			int pb = std::abs(estimated - above);
+			int pc = std::abs(estimated - upperLeft);
+
+			if ((pa <= pb) && (pa <= pc)) return left;
+			else if (pb <= pc) return above;
+			else return upperLeft;
+		}
+		int _Average(int left, int up) NSL_NOEXCEPT
+		{
+			return (int)std::floor((left + up) / 2.0);
+		}
+		void _Unfilter() NSL_NOEXCEPT
+		{
+			//PNG::Scanline& firstScanline = scanlines[0];
+
+			//switch (firstScanline.filtering)
+			//{
+			//case PNG::Scanline::Filtering::None:
+			//	break;
+
+			//case PNG::Scanline::Filtering::Sub:
+			//	for (size_t j = 0; j < firstScanline.scanline.size(); ++j)
+			//	{
+			//		const PixelRGB& leftPixel = j == 0 ? PixelRGB{ 0, 0, 0 } : firstScanline.scanline[j - 1];
+			//		PixelRGB& currentPixel = firstScanline.scanline[j];
+
+			//		currentPixel = currentPixel + leftPixel;
+			//	}
+			//	break;
+
+			//default:
+			//	break;
+			//}
+			//firstScanline.filtering = PNG::Scanline::Filtering::None;
+
+
+			for (size_t i = 0; i < scanlines.size(); ++i)
+			{
+				const PNG::Scanline& previousScanline = i == 0 ? PNG::Scanline(size.x) : scanlines[i - 1];
+				PNG::Scanline& currentScanline = scanlines[i];
+
+				switch (currentScanline.filtering)
+				{
+				case PNG::Scanline::Filtering::None:
+					break;
+
+				case PNG::Scanline::Filtering::Sub:
+					for (size_t j = 0; j < currentScanline.scanline.size(); j += channels)
+					{
+						for (size_t k = 0; k < channels; ++k)
+						{
+							const auto& leftPixel = j == 0 ? 0 : currentScanline.scanline[j - channels + k];
+							auto& currentPixel = currentScanline.scanline[j + k];
+
+							currentPixel += leftPixel;
+						}
+					}
+					break;
+
+				case PNG::Scanline::Filtering::Up:
+					for (size_t j = 0; j < currentScanline.scanline.size(); j += channels)
+					{
+						for (size_t k = 0; k < channels; ++k)
+						{
+							const auto& upPixel = previousScanline.scanline[j + k];
+							auto& currentPixel = currentScanline.scanline[j + k];
+
+							currentPixel += upPixel;
+						}
+					}
+					break;
+
+				case PNG::Scanline::Filtering::Average:
+					for (size_t j = 0; j < currentScanline.scanline.size(); j += channels)
+					{
+						for (size_t k = 0; k < channels; ++k)
+						{
+							const auto& leftPixel = j == 0 ? 0 : currentScanline.scanline[j - channels + k];
+							const auto& upPixel = previousScanline.scanline[j + k];
+							auto& currentPixel = currentScanline.scanline[j + k];
+
+							currentPixel += _Average(leftPixel, upPixel);
+						}
+					}
+					break;
+
+				case PNG::Scanline::Filtering::Paeth:
+					for (size_t j = 0; j < currentScanline.scanline.size(); j += channels)
+					{
+						for (size_t k = 0; k < channels; ++k)
+						{
+							const auto& leftPixel = j == 0 ? 0 : currentScanline.scanline[j - channels + k];
+							const auto& upPixel = previousScanline.scanline[j + k];
+							const auto& upLeftPixel = j == 0 ? 0 : previousScanline.scanline[j - channels + k];
+							auto& currentPixel = currentScanline.scanline[j + k];
+
+							currentPixel += _Paeth(leftPixel, upPixel, upLeftPixel);
+						}
+					}
+					break;
+
+				default:
+					break;
+				}
+
+				currentScanline.filtering = PNG::Scanline::Filtering::None;
+			}
+		}
+	
 
 	private:
 		static CRC _crc;

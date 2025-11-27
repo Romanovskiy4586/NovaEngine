@@ -212,35 +212,35 @@ export namespace Renderer
 
 			Texture2D texture;
 
-			//texture.width  = png.width;
-			//texture.height = png.height;
-			//texture.pixels = png.data;
+			texture.width  = png.size.x;
+			texture.height = png.size.y;
+			texture.pixels = png.GetPixelsData();
 
-			//switch (png.channels)
-			//{
-			//case NSL::PNG::Channels::RED:
-			//	texture.channels = Texture2D::RED;
-			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
-			//	break;
+			switch (png.channels)
+			{
+			case NSL::PNG::Channels::Red:
+				texture.channels = Texture2D::RED;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
 
-			//case NSL::PNG::Channels::RG:
-			//	texture.channels = Texture2D::RG;
-			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
-			//	break;
+			case NSL::PNG::Channels::RG:
+				texture.channels = Texture2D::RG;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
 
-			//case NSL::PNG::Channels::RGB:
-			//	texture.channels = Texture2D::RGB;
-			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
-			//	break;
+			case NSL::PNG::Channels::RGB:
+				texture.channels = Texture2D::RGB;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
 
-			//case NSL::PNG::Channels::RGBA:
-			//	texture.channels = Texture2D::RGBA;
-			//	texture.colorSpace = Texture2D::ColorSpace::Linear;
-			//	break;
+			case NSL::PNG::Channels::RGBA:
+				texture.channels = Texture2D::RGBA;
+				texture.colorSpace = Texture2D::ColorSpace::Linear;
+				break;
 
-			//default:
-			//	break;
-			//}
+			default:
+				break;
+			}
 
 			return texture;
 		}
