@@ -3,5 +3,6 @@
 	"mapHeight": 100,
 	"numWalls": 4000,
 	"emptyTileCost": 1.0,
-	"wallTileCost": -1.0
+	"wallTileCost": -1.0,
+	"pathSize": 200
 }

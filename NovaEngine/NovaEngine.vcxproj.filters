@@ -105,10 +105,7 @@
     <ClCompile Include="src\NSL\FileTypes\FBX\RawFBX.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NSL\FileTypes\PNG\PNGLoader.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NSL\FileTypes\PNG\PNG.cppm">
+    <ClCompile Include="src\NSL\FileTypes\PNG.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\RenderHandler.cppm">
@@ -273,6 +270,9 @@
     <ClCompile Include="src\NSL\CRC.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resources\Shaders_GlyphOutlining_frag.cppm">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core.h">
@@ -370,6 +370,7 @@
     <None Include="rc\Shaders\SpriteInstanced.vert" />
     <None Include="rc\Shaders\Glyph.vert" />
     <None Include="rc\Fonts\Font.json" />
+    <None Include="rc\Shaders\GlyphOutlining.frag" />
     <None Include="rc\Shaders\Glyph.frag" />
   </ItemGroup>
   <ItemGroup>

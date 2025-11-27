@@ -104,12 +104,6 @@
 	#define LogWarning(msg) NSL::Logger::LogMessageWithFileNameInConsole(msg, __FILE__, NSL::Logger::MessageType::Warning)
 	#define LogError(msg) NSL::Logger::LogMessageWithFileNameInConsole(msg, __FILE__, NSL::Logger::MessageType::Error)
 
-	#define ALCall(function)\
-		function;\
-		while(ALenum error = alGetError())\
-		{\
-			LogError(#function" throw an Error: " + std::to_string(error) + " at line " + std::to_string(__LINE__));\
-		}
 	#define GLCall(function)\
 		function;\
 		while(GLenum error = glGetError())\
@@ -131,7 +125,6 @@
 	#define LogWarning(msg) {}
 	#define LogError(msg) {}
 
-	#define ALCall(function) function;
 	#define GLCall(function) function;
 #endif // !NDEBUG
 

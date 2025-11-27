@@ -308,6 +308,10 @@ export namespace Renderer
 			resourcesManager.GetShaderStorageBuffer(name).Reallocate(data.data(), static_cast<unsigned long long>(data.size() * sizeof(T)), static_cast<unsigned int>(data.size()));
 			glBuffersManager.ReloadShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
 		}
+		void* MapShaderStorageBuffer(const std::string& name, unsigned long long size) NSL_NOEXCEPT
+		{
+			return glBuffersManager.MapShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name), size);
+		}
 		void DeleteShaderStorageBuffer(const std::string& name) NSL_NOEXCEPT
 		{
 			glBuffersManager.FreeShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));

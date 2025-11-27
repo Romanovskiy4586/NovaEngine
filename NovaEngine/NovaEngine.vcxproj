@@ -143,8 +143,7 @@
     <ClCompile Include="src\NSL\FileTypes\FBX\FBX.cppm" />
     <ClCompile Include="src\NSL\FileTypes\FBX\FBXLoader.cppm" />
     <ClCompile Include="src\NSL\FileTypes\FBX\RawFBX.cppm" />
-    <ClCompile Include="src\NSL\FileTypes\PNG\PNG.cppm" />
-    <ClCompile Include="src\NSL\FileTypes\PNG\PNGLoader.cppm" />
+    <ClCompile Include="src\NSL\FileTypes\PNG.cppm" />
     <ClCompile Include="src\NSL\FileTypes\WAVE.cppm" />
     <ClCompile Include="src\Engine\Engine.cppm" />
     <ClCompile Include="src\IO\BaseWindow.cppm" />
@@ -205,6 +204,7 @@
     <ClCompile Include="src\Resources\ResourcesDB.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Basic_vert.cppm" />
+    <ClCompile Include="src\Resources\Shaders_GlyphOutlining_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Glyph_frag.cppm" />
     <ClCompile Include="src\Resources\Shaders_Glyph_vert.cppm" />
     <ClCompile Include="src\Resources\Shaders_PostProcessEmpty_frag.cppm" />
@@ -248,9 +248,10 @@
   <ItemGroup>
     <None Include="cpp.hint" />
     <None Include="rc\Fonts\Font.json" />
+    <None Include="rc\Shaders\Glyph.frag" />
     <None Include="rc\Shaders\Basic.frag" />
     <None Include="rc\Shaders\Basic.vert" />
-    <None Include="rc\Shaders\Glyph.frag" />
+    <None Include="rc\Shaders\GlyphOutlining.frag" />
     <None Include="rc\Shaders\PostProcess.vert" />
     <None Include="rc\Shaders\PostProcessEmpty.frag" />
     <None Include="rc\Shaders\PostProcessGammaCorrection.frag" />

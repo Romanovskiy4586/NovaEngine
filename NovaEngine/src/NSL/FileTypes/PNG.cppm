@@ -10,6 +10,20 @@ import Logger;
 import CRC;
 import Color3;
 
+#ifndef NDEBUG
+#define PEEK_DATA_IF_DEBUG chunkContent = binaryStream.PeekBytes(dataLength + 4);
+#define CHECK_CRC_IF_DEBUG if (_crc(reinterpret_cast<void*>(chunkContent.data()), chunkContent.size()) == chunk.crc)\
+{\
+	LogInfo(chunk.type + " chunk CRC correct");\
+}\
+else\
+{\
+	LogError(chunk.type + " chunk CRC incorrect");\
+}
+#else
+#define PEEK_DATA_IF_DEBUG {}
+#define CHECK_CRC_IF_DEBUG {}
+#endif
 export namespace NSL
 {
 	struct NSL_API PNG
@@ -156,16 +170,12 @@ export namespace NSL
 			do
 			{
 				// As long as they are unprocessed chunks - read them
-				dataLength = binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-				chunkContent = binaryStream.PeekBytes(dataLength + 4);
-				chunk.type = binaryStream.ReadBytes(4);
-				chunk.data = binaryStream.ReadBytes(dataLength);
-				chunk.crc = binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-				// Check CRC
-				_crc(reinterpret_cast<void*>(chunkContent.data()), chunkContent.size()) == chunk.crc
-					? LogInfo(chunk.type + " chunk CRC correct")
-					: LogError(chunk.type + " chunk CRC incorrect");
-
+				dataLength =   binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+				PEEK_DATA_IF_DEBUG // If not debug, no need to peek. Needed for checking CRC
+				chunk.type =   binaryStream.ReadBytes(4);
+				chunk.data =   binaryStream.ReadBytes(dataLength);
+				chunk.crc =    binaryStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+				CHECK_CRC_IF_DEBUG // Check CRC if in DEBUG
 				chunks.push_back(chunk);
 
 			} while (!binaryStream.Empty());
@@ -182,14 +192,14 @@ export namespace NSL
 			{
 				if (chunks.back().type == "IHDR")
 				{
-					dataStream = chunks.back().data;
-					ihdr.width = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					ihdr.height = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					ihdr.bitDepth = dataStream.ReadUint8();
-					ihdr.colorType = (_IHDR::ColorType)(dataStream.ReadUint8());
+					dataStream =       chunks.back().data;
+					ihdr.width =       dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					ihdr.height =      dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					ihdr.bitDepth =	   dataStream.ReadUint8();
+					ihdr.colorType =   (_IHDR::ColorType)(dataStream.ReadUint8());
 					ihdr.compression = dataStream.ReadUint8();
-					ihdr.filter = dataStream.ReadUint8();
-					ihdr.interlace = dataStream.ReadUint8();
+					ihdr.filter =      dataStream.ReadUint8();
+					ihdr.interlace =   dataStream.ReadUint8();
 				}
 				else if (chunks.back().type == "PLTE")
 				{
@@ -213,15 +223,15 @@ export namespace NSL
 				}
 				else if (chunks.back().type == "cHRM")
 				{
-					dataStream = chunks.back().data;
+					dataStream =       chunks.back().data;
 					chrm.whitePointX = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
 					chrm.whitePointY = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					chrm.RedX = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					chrm.RedY = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					chrm.GreenX = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					chrm.GreenY = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					chrm.BlueX = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
-					chrm.BlueY = dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					chrm.RedX =        dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					chrm.RedY =        dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					chrm.GreenX =      dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					chrm.GreenY =      dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					chrm.BlueX =       dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
+					chrm.BlueY =       dataStream.ReadUint32(NSL::BinaryStream::BytesReadOrder::RightToLeft);
 				}
 				else if (chunks.back().type == "gAMA")
 				{
@@ -237,20 +247,20 @@ export namespace NSL
 
 			} while (!chunks.empty());
 
-			// PNG size and channels
+			// PNG all data but pixels
 			result.size = NSL::Vector2i(ihdr.width, ihdr.height);
 			result.gamma = gama.gamma / 100000.0f;
 			switch (ihdr.colorType)
 			{
-			case _IHDR::ColorType::Grayscale:		result.channels = PNG::Red;		break;
-			case _IHDR::ColorType::RGB:				result.channels = PNG::RGB;		break;
-			case _IHDR::ColorType::PaletteIndex:	result.channels = PNG::RGB;		break;
-			case _IHDR::ColorType::GrayscaleAlpha:	result.channels = PNG::RG;		break;
-			case _IHDR::ColorType::RGBA:			result.channels = PNG::RGBA;	break;
-			default: LogError("Unknown PNG color type"); break;
+				case _IHDR::ColorType::Grayscale:	   result.channels = PNG::Red;  break;
+				case _IHDR::ColorType::RGB:			   result.channels = PNG::RGB;  break;
+				case _IHDR::ColorType::PaletteIndex:   result.channels = PNG::RGB;  break;
+				case _IHDR::ColorType::GrayscaleAlpha: result.channels = PNG::RG;   break;
+				case _IHDR::ColorType::RGBA:		   result.channels = PNG::RGBA;	break;
+				default: LogError("Unknown PNG color type"); break;
 			}
 
-			// Decompress
+			// Decompress pixels
 			pixels = NSL::DecompressData(pixels);
 
 			// If palette - pixels indexing from palette table
@@ -282,6 +292,7 @@ export namespace NSL
 				pixels.erase(pixels.begin(), (pixels.begin() + result.size.x * result.channels) + 1);
 			}
 
+			// Unfilter scanlines
 			result._Unfilter();
 
 			// Flip image
@@ -296,21 +307,19 @@ export namespace NSL
 				result.scanlines[endScanlineIndex] = scanline;
 			}
 
-			
-
 			return result;
 		}
 
-		int _Paeth(int left, int above, int upperLeft) NSL_NOEXCEPT
+		int _Paeth(int left, int up, int upperLeft) NSL_NOEXCEPT
 		{
-			int estimated = left + above - upperLeft;
+			int estimated = left + up - upperLeft;
 
 			int pa = std::abs(estimated - left);
-			int pb = std::abs(estimated - above);
+			int pb = std::abs(estimated - up);
 			int pc = std::abs(estimated - upperLeft);
 
 			if ((pa <= pb) && (pa <= pc)) return left;
-			else if (pb <= pc) return above;
+			else if (pb <= pc) return up;
 			else return upperLeft;
 		}
 		int _Average(int left, int up) NSL_NOEXCEPT
@@ -319,29 +328,6 @@ export namespace NSL
 		}
 		void _Unfilter() NSL_NOEXCEPT
 		{
-			//PNG::Scanline& firstScanline = scanlines[0];
-
-			//switch (firstScanline.filtering)
-			//{
-			//case PNG::Scanline::Filtering::None:
-			//	break;
-
-			//case PNG::Scanline::Filtering::Sub:
-			//	for (size_t j = 0; j < firstScanline.scanline.size(); ++j)
-			//	{
-			//		const PixelRGB& leftPixel = j == 0 ? PixelRGB{ 0, 0, 0 } : firstScanline.scanline[j - 1];
-			//		PixelRGB& currentPixel = firstScanline.scanline[j];
-
-			//		currentPixel = currentPixel + leftPixel;
-			//	}
-			//	break;
-
-			//default:
-			//	break;
-			//}
-			//firstScanline.filtering = PNG::Scanline::Filtering::None;
-
-
 			for (size_t i = 0; i < scanlines.size(); ++i)
 			{
 				const PNG::Scanline& previousScanline = i == 0 ? PNG::Scanline(size.x) : scanlines[i - 1];
@@ -408,6 +394,7 @@ export namespace NSL
 					break;
 
 				default:
+					LogError("Unknown PNG Filtering");
 					break;
 				}
 
@@ -415,7 +402,6 @@ export namespace NSL
 			}
 		}
 	
-
 	private:
 		static CRC _crc;
 	};

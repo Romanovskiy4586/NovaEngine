@@ -170,6 +170,10 @@ export namespace Renderer
 				shaderStorageBuffer.Size(),
 				shaderStorageBuffer.Data(), GL_DYNAMIC_READ));
 		}
+		void* MapShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer, unsigned long long size) NSL_NOEXCEPT
+		{
+			return GLCall(glMapNamedBufferRange(shaderStorageBuffer._id, 0, size, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT));
+		}
 		void FreeShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
 			GLCall(glDeleteBuffers(1, &shaderStorageBuffer._id));

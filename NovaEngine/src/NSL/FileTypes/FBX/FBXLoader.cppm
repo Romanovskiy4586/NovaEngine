@@ -95,7 +95,7 @@ export namespace NSL
 
 			// Indices
 			//NSL_ASSERT(static_cast<int>(rawFBX.Indices[3]) >= 0, "");
-			NSL_ASSERT(static_cast<int>(rawFBX.Indices[2]) < 0, "Third index of a FBX less than zero. It means that FBX mesh consists not from triandles");
+			NSL_ASSERT(static_cast<int>(rawFBX.Indices[2]) < 0, "Third index of a FBX less than zero. It means that FBX mesh consists not from triangles");
 
 			fbx.indices.resize(rawFBX.Indices.size());
 			for (size_t i = 0; i < fbx.indices.size() / 3; ++i)

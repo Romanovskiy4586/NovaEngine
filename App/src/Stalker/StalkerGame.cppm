@@ -32,32 +32,7 @@ export namespace Stalker
 			});
 
 			// -------------------------------------------------- LOAD GAME -------------------------------------------------- //
-			NSL::JSON stalkerConfigJson = NSL::JSON::Load("StalkerConfig.json");
-			const int WALLS_COUNT = static_cast<int>(stalkerConfigJson.root.Int("numWalls"));
-			const int MAP_WIDTH = static_cast<int>(stalkerConfigJson.root.Int("mapWidth"));
-			const int MAP_HEIGHT = static_cast<int>(stalkerConfigJson.root.Int("mapHeight"));
-			_world.RebuildMap(MAP_WIDTH, MAP_HEIGHT);
-			NSL::Vector2ui position;
-			for (int i = 0; i < WALLS_COUNT; ++i)
-			{
-				do
-				{
-					position.x = NSL::Random(0, MAP_WIDTH - 1);
-					position.y = NSL::Random(0, MAP_HEIGHT - 1);
-				} while (_world.GetTile(position.x, position.y).type == Tile::Type::Wall);
-
-				_world.SetTileType(position.x, position.y, Tile::Type::Wall);
-			}
-			_world.SetTileType(0, 0, Tile::Type::Empty);
-			_world.SetTileType(MAP_WIDTH - 1, MAP_HEIGHT - 1, Tile::Type::Empty);
-			_world.SpawnNPC(Stalker::NPC::Type::LowtierStalker, NSL::Vector2ui::Zero);
-			auto path = _world.Astar2(NSL::Vector2ui::Zero, NSL::Vector2ui(MAP_WIDTH - 1, MAP_HEIGHT - 1));
-			_path.resize(path.size());
-			for (size_t i = 0; i < path.size(); ++i)
-			{
-				_path[i].x = static_cast<float>(path[i].x);
-				_path[i].y = static_cast<float>(path[i].y);
-			}
+			_InitGame();
 
 			// -------------------------------------------------- SETUP ENGINE -------------------------------------------------- //
 			_gameWindow.baseWindow.UI.LoadFont("Assets/Fonts/CascadiaMono.ttf", _gameWindow.baseWindow.monitor.GetPPM() * 4.0f);
@@ -66,6 +41,9 @@ export namespace Stalker
 			_gameWindow.renderHandler.SetClearColor(NSL::Vector4(0.3f, 0.3f, 0.3f, 1.0f));
 
 			// -------------------------------------------------- INIT CAMERA -------------------------------------------------- //
+			NSL::JSON stalkerConfigJson = NSL::JSON::Load("StalkerConfig.json");
+			const int MAP_WIDTH = static_cast<int>(stalkerConfigJson.root.Int("mapWidth"));
+			const int MAP_HEIGHT = static_cast<int>(stalkerConfigJson.root.Int("mapHeight"));
 			_camera.SetWidthAndHeight(_gameWindow.baseWindow.GetFramebufferWidth(), _gameWindow.baseWindow.GetFramebufferHeight());
 			_camera.SetFOVClampingValue(NSL::Vector2(250.0f, 100000.0f));
 			_camera.SetFOV(29.0f * MAP_WIDTH);
@@ -89,14 +67,7 @@ export namespace Stalker
 			_gameWindow.renderHandler.CreateShaderStorageBuffer("HightierStalkersPositions");
 			_gameWindow.renderHandler.CreateShaderStorageBuffer("Astar");
 
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("EmptyTilesPositions", _world.GetEmptyTilesPositions());
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("WallTilesPositions", _world.GetWallTilesPositions());
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("LowtierStalkersPositions", _world.GetLowtierStalkersPositions());
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("MidlowtierStalkersPositions", _world.GetMidlowtierStalkersPositions());
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("MidtierStalkersPositions", _world.GetMidtierStalkersPositions());
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("MidhightierStalkersPositions", _world.GetMidhightierStalkersPositions());
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("HightierStalkersPositions", _world.GetHightierStalkersPositions());
-			_gameWindow.renderHandler.UpdateShaderStorageBuffer("Astar", _path);
+			_UpdateSSBOs();
 		}
 
 		void _Update(double delta) NSL_NOEXCEPT
@@ -104,6 +75,9 @@ export namespace Stalker
 			static float speed;
 			static bool isNeedToUpdateSSBOs = false;
 			static bool isRebuildingMap = false;
+			static NSL::JSON stalkerConfigJson = NSL::JSON::Load("StalkerConfig.json");
+			static const int PATH_SIZE = static_cast<int>(stalkerConfigJson.root.Int("pathSize"));
+
 			speed = 0.00002f * static_cast<float>(delta) * _camera.GetFOV();
 
 			_camera.AddToFOV(-_gameWindow.baseWindow.GetMouseScrollDelta() * _camera.GetFOV() * 0.1f);
@@ -143,8 +117,9 @@ export namespace Stalker
 					{
 						do
 						{
-							//_InitGame();
-						} while (_path.empty());
+							_InitGame();
+
+						} while (_path.size() < PATH_SIZE);
 						isNeedToUpdateSSBOs = true;
 						isRebuildingMap = false;
 					});
@@ -152,7 +127,7 @@ export namespace Stalker
 			}
 			if (isNeedToUpdateSSBOs)
 			{
-				//_UpdateSSBOs();
+				_UpdateSSBOs();
 				isNeedToUpdateSSBOs = false;
 			}
 		}
@@ -214,6 +189,48 @@ export namespace Stalker
 			_gameWindow.renderHandler.DeleteShaderStorageBuffer("Astar");
 		}
 
+		void _UpdateSSBOs() NSL_NOEXCEPT
+		{
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("EmptyTilesPositions", _world.GetEmptyTilesPositions());
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("WallTilesPositions", _world.GetWallTilesPositions());
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("LowtierStalkersPositions", _world.GetLowtierStalkersPositions());
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("MidlowtierStalkersPositions", _world.GetMidlowtierStalkersPositions());
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("MidtierStalkersPositions", _world.GetMidtierStalkersPositions());
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("MidhightierStalkersPositions", _world.GetMidhightierStalkersPositions());
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("HightierStalkersPositions", _world.GetHightierStalkersPositions());
+			_gameWindow.renderHandler.UpdateShaderStorageBuffer("Astar", _path);
+		}
+		void _InitGame() NSL_NOEXCEPT
+		{
+			static NSL::JSON stalkerConfigJson = NSL::JSON::Load("StalkerConfig.json");
+			static const int WALLS_COUNT = static_cast<int>(stalkerConfigJson.root.Int("numWalls"));
+			static const int MAP_WIDTH = static_cast<int>(stalkerConfigJson.root.Int("mapWidth"));
+			static const int MAP_HEIGHT = static_cast<int>(stalkerConfigJson.root.Int("mapHeight"));
+
+			_world.RebuildMap(MAP_WIDTH, MAP_HEIGHT);
+			NSL::Vector2ui position;
+			for (int i = 0; i < WALLS_COUNT; ++i)
+			{
+				do
+				{
+					position.x = NSL::Random(0, MAP_WIDTH - 1);
+					position.y = NSL::Random(0, MAP_HEIGHT - 1);
+
+				} while (_world.GetTile(position.x, position.y).type == Tile::Type::Wall);
+
+				_world.SetTileType(position.x, position.y, Tile::Type::Wall);
+			}
+			_world.SetTileType(0, 0, Tile::Type::Empty);
+			_world.SetTileType(MAP_WIDTH - 1, MAP_HEIGHT - 1, Tile::Type::Empty);
+			_world.SpawnNPC(Stalker::NPC::Type::LowtierStalker, NSL::Vector2ui::Zero);
+			auto path = _world.Astar2(NSL::Vector2ui::Zero, NSL::Vector2ui(MAP_WIDTH - 1, MAP_HEIGHT - 1));
+			_path.resize(path.size());
+			for (size_t i = 0; i < path.size(); ++i)
+			{
+				_path[i].x = static_cast<float>(path[i].x);
+				_path[i].y = static_cast<float>(path[i].y);
+			}
+		}
 	private:
 		Engine::GameWindow _gameWindow;
 		StalkerWorld _world;
