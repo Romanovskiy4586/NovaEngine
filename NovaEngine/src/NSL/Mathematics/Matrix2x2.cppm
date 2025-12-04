@@ -1,6 +1,10 @@
 export module Matrix2x2;
 #include "Core.h"
+import std;
 import Vector2;
+import Logger;
+
+static constexpr int s_size = 2;
 
 export namespace NSL
 {
@@ -57,16 +61,24 @@ export namespace NSL
 		{
 			return Matrix2x2(-col0, -col1);
 		}
-
-		static const int size = 2;
-		union
+		const Vector2& operator[](int index) const NSL_NOEXCEPT
 		{
-			Vector2 components[size];
-			struct
-			{
-				Vector2 col0, col1;
-			};
-		};
+			static_assert(sizeof(Matrix2x2) == 16, "Unexpected Matrix2x2 size");
+			static_assert(alignof(Matrix2x2) == 4, "Unexpected Matrix2x2 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<const Vector2*>(this) + index);
+		}
+		Vector2& operator[](int index) NSL_NOEXCEPT
+		{
+			static_assert(sizeof(Matrix2x2) == 16, "Unexpected Matrix2x2 size");
+			static_assert(alignof(Matrix2x2) == 4, "Unexpected Matrix2x2 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<Vector2*>(this) + index);
+		}
+
+		Vector2 col0, col1;
 
 		static const Matrix2x2 Unit;
 		static const Matrix2x2 Zero;

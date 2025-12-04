@@ -1,4 +1,4 @@
-export module STDHasher;
+export module Hasher;
 #include "Core.h"
 import std;
 import Vector2;
@@ -9,7 +9,7 @@ import Astar2DGrid;
 export namespace NSL
 {
 	template <typename T>
-	struct STDHasher
+	struct Hasher
 	{
 		size_t operator()(const T& value) const NSL_NOEXCEPT
 		{
@@ -18,7 +18,7 @@ export namespace NSL
 	};
 
 	template <>
-	struct STDHasher<std::string>
+	struct Hasher<std::string>
 	{
 		size_t operator()(const std::string& value) const NSL_NOEXCEPT
 		{
@@ -27,7 +27,7 @@ export namespace NSL
 	};
 
 	template <>
-	struct STDHasher<Vector2>
+	struct Hasher<Vector2>
 	{
 		size_t operator()(const Vector2& value) const NSL_NOEXCEPT
 		{
@@ -36,7 +36,7 @@ export namespace NSL
 	};
 
 	template <>
-	struct STDHasher<Vector2i>
+	struct Hasher<Vector2i>
 	{
 		size_t operator()(const Vector2i& value) const NSL_NOEXCEPT
 		{
@@ -45,7 +45,7 @@ export namespace NSL
 	};
 
 	template <>
-	struct STDHasher<Vector2ui>
+	struct Hasher<Vector2ui>
 	{
 		size_t operator()(const Vector2ui& value) const NSL_NOEXCEPT
 		{
@@ -54,7 +54,7 @@ export namespace NSL
 	};
 
 	template <>
-	struct STDHasher<Astar2DGrid::Node>
+	struct Hasher<Astar2DGrid::Node>
 	{
 		size_t operator()(const Astar2DGrid::Node& value) const NSL_NOEXCEPT
 		{

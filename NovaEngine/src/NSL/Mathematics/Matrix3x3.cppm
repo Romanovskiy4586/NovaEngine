@@ -1,6 +1,10 @@
 export module Matrix3x3;
 #include "Core.h"
+import std;
 import Vector3;
+import Logger;
+
+static constexpr int s_size = 3;
 
 export namespace NSL
 {
@@ -79,16 +83,24 @@ export namespace NSL
 		{
 			return Matrix3x3(-col0, -col1, -col2);
 		}
-
-		static const int size = 3;
-		union
+		const Vector3& operator[](int index) const NSL_NOEXCEPT
 		{
-			Vector3 components[size];
-			struct
-			{
-				Vector3 col0, col1, col2;
-			};
-		};
+			static_assert(sizeof(Matrix3x3) == 36, "Unexpected Matrix3x3 size");
+			static_assert(alignof(Matrix3x3) == 4, "Unexpected Matrix3x3 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<const Vector3*>(this) + index);
+		}
+		Vector3& operator[](int index) NSL_NOEXCEPT
+		{
+			static_assert(sizeof(Matrix3x3) == 36, "Unexpected Matrix3x3 size");
+			static_assert(alignof(Matrix3x3) == 4, "Unexpected Matrix3x3 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<Vector3*>(this) + index);
+		}
+
+		Vector3 col0, col1, col2;
 
 		static const Matrix3x3 Unit;
 		static const Matrix3x3 Zero;

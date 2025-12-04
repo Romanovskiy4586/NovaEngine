@@ -13,8 +13,6 @@ import ShaderStorageBuffer;
 export namespace Renderer
 {
 	class NSL_API ResourcesManager final
-		: public NSL::INonCopyable
-		, public NSL::INonMovable
 	{
 	public:
 		void LoadMesh(const std::string& name, const std::string& fbxPath) NSL_NOEXCEPT

@@ -135,8 +135,8 @@
     <ClCompile Include="src\IO\MouseButtons.cppm" />
     <ClCompile Include="src\IO\MouseState.cppm" />
     <ClCompile Include="src\IO\IO.cppm" />
-    <ClCompile Include="src\NSL\Astar.cppm" />
-    <ClCompile Include="src\NSL\Astar2DGrid.cppm" />
+    <ClCompile Include="src\NSL\Astar\Astar.cppm" />
+    <ClCompile Include="src\NSL\Astar\Astar2DGrid.cppm" />
     <ClCompile Include="src\NSL\Color3.cppm" />
     <ClCompile Include="src\NSL\Color4.cppm" />
     <ClCompile Include="src\NSL\CRC.cppm" />
@@ -153,7 +153,7 @@
     <ClCompile Include="src\NovaEngine.cppm" />
     <ClCompile Include="src\Engine\GameWindow.cppm" />
     <ClCompile Include="src\NSL\Mathematics\Mathematics.Functions.cppm" />
-    <ClCompile Include="src\NSL\Mathematics\Ray.cppm" />
+    <ClCompile Include="src\NSL\Ray.cppm" />
     <ClCompile Include="src\NSL\Mathematics\Vector2i.cppm" />
     <ClCompile Include="src\NSL\Mathematics\Vector2ui.cppm" />
     <ClCompile Include="src\NSL\NSL.BinaryStream.cppm" />
@@ -168,10 +168,9 @@
     <ClCompile Include="src\NSL\Mathematics\Vector3.cppm" />
     <ClCompile Include="src\NSL\Mathematics\Vector4.cppm" />
     <ClCompile Include="src\NSL\NSL.cppm" />
-    <ClCompile Include="src\NSL\NSL.Interfaces.cppm" />
     <ClCompile Include="src\NSL\NSL.Functions.cppm" />
-    <ClCompile Include="src\NSL\STDHasher.cppm" />
-    <ClCompile Include="src\NSL\STDLess.cppm" />
+    <ClCompile Include="src\NSL\Hasher.cppm" />
+    <ClCompile Include="src\NSL\Less.cppm" />
     <ClCompile Include="src\NSL\Time.cppm" />
     <ClCompile Include="src\Renderer\Font.cppm" />
     <ClCompile Include="src\Renderer\MeshesDataDB.cppm" />

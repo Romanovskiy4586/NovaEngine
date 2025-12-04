@@ -4,6 +4,8 @@ import std;
 import Mathematics.Constants;
 import Logger;
 
+static constexpr int s_size = 4;
+
 export namespace NSL
 {
 	struct NSL_API Vector4 final
@@ -124,13 +126,19 @@ export namespace NSL
 
 		const float& operator[](int index) const NSL_NOEXCEPT
 		{
-			NSL_ASSERT(0 <= index && index <= size - 1, "Invalid index: " + std::to_string(index))
-			return components[index];
+			static_assert(sizeof(Vector4) == 16, "Unexpected Vector4 size");
+			static_assert(alignof(Vector4) == 4, "Unexpected Vector4 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<const float*>(this) + index);
 		}
 		float& operator[](int index) NSL_NOEXCEPT
 		{
-			NSL_ASSERT(0 <= index && index <= size - 1, "Invalid index: " + std::to_string(index))
-			return components[index];
+			static_assert(sizeof(Vector4) == 16, "Unexpected Vector4 size");
+			static_assert(alignof(Vector4) == 4, "Unexpected Vector4 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<float*>(this) + index);
 		}
 		Vector4 operator-() const NSL_NOEXCEPT
 		{
@@ -145,15 +153,7 @@ export namespace NSL
 			return !(*this == other);
 		}
 
-		static const int size = 4;
-		union
-		{
-			float components[size];
-			struct
-			{
-				float x, y, z, w;
-			};
-		};
+		float x, y, z, w;
 
 		static const Vector4 Zero;
 		static const Vector4 Unit;

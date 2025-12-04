@@ -1,6 +1,10 @@
 export module Matrix4x4;
 #include "Core.h"
+import std;
 import Vector4;
+import Logger;
+
+static constexpr int s_size = 3;
 
 export namespace NSL
 {
@@ -71,24 +75,24 @@ export namespace NSL
 
 
 #define resultMatrixCol0 ax1 * bx1 + ax2 * by1 + ax3 * bz1 + ax4 * bw1, \
-								 ay1 * bx1 + ay2 * by1 + ay3 * bz1 + ay4 * bw1, \
-								 az1 * bx1 + az2 * by1 + az3 * bz1 + az4 * bw1, \
-								 aw1 * bx1 + aw2 * by1 + aw3 * bz1 + aw4 * bw1
+						 ay1 * bx1 + ay2 * by1 + ay3 * bz1 + ay4 * bw1, \
+						 az1 * bx1 + az2 * by1 + az3 * bz1 + az4 * bw1, \
+						 aw1 * bx1 + aw2 * by1 + aw3 * bz1 + aw4 * bw1
 
 #define resultMatrixCol1 ax1 * bx2 + ax2 * by2 + ax3 * bz2 + ax4 * bw2, \
-								 ay1 * bx2 + ay2 * by2 + ay3 * bz2 + ay4 * bw2, \
-								 az1 * bx2 + az2 * by2 + az3 * bz2 + az4 * bw2, \
-								 aw1 * bx2 + aw2 * by2 + aw3 * bz2 + aw4 * bw2
+						 ay1 * bx2 + ay2 * by2 + ay3 * bz2 + ay4 * bw2, \
+						 az1 * bx2 + az2 * by2 + az3 * bz2 + az4 * bw2, \
+						 aw1 * bx2 + aw2 * by2 + aw3 * bz2 + aw4 * bw2
 
 #define resultMatrixCol2 ax1 * bx3 + ax2 * by3 + ax3 * bz3 + ax4 * bw3, \
-								 ay1 * bx3 + ay2 * by3 + ay3 * bz3 + ay4 * bw3, \
-								 az1 * bx3 + az2 * by3 + az3 * bz3 + az4 * bw3, \
-								 aw1 * bx3 + aw2 * by3 + aw3 * bz3 + aw4 * bw3
+						 ay1 * bx3 + ay2 * by3 + ay3 * bz3 + ay4 * bw3, \
+						 az1 * bx3 + az2 * by3 + az3 * bz3 + az4 * bw3, \
+						 aw1 * bx3 + aw2 * by3 + aw3 * bz3 + aw4 * bw3
 
 #define resultMatrixCol3 ax1 * bx4 + ax2 * by4 + ax3 * bz4 + ax4 * bw4, \
-								 ay1 * bx4 + ay2 * by4 + ay3 * bz4 + ay4 * bw4, \
-								 az1 * bx4 + az2 * by4 + az3 * bz4 + az4 * bw4, \
-								 aw1 * bx4 + aw2 * by4 + aw3 * bz4 + aw4 * bw4
+						 ay1 * bx4 + ay2 * by4 + ay3 * bz4 + ay4 * bw4, \
+						 az1 * bx4 + az2 * by4 + az3 * bz4 + az4 * bw4, \
+						 aw1 * bx4 + aw2 * by4 + aw3 * bz4 + aw4 * bw4
 
 			return Matrix4x4(Vector4(resultMatrixCol0), Vector4(resultMatrixCol1), Vector4(resultMatrixCol2), Vector4(resultMatrixCol3));
 		}
@@ -107,16 +111,24 @@ export namespace NSL
 		{
 			return Matrix4x4(-col0, -col1, -col2, -col3);
 		}
-
-		static const int size = 4;
-		union
+		const Vector4& operator[](int index) const NSL_NOEXCEPT
 		{
-			Vector4 components[size];
-			struct
-			{
-				Vector4 col0, col1, col2, col3;
-			};
-		};
+			static_assert(sizeof(Matrix4x4) == 64, "Unexpected Matrix4x4 size");
+			static_assert(alignof(Matrix4x4) == 4, "Unexpected Matrix4x4 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+				return *(reinterpret_cast<const Vector4*>(this) + index);
+		}
+		Vector4& operator[](int index) NSL_NOEXCEPT
+		{
+			static_assert(sizeof(Matrix4x4) == 64, "Unexpected Matrix4x4 size");
+			static_assert(alignof(Matrix4x4) == 4, "Unexpected Matrix4x4 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+				return *(reinterpret_cast<Vector4*>(this) + index);
+		}
+
+		Vector4 col0, col1, col2, col3;
 
 		static const Matrix4x4 Unit;
 		static const Matrix4x4 Zero;

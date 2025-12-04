@@ -149,6 +149,17 @@ export namespace Renderer
 				shaderStorageBuffer.Size(),
 				shaderStorageBuffer.Data(), GL_DYNAMIC_READ));
 		}
+		void* RegisterMappedShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
+		{
+			GLCall(glCreateBuffers(1, &shaderStorageBuffer._id));
+			//_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
+			GLCall(glNamedBufferStorage(shaderStorageBuffer._id, shaderStorageBuffer.Size(), shaderStorageBuffer.Data(), 
+				GL_MAP_PERSISTENT_BIT | // Buffer is always valid and can be used at every time (must also contain at least one of GL_MAP_READ_BIT or GL_MAP_WRITE_BIT)
+				GL_MAP_WRITE_BIT |	    // We only write into buffer, not read from it
+				GL_MAP_COHERENT_BIT     // Works only if GL_MAP_PERSISTENT_BIT used. With this flag when buffer through void* updates, GPU instantly sees it 
+			));
+			return GLCall(glMapNamedBufferRange(shaderStorageBuffer._id, 0, shaderStorageBuffer.Size(), GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT));
+		}
 		void BindShaderStorageBuffer(const ShaderStorageBuffer* shaderStorageBuffer, unsigned int index) NSL_NOEXCEPT
 		{
 			NSL_ASSERT(index <= _bindedSSBOs.size() - 1,
@@ -158,21 +169,17 @@ export namespace Renderer
 		}
 		void UpdateShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
-			_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
-			GLCall(glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0,
+			//_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
+			GLCall(glNamedBufferSubData(shaderStorageBuffer._id, 0,
 				shaderStorageBuffer.Size(),
 				shaderStorageBuffer.Data()));
 		}
 		void ReloadShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{
-			_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
-			GLCall(glBufferData(GL_SHADER_STORAGE_BUFFER,
+			//_BindShaderStorageBuffer(&shaderStorageBuffer, 0);
+			GLCall(glNamedBufferData(shaderStorageBuffer._id,
 				shaderStorageBuffer.Size(),
 				shaderStorageBuffer.Data(), GL_DYNAMIC_READ));
-		}
-		void* MapShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer, unsigned long long size) NSL_NOEXCEPT
-		{
-			return GLCall(glMapNamedBufferRange(shaderStorageBuffer._id, 0, size, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT));
 		}
 		void FreeShaderStorageBuffer(ShaderStorageBuffer& shaderStorageBuffer) NSL_NOEXCEPT
 		{

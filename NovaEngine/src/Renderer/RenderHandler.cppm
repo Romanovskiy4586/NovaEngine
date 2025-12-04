@@ -51,8 +51,6 @@ export namespace Renderer
 	using Texture2DFiltering = GLTexturesManager::Filtering;
 
 	class NSL_API RenderHandler final
-		: public NSL::INonCopyable
-		, public NSL::INonMovable
 	{
 	public:
 		struct NSL_API PostProcessParameters
@@ -308,10 +306,6 @@ export namespace Renderer
 			resourcesManager.GetShaderStorageBuffer(name).Reallocate(data.data(), static_cast<unsigned long long>(data.size() * sizeof(T)), static_cast<unsigned int>(data.size()));
 			glBuffersManager.ReloadShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
 		}
-		void* MapShaderStorageBuffer(const std::string& name, unsigned long long size) NSL_NOEXCEPT
-		{
-			return glBuffersManager.MapShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name), size);
-		}
 		void DeleteShaderStorageBuffer(const std::string& name) NSL_NOEXCEPT
 		{
 			glBuffersManager.FreeShaderStorageBuffer(resourcesManager.GetShaderStorageBuffer(name));
@@ -363,7 +357,7 @@ export namespace Renderer
 
 			UpdateFramebufferSize(_framebufferWidth, _framebufferHeight);
 		}
-		void SetScreenSize(const NSL::Vector2 size) NSL_NOEXCEPT
+		void SetScreenSize(const NSL::Vector2i size) NSL_NOEXCEPT
 		{
 			_screenSize = size;
 		}
@@ -584,6 +578,6 @@ export namespace Renderer
 		int _framebufferHeight;
 		int _scaledWidth;
 		int _scaledHeight;
-		NSL::Vector2 _screenSize;
+		NSL::Vector2i _screenSize;
 	};
 }

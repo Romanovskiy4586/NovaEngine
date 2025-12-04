@@ -208,12 +208,12 @@ export namespace Stalker
 		GameMap _gameMap;
 		std::vector<NPC> _npcs;
 
-		std::unordered_set<NSL::Vector2ui, NSL::STDHasher<NSL::Vector2ui>> _emptyTilesPositions;
-		std::unordered_set<NSL::Vector2ui, NSL::STDHasher<NSL::Vector2ui>> _wallTilesPositions;
-		std::unordered_set<NSL::Vector2ui, NSL::STDHasher<NSL::Vector2ui>> _lowtierStalkersPositions;
-		std::unordered_set<NSL::Vector2ui, NSL::STDHasher<NSL::Vector2ui>> _midlowtierStalkersPositions;
-		std::unordered_set<NSL::Vector2ui, NSL::STDHasher<NSL::Vector2ui>> _midtierStalkersPositions;
-		std::unordered_set<NSL::Vector2ui, NSL::STDHasher<NSL::Vector2ui>> _midhightierStalkersPositions;
-		std::unordered_set<NSL::Vector2ui, NSL::STDHasher<NSL::Vector2ui>> _hightierStalkersPositions;
+		std::unordered_set<NSL::Vector2ui, NSL::Hasher<NSL::Vector2ui>> _emptyTilesPositions;
+		std::unordered_set<NSL::Vector2ui, NSL::Hasher<NSL::Vector2ui>> _wallTilesPositions;
+		std::unordered_set<NSL::Vector2ui, NSL::Hasher<NSL::Vector2ui>> _lowtierStalkersPositions;
+		std::unordered_set<NSL::Vector2ui, NSL::Hasher<NSL::Vector2ui>> _midlowtierStalkersPositions;
+		std::unordered_set<NSL::Vector2ui, NSL::Hasher<NSL::Vector2ui>> _midtierStalkersPositions;
+		std::unordered_set<NSL::Vector2ui, NSL::Hasher<NSL::Vector2ui>> _midhightierStalkersPositions;
+		std::unordered_set<NSL::Vector2ui, NSL::Hasher<NSL::Vector2ui>> _hightierStalkersPositions;
 	};
 }

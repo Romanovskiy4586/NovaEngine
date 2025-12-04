@@ -10,8 +10,6 @@ import Texture2D;
 export namespace Renderer
 {
 	class NSL_API AssetsManager final
-		: public NSL::INonCopyable
-		, public NSL::INonMovable
 	{
 	public:
 		void BindIntoModel(const std::string& name, Mesh& mesh, Texture2D& albedo, Texture2D& normal,

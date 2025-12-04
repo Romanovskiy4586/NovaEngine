@@ -3,8 +3,8 @@ export module Astar;
 import std;
 import Astar2DGrid;
 import Mathematics;
-import STDLess;
-import STDHasher;
+import Less;
+import Hasher;
 
 const float DIAGONAL_COST = 1.4f;
 const float STRAIGHT_COST = 1.0f;
@@ -418,10 +418,10 @@ export namespace NSL
 	private:
 		Astar2DGrid _grid;
 		std::vector<Astar2DGrid::Node*> _openList;
-		std::set<Astar2DGrid::Node, NSL::STDLess<Astar2DGrid::Node>> _sortedOpenList;
-		std::set<Astar2DGrid::Node*, NSL::STDLess<Astar2DGrid::Node*>> _sortedOpenListPointers;
+		std::set<Astar2DGrid::Node, NSL::Less<Astar2DGrid::Node>> _sortedOpenList;
+		std::set<Astar2DGrid::Node*, NSL::Less<Astar2DGrid::Node*>> _sortedOpenListPointers;
 		std::unordered_set<Astar2DGrid::Node*> _closeList;
-		std::unordered_set<Astar2DGrid::Node, NSL::STDHasher<Astar2DGrid::Node>> _newCloseList;
+		std::unordered_set<Astar2DGrid::Node, NSL::Hasher<Astar2DGrid::Node>> _newCloseList;
 		
 		const int DIAGONAL_COST = 14;
 		const int STRAIGHT_COST = 10;

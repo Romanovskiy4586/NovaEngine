@@ -28,8 +28,6 @@ namespace IO
 export namespace IO
 {
 	class NSL_API BaseWindow final
-		: public NSL::INonCopyable
-		, public NSL::INonMovable
 	{
 	public:
 		BaseWindow() NSL_NOEXCEPT

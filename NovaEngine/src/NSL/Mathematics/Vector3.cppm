@@ -4,12 +4,14 @@ import std;
 import Mathematics.Constants;
 import Logger;
 
+static constexpr int s_size = 3;
+
 export namespace NSL
 {
 	struct NSL_API Vector3 final
 	{
 		Vector3() = default;
-		explicit Vector3(float xyz) NSL_NOEXCEPT
+		Vector3(float xyz) NSL_NOEXCEPT
 			: x(xyz)
 			, y(xyz)
 			, z(xyz)
@@ -114,13 +116,19 @@ export namespace NSL
 
 		const float& operator[](int index) const NSL_NOEXCEPT
 		{
-			NSL_ASSERT(0 <= index && index <= size - 1, "Invalid index: " + std::to_string(index))
-			return components[index];
+			static_assert(sizeof(Vector3) == 12, "Unexpected Vector3 size");
+			static_assert(alignof(Vector3) == 4, "Unexpected Vector3 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<const float*>(this) + index);
 		}
 		float& operator[](int index) NSL_NOEXCEPT
 		{
-			NSL_ASSERT(0 <= index && index <= size - 1, "Invalid index: " + std::to_string(index))
-			return components[index];
+			static_assert(sizeof(Vector3) == 12, "Unexpected Vector3 size");
+			static_assert(alignof(Vector3) == 4, "Unexpected Vector3 alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<float*>(this) + index);
 		}
 		Vector3 operator-() const NSL_NOEXCEPT
 		{
@@ -135,15 +143,7 @@ export namespace NSL
 			return !(*this == other);
 		}
 
-		static const int size = 3;
-		union
-		{
-			float components[size];
-			struct
-			{
-				float x, y, z;
-			};
-		};
+		float x, y, z;
 
 		static const Vector3 Zero;
 		static const Vector3 Unit;
@@ -152,9 +152,9 @@ export namespace NSL
 		static const Vector3 UnitZ;
 	};
 
-	const Vector3 Vector3::Zero{ 0.0f, 0.0f, 0.0f};
-	const Vector3 Vector3::Unit{ 1.0f, 1.0f, 1.0f};
-	const Vector3 Vector3::UnitX{ 1.0f, 0.0f, 0.0f};
-	const Vector3 Vector3::UnitY{ 0.0f, 1.0f, 0.0f};
-	const Vector3 Vector3::UnitZ{ 0.0f, 0.0f, 1.0f};
+	const Vector3 Vector3::Zero { 0.0f, 0.0f, 0.0f };
+	const Vector3 Vector3::Unit { 1.0f, 1.0f, 1.0f };
+	const Vector3 Vector3::UnitX{ 1.0f, 0.0f, 0.0f };
+	const Vector3 Vector3::UnitY{ 0.0f, 1.0f, 0.0f };
+	const Vector3 Vector3::UnitZ{ 0.0f, 0.0f, 1.0f };
 }

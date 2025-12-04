@@ -8,8 +8,6 @@ import Shader;
 export namespace Renderer
 {
 	class NSL_API GLShadersManager
-		: public NSL::INonCopyable
-		, public NSL::INonMovable
 	{
 	public:
         GLShadersManager()

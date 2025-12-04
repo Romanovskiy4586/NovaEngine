@@ -1,11 +1,11 @@
-export module STDLess;
+export module Less;
 #include "Core.h"
 import Astar2DGrid;
 
 export namespace NSL
 {
 	template <class T>
-	class NSL_API STDLess
+	class NSL_API Less
 	{
 	public:
 		bool operator()(const T& left, const T& right) const NSL_NOEXCEPT
@@ -15,7 +15,7 @@ export namespace NSL
 	};
 
 	template <>
-	class NSL_API STDLess<Astar2DGrid::Node*>
+	class NSL_API Less<Astar2DGrid::Node*>
 	{
 	public:
 		bool operator()(const Astar2DGrid::Node* const& left, const Astar2DGrid::Node* const& right) const NSL_NOEXCEPT
@@ -29,7 +29,7 @@ export namespace NSL
 	};
 
 	template <>
-	class NSL_API STDLess<Astar2DGrid::Node>
+	class NSL_API Less<Astar2DGrid::Node>
 	{
 	public:
 		bool operator()(const Astar2DGrid::Node& left, const Astar2DGrid::Node& right) const NSL_NOEXCEPT

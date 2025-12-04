@@ -7,7 +7,6 @@ export import Logger;
 export import NSL.Functions;
 export import Mathematics;
 export import Time;
-export import NSL.Interfaces;
 export import Color4;
 export import Color3;
 export import CRC;
@@ -21,7 +20,7 @@ export import RawFBX;
 export import PNG;
 //export import PNGLoader;
 
-export import STDHasher;
-export import STDLess;
+export import Hasher;
+export import Less;
 export import Astar;
 export import Astar2DGrid;

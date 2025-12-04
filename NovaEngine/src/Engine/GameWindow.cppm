@@ -16,7 +16,7 @@ export namespace Engine
 			, renderHandler(baseWindow.GetFramebufferWidth(), baseWindow.GetFramebufferHeight())
 		{
 			baseWindow.SubscribeOnFramebuffer([this](int width, int height) { renderHandler.UpdateFramebufferSize(width, height); });
-			renderHandler.SetScreenSize(NSL::Vector2(static_cast<float>(baseWindow.monitor.GetResolutionWidth()), static_cast<float>(baseWindow.monitor.GetResolutionHeight())));
+			renderHandler.SetScreenSize(NSL::Vector2i(baseWindow.monitor.GetResolutionWidth(), baseWindow.monitor.GetResolutionHeight()));
 		}
 
 	public:

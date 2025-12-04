@@ -4,6 +4,8 @@ import std;
 import Mathematics.Constants;
 import Logger;
 
+static constexpr int s_size = 2;
+
 export namespace NSL
 {
 	struct NSL_API Vector2i final
@@ -104,13 +106,19 @@ export namespace NSL
 
 		const int& operator[](int index) const NSL_NOEXCEPT
 		{
-			NSL_ASSERT(0 <= index && index <= size - 1, "Invalid index: " + std::to_string(index))
-			return components[index];
+			static_assert(sizeof(Vector2i) == 8, "Unexpected Vector2i size");
+			static_assert(alignof(Vector2i) == 4, "Unexpected Vector2i alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<const int*>(this) + index);
 		}
 		int& operator[](int index) NSL_NOEXCEPT
 		{
-			NSL_ASSERT(0 <= index && index <= size - 1, "Invalid index: " + std::to_string(index))
-			return components[index];
+			static_assert(sizeof(Vector2i) == 8, "Unexpected Vector2i size");
+			static_assert(alignof(Vector2i) == 4, "Unexpected Vector2i alignment");
+
+			NSL_ASSERT(0 <= index && index < s_size, "Invalid index: " + std::to_string(index))
+			return *(reinterpret_cast<int*>(this) + index);
 		}
 		Vector2i operator-() const NSL_NOEXCEPT
 		{
@@ -133,15 +141,7 @@ export namespace NSL
 			return (x < other.x && y <= other.y) || (x <= other.x && y < other.y);
 		}
 
-		static const int size = 2;
-		union
-		{
-			int components[size];
-			struct
-			{
-				int x, y;
-			};
-		};
+		int x, y;
 
 		static const Vector2i Zero;
 		static const Vector2i Unit;

@@ -12,7 +12,7 @@ import Color3;
 
 #ifndef NDEBUG
 #define PEEK_DATA_IF_DEBUG chunkContent = binaryStream.PeekBytes(dataLength + 4);
-#define CHECK_CRC_IF_DEBUG if (_crc(reinterpret_cast<void*>(chunkContent.data()), chunkContent.size()) == chunk.crc)\
+#define CHECK_CRC_IF_DEBUG if (_crc(reinterpret_cast<void*>(chunkContent.data()), static_cast<int>(chunkContent.size())) == chunk.crc)\
 {\
 	LogInfo(chunk.type + " chunk CRC correct");\
 }\
@@ -267,9 +267,9 @@ export namespace NSL
 			if (ihdr.colorType == _IHDR::ColorType::PaletteIndex)
 			{
 				std::vector<unsigned char> indexedPixels;
-				for (unsigned int y = 0; y < result.size.y; ++y)
+				for (int y = 0; y < result.size.y; ++y)
 				{
-					for (unsigned int x = 1; x < result.size.x + 1; ++x)
+					for (int x = 1; x < result.size.x + 1; ++x)
 					{
 						Color3 color = plte.colors[x + y * result.size.x];
 						indexedPixels.push_back(color.r);
@@ -283,7 +283,7 @@ export namespace NSL
 			// Parse pixels into PNG scanlines
 			Scanline scanline;
 			std::vector<unsigned char> rawScanline;
-			for (unsigned int i = 0; i < result.size.y; ++i)
+			for (int i = 0; i < result.size.y; ++i)
 			{
 				rawScanline = std::vector<unsigned char>(pixels.begin(), (pixels.begin() + result.size.x * result.channels) + 1);
 				scanline.filtering = (NSL::PNG::Scanline::Filtering)rawScanline[0];
@@ -296,9 +296,9 @@ export namespace NSL
 			result._Unfilter();
 
 			// Flip image
-			const unsigned int halfHeight = result.size.y / 2;
-			unsigned int endScanlineIndex;
-			for (unsigned int i = 0; i < halfHeight; ++i)
+			const int halfHeight = result.size.y / 2;
+			size_t endScanlineIndex;
+			for (int i = 0; i < halfHeight; ++i)
 			{
 				endScanlineIndex = result.scanlines.size() - 1 - i;
 				scanline = result.scanlines[i];

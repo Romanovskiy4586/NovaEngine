@@ -8,8 +8,6 @@ import Texture2D;
 export namespace Renderer
 {
 	export class NSL_API GLTexturesManager final
-		: public NSL::INonCopyable
-		, public NSL::INonMovable
 	{
 	public:
 		enum class NSL_API Filtering

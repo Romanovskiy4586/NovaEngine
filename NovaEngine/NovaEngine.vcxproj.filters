@@ -144,9 +144,6 @@
     <ClCompile Include="src\Renderer\OpenGL\GLContextManager.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NSL\NSL.Interfaces.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\NSL\Mathematics\Mathematics.Functions.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -171,7 +168,7 @@
     <ClCompile Include="src\NSL\Mathematics\Vector2ui.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NSL\STDHasher.cppm">
+    <ClCompile Include="src\NSL\Hasher.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\OpenGL\GLTexturesManager.cppm">
@@ -183,7 +180,7 @@
     <ClCompile Include="src\Renderer\OpenGL\GLBuffersManager.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NSL\Mathematics\Ray.cppm">
+    <ClCompile Include="src\NSL\Ray.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Renderer\Raycaster.cppm">
@@ -201,13 +198,13 @@
     <ClCompile Include="src\Renderer\OpenGL\ShaderStorageBuffer.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NSL\Astar2DGrid.cppm">
+    <ClCompile Include="src\NSL\Astar\Astar2DGrid.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NSL\Astar.cppm">
+    <ClCompile Include="src\NSL\Astar\Astar.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NSL\STDLess.cppm">
+    <ClCompile Include="src\NSL\Less.cppm">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Resources\ResourcesDB.cppm">

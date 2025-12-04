@@ -14,8 +14,6 @@ export namespace Renderer
 	// При создании инициализирует базовый глобальный контекст: вьюпорт, маску stencil, blending, clear color, включается multisample.
 	// С помощью объекта этого класса меняется глобальный контекст, в лупе вызывается отрисовка мешей
 	class NSL_API GLContextManager final
-		: public NSL::INonCopyable
-		, public NSL::INonMovable
 	{
 	public:
 		GLContextManager(int framebufferWidth, int framebufferHeight) NSL_NOEXCEPT
